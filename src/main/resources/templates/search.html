@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ETF 조건 검색</title>
+    <link rel="icon" th:href="@{/images/favi.png}">
+
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        /* 페이지 전용 스타일 */
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f7f7f7;
+        }
+
+        .search-wrap {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 30px;
+        }
+
+        .search-box {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .search-box button {
+            padding: 12px 24px;
+            background-color: #055C4D;
+            color: white;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .search-box button:hover {
+            background-color: #04463a;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background-color: #f1f3f5;
+            font-weight: 600;
+            color: #333;
+        }
+
+        tr:hover { background-color: #f8f9fa; }
+
+        .badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .risk-high { background: #ffe3e3; color: #e03131; }
+        .risk-low { background: #d3f9d8; color: #2b8a3e; }
+    </style>
+</head>
+
+<body>
+
+<div th:replace="~{fragments/header :: headerFragment}"></div>
+
+<div style="position: relative; z-index: 1; padding-top: 100px;">
+    <div class="search-wrap">
+        <h1>🔍 ETF 상세 검색</h1>
+
+        <div class="search-box">
+            <form action="/search" method="get" class="w-full flex gap-4">
+                <input type="text" name="keyword" placeholder="검색어를 입력하세요" th:value="${keyword}">
+                <button type="submit">검색하기</button>
+            </form>
+        </div>
+
+        <table>
+            <thead>
+            <tr>
+                <th style="width:40%">종목명</th>
+                <th>테마</th>
+                <th>자산유형</th>
+                <th>위험등급</th>
+                <th>보수수준</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:if="${results.isEmpty()}">
+                <td colspan="5" style="text-align:center; padding: 40px; color: #888;">
+                    조건에 맞는 ETF가 없습니다.
+                </td>
+            </tr>
+
+            <tr th:each="etf : ${results}">
+                <td style="font-weight:bold;">
+                    <a th:href="@{/etf/{isin}(isin=${etf.isinCd})}"
+                       style="text-decoration:none; color:#000; display:block;">
+                        <span th:text="${etf.name}"></span>
+                    </a>
+                </td>
+                <td th:text="${etf.theme}"></td>
+                <td th:text="${etf.assetType}"></td>
+                <td>
+                    <span th:text="${etf.riskLevel} + '등급'"
+                          th:class="${etf.riskLevel >= 4} ? 'badge risk-high' : 'badge risk-low'">
+                    </span>
+                </td>
+                <td th:text="${etf.expenseLevel}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer :: footerFragment}"></div>
+
+<script th:src="@{/js/common.js}"></script>
+</body>
+</html>

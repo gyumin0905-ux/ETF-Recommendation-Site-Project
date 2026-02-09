@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ETF 메인 - Verte</title>
+    <link rel="icon" th:href="@{/images/favi.png}">
+
+    <!-- 공통 CSS -->
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+
+    <!-- 외부 -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script th:src="@{/js/common.js}" defer></script>
+    <script th:src="@{/js/main.js}" defer></script>
+</head>
+
+<body th:data-login="${loginUser != null}">
+
+<!-- ================= HEADER ================= -->
+<div th:replace="~{fragments/header :: headerFragment}"></div>
+
+<main style="padding-top:100px">
+
+    <!-- ================= 검색 히어로 ================= -->
+    <section id="search">
+        <div class="circle"></div>
+
+        <div class="transition-box">
+            <h2>
+                투자의 새로운 기준,<br>
+                <span>Verte ETF</span>
+            </h2>
+            <p>ETF 시장의 흐름을 읽는 가장 스마트한 방법</p>
+
+            <!-- 예시 검색 -->
+            <div class="search-wrap">
+                <input type="text" class="search-bar" placeholder="관심있는 ETF 상품명이나 코드를 입력해보세요">
+                <button class="search-btn">검색</button>
+            </div>
+
+            <ul class="word-list">
+                <li>추천검색어:</li>
+                <li th:each="company : ${recommendCompanies}">
+                    <a th:href="@{/etf/list(keyword=${company})}"
+                       th:text="'#' + ${company}">
+                        #KODEX
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- ================= 배너 ================= -->
+    <section id="banners">
+        <ul class="banner-list">
+            <li th:each="etf : ${bannerEtfs}">
+                <a th:href="@{/etf/{isin}(isin=${etf.isinCd})}">
+
+                    <p class="text-top">• 대표 ETF •</p>
+
+                    <h3 th:text="${etf.itmsNm}">
+                        ETF 이름
+                    </h3>
+
+                    <p class="etf-name" th:text="${etf.itmsNm}"></p>
+
+                    <p class="etf-ticker" th:text="${etf.isinCd}"></p>
+
+                    <!-- 이미지 분기 -->
+                    <img th:if="${#strings.contains(etf.itmsNm,'반도체')}"
+                         th:src="@{/images/banner2.png}" />
+
+                    <img th:if="${#strings.contains(etf.itmsNm,'KODEX 미국S&P500')}"
+                         th:src="@{/images/banner3.png}" />
+
+                    <img th:if="${#strings.contains(etf.itmsNm,'TIGER 미국S&P500')}"
+                         th:src="@{/images/banner1.png}" />
+                </a>
+            </li>
+        </ul>
+    </section>
+
+    <!-- ================= 이벤트 (실데이터 유지) ================= -->
+    <section id="event" th:if="${latestEvents != null and !latestEvents.isEmpty()}">
+        <ul class="event-list">
+            <li th:each="event : ${latestEvents}">
+                <a th:href="@{/event/detail/{id}(id=${event.id})}">
+                    <img th:src="@{/images/} + ${event.thumbnailUrl}" alt="">
+                    <h3 th:text="${event.title}">이벤트 제목</h3>
+                    <p>
+                        이벤트기간 |
+                        <span th:text="${event.startDate}"></span> ~
+                        <span th:text="${event.endDate}"></span>
+                    </p>
+                </a>
+            </li>
+        </ul>
+    </section>
+
+    <!-- ================= 추천 ETF ================= -->
+    <section id="recommend">
+        <div class="left">
+            <h2>추천 ETF<br>한눈에 보기</h2>
+            <p>지금 가장 인기 있는 ETF</p>
+
+            <ul class="tab-btn">
+                <li class="active">해외 ETF</li>
+                <li>국내 ETF</li>
+                <li>채권 ETF</li>
+                <li>안정형 ETF</li>
+            </ul>
+        </div>
+
+        <div class="right">
+
+            <!-- ================= 해외 ETF ================= -->
+            <ul class="etf-list active">
+                <li th:each="etf, stat : ${recommendOverseas}">
+                    <a th:href="@{/etf/{isin}(isin=${etf.isinCd})}">
+                        <p class="rank-num" th:text="${stat.count}">1</p>
+
+                        <h4 class="etf-name" th:text="${etf.name}">ETF 이름</h4>
+
+                        <p class="etf-ticker" th:text="${etf.isinCd}">종목코드</p>
+
+                        <p class="etf-info">해외 ETF</p>
+
+                        <!-- ✅ FIX: dayReturn -> flucRt -->
+                        <p class="etf-return"
+                           th:if="${etf.flucRt != null}"
+                           th:text="${(etf.flucRt >= 0 ? '+' : '') + #numbers.formatDecimal(etf.flucRt, 1, 2)} + '%'"
+                           th:style="${etf.flucRt >= 0 ? 'color:#F04452' : 'color:#4594DF'}">
+                            +0.00%
+                        </p>
+                        <p class="etf-return"
+                           th:if="${etf.flucRt == null}"
+                           style="color:#999">
+                            -
+                        </p>
+
+                        <p class="etf-date">
+                            <span>1개월 기준</span>
+                            <span>최근</span>
+                        </p>
+                    </a>
+                </li>
+            </ul>
+
+            <!-- ================= 국내 ETF ================= -->
+            <ul class="etf-list">
+                <li th:each="etf, stat : ${recommendDomestic}">
+                    <a th:href="@{/etf/{isin}(isin=${etf.isinCd})}">
+                        <p class="rank-num" th:text="${stat.count}">1</p>
+
+                        <h4 class="etf-name" th:text="${etf.name}">ETF 이름</h4>
+
+                        <p class="etf-ticker" th:text="${etf.isinCd}">종목코드</p>
+
+                        <p class="etf-info">국내 ETF</p>
+
+                        <!-- ✅ FIX: dayReturn -> flucRt -->
+                        <p class="etf-return"
+                           th:if="${etf.flucRt != null}"
+                           th:text="${(etf.flucRt >= 0 ? '+' : '') + #numbers.formatDecimal(etf.flucRt, 1, 2)} + '%'"
+                           th:style="${etf.flucRt >= 0 ? 'color:#F04452' : 'color:#4594DF'}">
+                            +0.00%
+                        </p>
+                        <p class="etf-return"
+                           th:if="${etf.flucRt == null}"
+                           style="color:#999">
+                            -
+                        </p>
+
+                        <p class="etf-date">
+                            <span>1개월 기준</span>
+                            <span>최근</span>
+                        </p>
+                    </a>
+                </li>
+            </ul>
+
+            <!-- ================= 채권 ETF ================= -->
+            <ul class="etf-list">
+                <li th:each="etf, stat : ${recommendBond}">
+                    <a th:href="@{/etf/{isin}(isin=${etf.isinCd})}">
+                        <p class="rank-num" th:text="${stat.count}">1</p>
+
+                        <h4 class="etf-name" th:text="${etf.name}">ETF 이름</h4>
+
+                        <p class="etf-ticker" th:text="${etf.isinCd}">종목코드</p>
+
+                        <p class="etf-info">채권 ETF</p>
+
+                        <!-- ✅ FIX: dayReturn -> flucRt -->
+                        <p class="etf-return"
+                           th:if="${etf.flucRt != null}"
+                           th:text="${(etf.flucRt >= 0 ? '+' : '') + #numbers.formatDecimal(etf.flucRt, 1, 2)} + '%'"
+                           th:style="${etf.flucRt >= 0 ? 'color:#F04452' : 'color:#4594DF'}">
+                            +0.00%
+                        </p>
+                        <p class="etf-return"
+                           th:if="${etf.flucRt == null}"
+                           style="color:#999">
+                            -
+                        </p>
+
+                        <p class="etf-date">
+                            <span>1개월 기준</span>
+                            <span>최근</span>
+                        </p>
+                    </a>
+                </li>
+            </ul>
+
+            <!-- ================= 안정형 ETF ================= -->
+            <ul class="etf-list">
+                <li th:each="etf, stat : ${recommendSafe}">
+                    <a th:href="@{/etf/{isin}(isin=${etf.isinCd})}">
+                        <p class="rank-num" th:text="${stat.count}">1</p>
+
+                        <h4 class="etf-name" th:text="${etf.name}">ETF 이름</h4>
+
+                        <p class="etf-ticker" th:text="${etf.isinCd}">종목코드</p>
+
+                        <p class="etf-info">안정형 ETF</p>
+
+                        <!-- ✅ FIX: dayReturn -> flucRt -->
+                        <p class="etf-return"
+                           th:if="${etf.flucRt != null}"
+                           th:text="${(etf.flucRt >= 0 ? '+' : '') + #numbers.formatDecimal(etf.flucRt, 1, 2)} + '%'"
+                           th:style="${etf.flucRt >= 0 ? 'color:#F04452' : 'color:#4594DF'}">
+                            +0.00%
+                        </p>
+                        <p class="etf-return"
+                           th:if="${etf.flucRt == null}"
+                           style="color:#999">
+                            -
+                        </p>
+
+                        <p class="etf-date">
+                            <span>1개월 기준</span>
+                            <span>최근</span>
+                        </p>
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+    </section>
+
+    <!-- ================= ETF 뉴스 ================= -->
+    <section id="news">
+        <div class="title-line">
+            <h2>ETF 뉴스</h2>
+            <a th:href="@{/notice}" class="more-btn">전체보기 ></a>
+        </div>
+
+        <div class="news-swiper swiper">
+            <div class="swiper-wrapper">
+
+                <div class="swiper-slide" th:each="news : ${latestNews}">
+                    <!-- ✅ 디자인은 이 안에서만 -->
+                    <a class="news-card"
+                       th:href="@{/notice/{id}(id=${news.id})}">
+
+                        <div class="img-wrap">
+                            <img th:src="${news.thumbnailUrl != null
+                          ? news.thumbnailUrl
+                          : '/images/news-default.jpg'}">
+                        </div>
+
+                        <div class="text-wrap">
+                            <span class="category">ETF 뉴스</span>
+                            <h3 th:text="${news.title}">제목</h3>
+                            <p th:text="${#strings.abbreviate(news.content, 80)}"></p>
+                        </div>
+                    </a>
+                </div>
+
+            </div>
+
+            <!-- 기본 네비게이션 -->
+            <div class="swiper-button-prev">
+                <img src="/images/slide-btn.png">
+            </div>
+            <div class="swiper-button-next">
+                <img src="/images/slide-btn.png">
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ================= ETF 투자 정보 ================= -->
+    <section id="info">
+        <div class="info-top">
+            <h2>ETF 투자정보</h2>
+            <p>ETF 비교부터 랭킹, 투자 시뮬레이션까지! ETF 투자를 위한 다양한 정보를 확인해보세요.</p>
+        </div>
+
+        <div class="info-bot">
+            <ul class="info-list">
+
+                <!-- 1. ETF 비교 · 랭킹 -->
+                <li>
+                    <a th:href="@{/compare}">
+                        <div class="left">
+                            <div class="flip">
+                                <img th:src="@{/images/info-icon1.png}" alt="ETF 비교">
+                            </div>
+                        </div>
+                        <div class="right">
+                            <h4>ETF 비교·랭킹</h4>
+                            <p>두 가지 ETF 정보를 한 화면에서 비교해보세요.</p>
+                        </div>
+                    </a>
+                </li>
+
+                <!-- 2. ETF 라인업 -->
+                <li>
+                    <a th:href="@{/etf/list}">
+                        <div class="left">
+                            <div class="flip">
+                                <img th:src="@{/images/info-icon2.png}" alt="ETF 라인업">
+                            </div>
+                        </div>
+                        <div class="right">
+                            <h4>ETF 라인업</h4>
+                            <p>지금 시장에는 어떤 ETF가 있을까요?</p>
+                        </div>
+                    </a>
+                </li>
+
+                <!-- 3. 오늘의 투자 운세 -->
+                <li>
+                    <a th:href="@{/fortune}">
+                        <div class="left">
+                            <div class="flip">
+                                <img th:src="@{/images/info-icon3.png}" alt="투자 운세">
+                            </div>
+                        </div>
+                        <div class="right">
+                            <h4>오늘의 투자 운세</h4>
+                            <p>별자리로 뽑는 오늘의 투자 운세 보고 가세요!</p>
+                        </div>
+                    </a>
+                </li>
+
+                <!-- 4. ETF 커뮤니티 -->
+                <li>
+                    <a th:href="@{/board}">
+                        <div class="left">
+                            <div class="flip">
+                                <img th:src="@{/images/info-icon4.png}" alt="ETF 커뮤니티">
+                            </div>
+                        </div>
+                        <div class="right">
+                            <h4>ETF 커뮤니티</h4>
+                            <p>ETF 투자자들과 함께 의견을 나눠보세요.</p>
+                        </div>
+                    </a>
+                </li>
+
+            </ul>
+        </div>
+    </section>
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+<div th:replace="~{fragments/footer :: footerFragment}"></div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelector('#search').classList.add('active');
+    });
+</script>
+
+</body>
+</html>

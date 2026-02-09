@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ETF 라인업 - Verte</title>
+    <link rel="icon" th:href="@{/images/favi.png}">
+
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://kit.fontawesome.com/4aff7483c9.js" crossorigin="anonymous"></script>
+
+    <style>
+        /* ===== 페이지 레이아웃 ===== */
+        body {
+            background-color: #f5f7fb;
+            font-family: "Noto Sans KR", sans-serif;
+        }
+
+        /* ===== 상단 검색 ===== */
+        .searchsection {
+            width: 1620px;
+            margin: 0 auto 80px; /* 간격 조정 */
+            text-align: center;
+        }
+
+        .searchTit {
+            font-size: 48px;
+            font-weight: 600;
+            color: #1e1f7c;
+            margin-bottom: 40px;
+        }
+
+        .searchBox {
+            max-width: 860px;
+            margin: 0 auto;
+        }
+
+        .searchInputWrap {
+            height: 60px;
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            background: #fff;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, .04);
+        }
+
+        /* ===== 메인 컨텐츠 (필터 + 리스트) ===== */
+        .main-wrap {
+            width: 1620px;
+            margin: 0 auto;
+            display: flex;
+            gap: 40px; /* 간격 최적화 */
+            align-items: flex-start;
+        }
+
+        /* [좌측 필터] */
+        .filter {
+            width: 300px; /* 너비 살짝 조정 */
+            background: #fff;
+            padding: 32px 28px;
+            border-radius: 20px;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        }
+
+        .filter-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 28px;   /* 기존 20px → 여유 */
+            padding-bottom: 15px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .filter-header h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .filter-reset-btn {
+            font-size: 13px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            background: #fff;
+            color: #666;
+            transition: 0.2s;
+            margin-left: 12px;     /* 제목과 거리 */
+        }
+        .filter-reset-btn:hover {
+            background: #f1f1f1;
+            color: #333;
+        }
+
+        /* 필터 그룹 간 간격 강화 */
+        .filter-group {
+            margin-bottom: 36px;   /* 기존 30px → 여유 */
+            padding-bottom: 28px;
+            border-bottom: 1px dashed #e5e7eb;
+            display: flex;
+            flex-direction: column;
+            gap: 10px; /* 버튼 간 간격 */
+        }
+        .filter-group p {
+            font-size: 14px;
+            font-weight: 700;
+            color: #055C4D;
+            margin-bottom: 14px;
+        }
+
+        .filter-group:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        /* 그룹 구분선 */
+        .filter-group:not(:last-child) {
+            padding-bottom: 24px;
+            border-bottom: 1px dashed #e5e7eb;
+        }
+
+        /* 보수 수준 강조 */
+        .filter-group:last-child p {
+            color: #1e1f7c;     /* 메인 포인트 컬러 */
+        }
+
+        .filter-btn {
+            display: block;
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            margin-bottom: 6px;
+            text-align: left;
+            font-size: 14px;
+            color: #555;
+            transition: 0.2s;
+        }
+
+        .filter-btn:hover {
+            background: #f5f7fb;
+        }
+
+        .filter-btn.active {
+            background: #055C4D;
+            color: #fff;
+            border-color: #055C4D;
+            font-weight: 600;
+        }
+
+        /* [우측 결과 리스트] */
+        .result {
+            flex: 1; /* 남은 공간 모두 차지 */
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .prod-box {
+            width: 100%; /* ★수정: 고정폭 700px 제거하고 꽉 채움 */
+            background-color: #fff;
+            border-radius: 20px;
+            padding: 35px 45px;
+            position: relative;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 1px solid #f0f0f0;
+        }
+
+        .prod-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            border-color: #055C4D;
+        }
+
+        .prod-top { margin-bottom: 15px; }
+
+        .prod-tag {
+            display: inline-block;
+            background: #e0f2f1;
+            color: #00695c;
+            font-size: 13px;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .prod-name {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 25px;
+            padding-right: 50px; /* 북마크 공간 확보 */
+            word-break: keep-all;
+        }
+
+        .prod-info {
+            display: flex;
+            gap: 40px;
+            font-size: 16px;
+            color: #555;
+            align-items: center;
+        }
+
+        .prod-info .val {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-left: 8px;
+        }
+
+        .percent {
+            font-weight: 700;
+        }
+        .percent.positive {
+            color: #e03131; /* 빨강 */
+        }
+
+        .percent.negative {
+            color: #1c7ed6; /* 파랑 */
+        }
+
+        .percent.zero {
+            color: #868e96; /* 회색 */
+        }
+
+        /* 북마크 아이콘 */
+        .bookmark-wrap {
+            position: absolute;
+            top: 35px;
+            right: 40px;
+            cursor: pointer;
+            font-size: 24px;
+            transition: transform 0.2s;
+        }
+        .bookmark-wrap:hover { transform: scale(1.1); }
+
+        .bookmark-wrap .fa-regular { color: #ccc; }
+        .bookmark-wrap .fa-solid { color: #FFD15B; display: none; }
+
+        .bookmark-wrap.on .fa-solid { display: inline-block; }
+        .bookmark-wrap.on .fa-regular { display: none; }
+
+        /* 자세히 보기 버튼 */
+        .detail-btn {
+            position: absolute;
+            right: 40px;
+            bottom: 35px;
+            background: #f1f3f5;
+            color: #495057;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+        .detail-btn:hover {
+            background: #055C4D;
+            color: white;
+        }
+
+        /* 페이지네이션 */
+        .pagination-wrap {
+            margin: 60px 0 100px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .pagination { display: flex; gap: 6px; }
+
+        .pagination li a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px; height: 40px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            background: #fff;
+            color: #555;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .pagination li.active a {
+            background: #055C4D;
+            color: white;
+            border-color: #055C4D;
+            font-weight: bold;
+        }
+
+        .pagination li a:hover:not(.active) {
+            background: #f8f9fa;
+            border-color: #ddd;
+        }
+    </style>
+</head>
+
+<body th:data-login="${loginUser != null}">
+
+<div th:replace="~{fragments/header :: headerFragment}"></div>
+
+<div style="position: relative; z-index: 1; padding-top: 100px;">
+
+    <section class="searchsection">
+        <h2 class="searchTit">ETF 라인업</h2>
+        <form action="/etf/list" method="get" class="searchBox">
+            <div class="searchInputWrap">
+                <input type="search"
+                       name="keyword"
+                       th:value="${keyword}"
+                       placeholder="궁금한 ETF를 검색해보세요"
+                       class="w-full outline-none border-none text-lg">
+                <button type="submit" class="text-2xl text-[#055C4D]">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </div>
+        </form>
+    </section>
+
+    <main class="main-wrap">
+
+        <aside class="filter">
+            <div class="filter-header">
+                <h3>검색필터</h3>
+                <a href="/etf/list" class="filter-reset-btn"><i class="fa-solid fa-rotate-right mr-1"></i>초기화</a>
+            </div>
+
+            <div class="filter-group">
+                <p>자산유형</p>
+                <a th:href="@{/etf/list(keyword=${queryParams.keyword}, riskLevel=${queryParams.riskLevel}, expenseLevel=${queryParams.expenseLevel})}"
+                   class="filter-btn"
+                   th:classappend="${#strings.isEmpty(queryParams.theme)} ? ' active'">전체</a>
+
+                <a th:each="t : ${themes}"
+                   th:href="@{/etf/list(theme=${t}, keyword=${queryParams.keyword}, riskLevel=${queryParams.riskLevel}, expenseLevel=${queryParams.expenseLevel})}"
+                   class="filter-btn"
+                   th:text="${t}"
+                   th:classappend="${t.equals(queryParams.theme)} ? ' active'"></a>
+            </div>
+
+            <div class="filter-group">
+                <p>위험도</p>
+                <a th:href="@{/etf/list(keyword=${queryParams.keyword}, theme=${queryParams.theme}, expenseLevel=${queryParams.expenseLevel})}"
+                   class="filter-btn"
+                   th:classappend="${queryParams.riskLevel == null} ? ' active'">전체</a>
+
+                <a th:href="@{/etf/list(riskLevel=1, keyword=${queryParams.keyword}, theme=${queryParams.theme}, expenseLevel=${queryParams.expenseLevel})}"
+                   class="filter-btn" th:classappend="${queryParams.riskLevel == 1} ? ' active'">1등급 (초고위험)</a>
+                <a th:href="@{/etf/list(riskLevel=2, keyword=${queryParams.keyword}, theme=${queryParams.theme}, expenseLevel=${queryParams.expenseLevel})}"
+                   class="filter-btn" th:classappend="${queryParams.riskLevel == 2} ? ' active'">2등급 (고위험)</a>
+                <a th:href="@{/etf/list(riskLevel=3, keyword=${queryParams.keyword}, theme=${queryParams.theme}, expenseLevel=${queryParams.expenseLevel})}"
+                   class="filter-btn" th:classappend="${queryParams.riskLevel == 3} ? ' active'">3등급 (중위험)</a>
+                <a th:href="@{/etf/list(riskLevel=4, keyword=${queryParams.keyword}, theme=${queryParams.theme}, expenseLevel=${queryParams.expenseLevel})}"
+                   class="filter-btn" th:classappend="${queryParams.riskLevel == 4} ? ' active'">4등급 (저위험)</a>
+            </div>
+
+            <div class="filter-group">
+                <p>보수 수준</p>
+                <a th:href="@{/etf/list(keyword=${queryParams.keyword}, theme=${queryParams.theme}, riskLevel=${queryParams.riskLevel})}"
+                   class="filter-btn" th:classappend="${#strings.isEmpty(queryParams.expenseLevel)} ? ' active'">전체</a>
+                <a th:href="@{/etf/list(expenseLevel='low', keyword=${queryParams.keyword}, theme=${queryParams.theme}, riskLevel=${queryParams.riskLevel})}"
+                   class="filter-btn" th:classappend="${'low'.equals(queryParams.expenseLevel)} ? ' active'">낮음</a>
+                <a th:href="@{/etf/list(expenseLevel='mid', keyword=${queryParams.keyword}, theme=${queryParams.theme}, riskLevel=${queryParams.riskLevel})}"
+                   class="filter-btn" th:classappend="${'mid'.equals(queryParams.expenseLevel)} ? ' active'">보통</a>
+                <a th:href="@{/etf/list(expenseLevel='high', keyword=${queryParams.keyword}, theme=${queryParams.theme}, riskLevel=${queryParams.riskLevel})}"
+                   class="filter-btn" th:classappend="${'high'.equals(queryParams.expenseLevel)} ? ' active'">높음</a>
+            </div>
+        </aside>
+
+        <section class="result">
+            <div class="prod-box" th:each="etf : ${list}">
+
+                <div class="bookmark-wrap bookmark-btn" th:data-etf-id="${etf.isinCd}">
+                    <i class="fa-regular fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                </div>
+
+                <div class="prod-top">
+                    <span class="prod-tag" th:text="${etf.theme}">테마</span>
+                </div>
+
+                <div class="prod-name" th:text="${etf.name}">ETF 종목명</div>
+
+                <div class="prod-info">
+                    <div>
+                        <span>거래량</span>
+                        <span class="val" th:text="${#numbers.formatInteger(etf.trPrc, 0, 'COMMA')}">0</span>
+                        <span style="font-size:14px">원</span>
+                    </div>
+                    <div style="width: 1px; height: 15px; background: #ddd; margin: 0 10px;"></div>
+                    <div>
+                        <span>1개월 수익률</span>
+                        <span class="val percent"
+                              th:text="${etf.monthRt != null ? #numbers.formatDecimal(etf.monthRt, 1, 2) + '%' : '-'}"
+                              th:classappend="
+                            ${etf.monthRt > 0} ? ' positive' :
+                            (${etf.monthRt < 0} ? ' negative' : ' zero')
+                            ">
+                        </span>
+                    </div>
+                </div>
+
+                <a th:href="@{/etf/{isin}(isin=${etf.isinCd})}" class="detail-btn">
+                    자세히 보기 <i class="fa-solid fa-chevron-right ml-1"></i>
+                </a>
+            </div>
+
+            <div th:if="${list.isEmpty()}" style="text-align: center; padding: 100px; color: #888;">
+                <i class="fa-solid fa-circle-exclamation text-4xl mb-4 text-gray-300"></i>
+                <p>검색 조건에 맞는 ETF가 없습니다.</p>
+            </div>
+        </section>
+    </main>
+
+    <div class="pagination-wrap" th:if="${!list.isEmpty()}">
+        <ul class="pagination">
+            <li th:if="${startPage > 0}">
+                <a th:href="@{/etf/list(page=${startPage - 1}, size=${page.size}, keyword=${queryParams.keyword}, theme=${queryParams.theme}, riskLevel=${queryParams.riskLevel}, expenseLevel=${queryParams.expenseLevel})}">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </a>
+            </li>
+
+            <li th:each="i : ${#numbers.sequence(startPage, endPage)}" th:classappend="${i == currentPage} ? ' active'">
+                <a th:href="@{/etf/list(page=${i}, size=${page.size}, keyword=${queryParams.keyword}, theme=${queryParams.theme}, riskLevel=${queryParams.riskLevel}, expenseLevel=${queryParams.expenseLevel})}"
+                   th:text="${i + 1}">1</a>
+            </li>
+
+            <li th:if="${endPage < totalPages - 1}">
+                <a th:href="@{/etf/list(page=${endPage + 1}, size=${page.size}, keyword=${queryParams.keyword}, theme=${queryParams.theme}, riskLevel=${queryParams.riskLevel}, expenseLevel=${queryParams.expenseLevel})}">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer :: footerFragment}"></div>
+
+<script th:src="@{/js/common.js}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const isLogin = document.body.dataset.login === 'true';
+        document.querySelectorAll('.bookmark-btn').forEach(btn => {
+            const id = btn.dataset.etfId;
+            // 초기 상태 확인 (로그인 시)
+            if (isLogin) {
+                fetch(`/api/bookmark/${id}`, {credentials: 'same-origin'})
+                    .then(r => r.json())
+                    .then(d => btn.classList.toggle('on', d.bookmarked))
+                    .catch(e => console.error(e));
+            }
+            // 클릭 이벤트
+            btn.onclick = e => {
+                e.preventDefault();
+                if (!isLogin) {
+                    if(confirm('로그인이 필요한 서비스입니다.\n로그인 페이지로 이동하시겠습니까?')) {
+                        location.href = '/login';
+                    }
+                    return;
+                }
+                fetch(`/api/bookmark/${id}`, {method: 'POST', credentials: 'same-origin'})
+                    .then(r => {
+                        if(r.ok) btn.classList.toggle('on');
+                        else alert('북마크 처리 실패');
+                    });
+            }
+        })
+    });
+</script>
+
+</body>
+</html>

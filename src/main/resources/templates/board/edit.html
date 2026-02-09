@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>게시글 수정</title>
+
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        /* ===== 수정 페이지 전용 스타일 ===== */
+        .tab-location{padding-top:100px;text-align:center;}
+        .tab-location h2{font-size:70px;margin:70px 0;color:#055C4D;}
+
+        .community-wrap{display:flex;justify-content:center;}
+        .editBox{
+            width:1520px;
+            border:1px solid #1d7a5548;
+            border-radius:30px;
+            padding:30px;
+            margin-bottom:120px;
+        }
+        .field{margin-bottom:18px;}
+        .field label{display:block;font-size:14px;color:#777;margin-bottom:8px;}
+        .field input,.field textarea{
+            width:100%;
+            border:1px solid #ccc;
+            border-radius:12px;
+            padding:14px;
+            font-size:16px;
+        }
+        .field textarea{height:260px;resize:none;line-height:1.7;}
+        .btnRow{display:flex;gap:10px;justify-content:flex-end;margin-top:10px;}
+    </style>
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: headerFragment}"></div>
+
+<div class="wrap" style="position: relative; z-index: 1;">
+    <section class="tab-location">
+        <h2>게시글 수정</h2>
+    </section>
+
+    <div class="community-wrap">
+        <div class="editBox">
+
+            <form th:action="@{/board/{id}/update(id=${board.id})}" method="post">
+                <div class="field">
+                    <label>제목</label>
+                    <input type="text" name="title" th:value="${board.title}" required>
+                </div>
+
+                <div class="field">
+                    <label>내용</label>
+                    <textarea name="content" required th:text="${board.content}"></textarea>
+                </div>
+
+                <div class="btnRow">
+                    <a th:href="@{/board/{id}(id=${board.id})}" class="btn btn-outline">취소</a>
+                    <button type="submit" class="btn btn-outline">수정완료</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer :: footerFragment}"></div>
+
+<script th:src="@{/js/common.js}"></script>
+</body>
+</html>

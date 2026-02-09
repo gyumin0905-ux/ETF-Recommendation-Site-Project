@@ -1,0 +1,1446 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ETF 상세페이지</title>
+    <link rel="icon" th:href="@{/images/favi.png}" />
+
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://kit.fontawesome.com/4aff7483c9.js" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+
+    <style>
+        /* ===== 페이지 전용 스타일 ===== */
+        .firstInfo {
+            width: 100%;
+            margin: 0 auto;
+            padding-top: 100px;
+            box-sizing: border-box;
+            background-color: #ffffff;
+        }
+        .firstInfo .info-wrap {
+            width: 1200px;
+            height: 700px;
+            padding: 100px 0px;
+            margin: 0 auto;
+            box-sizing: border-box;
+            display: flex;
+            gap: 100px;
+            align-items: center;
+        }
+        .firstInfo .info-wrap .prod-name .etf-theme {
+            text-align: left;
+            font-size: 16px;
+        }
+        .firstInfo .info-wrap .prod-name .etf-name {
+            color: #1a1a1a;
+            font-weight: 600;
+            font-size: 40px;
+            letter-spacing: -2px;
+            line-height: 130%;
+            text-align: left;
+            width: 500px;
+            height: 300px;
+        }
+        .firstInfo .info-wrap .prod-name .etf-name .etf-Tit {
+            margin-bottom: 30px;
+            font-weight: 500;
+        }
+
+        .code {
+            margin: 10px 0px;
+        }
+        .firstInfo .info-wrap .prod-name {
+            white-space: nowrap;
+        }
+
+        .firstInfo .info-wrap .etf-info .first-line {
+            display: flex;
+            gap: 30px;
+        }
+        .firstInfo .info-wrap .etf-info > li > ul > li > div .bg-tit {
+            font-size: 20px;
+            font-weight: 500;
+            color: #ffffff;
+        }
+        .firstInfo .info-wrap .etf-info > li > ul > li > div .bg-tit2 {
+            font-size: 20px;
+            font-weight: 500;
+            color: #000000;
+        }
+        .cont-back {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .firstInfo .info-wrap .etf-info .first-line .present-price {
+            background-color: #fff;
+            border: 1px solid #e5e5e5;
+            border-radius: 5px;
+            padding: 25px 40px;
+            box-sizing: border-box;
+        }
+        .firstInfo .info-wrap .etf-info .first-line .present-price .price-tit {
+            display: flex;
+            gap: 14px;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .firstInfo .info-wrap .etf-info .first-line .present-price .price-tit .bg-tit {
+            font-size: 20px;
+            color: #1a1a1a;
+        }
+        .updown-wrap {
+            display: flex;
+            margin-top: 70px;
+            margin-left: 120px;
+            white-space: nowrap;
+        }
+        .firstInfo .info-wrap .etf-info .first-line .updown-wrap .updown,
+        .firstInfo .info-wrap .etf-info .first-line .updown-wrap i {
+            color: #0800ff;
+            font-size: 14px;
+        }
+        .firstInfo .info-wrap .etf-info .first-line .updown-wrap p {
+            margin-left: 5px;
+        }
+        .firstInfo .info-wrap .etf-info .first-line .present-price .updown-wrap .updown > span {
+            color: #1a1a1a;
+        }
+        /*기준가 수익률*/
+        .firstInfo .info-wrap .etf-info .first-line .standard-price {
+            background-color: #2f855a;
+            border-radius: 5px;
+            padding: 25px 40px;
+            box-sizing: border-box;
+        }
+        .firstInfo .info-wrap .etf-info .first-line .standard-price .nav-tit {
+            display: flex;
+            gap: 14px;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .firstInfo .info-wrap .etf-info .first-line .standard-price .nav-tit .bg-tit {
+            font-size: 20px;
+            color: #ffffff;
+        }
+        .firstInfo .info-wrap .etf-info .first-line .updown-wrap .updown {
+            color: #0800ff;
+            font-size: 14px;
+        }
+        .firstInfo .info-wrap .etf-info .first-line .updown > span {
+            color: #ffffff;
+        }
+        .firstInfo .info-wrap .etf-info .first-line .real-price {
+            font-size: 20px;
+            margin-left: 120px;
+            white-space: nowrap;
+            margin-bottom: 40px;
+            box-sizing: border-box;
+            color: #1a1a1a;
+        }
+        .firstInfo .info-wrap .etf-info .first-line .real-price .won {
+            font-size: 20px;
+        }
+        .firstInfo .info-wrap .etf-info .first-line .real-price2 {
+            font-size: 20px;
+            margin-left: 180px;
+            white-space: nowrap;
+            margin-bottom: 40px;
+            box-sizing: border-box;
+            color: #ffffff;
+        }
+        .firstInfo .info-wrap .etf-info .first-line .real-price2 .won {
+            font-size: 20px;
+        }
+
+        /* 수익률 */
+        .firstInfo .info-wrap .etf-info .second-line {
+            margin-top: 30px;
+            display: flex;
+            gap: 30px;
+        }
+        .firstInfo .info-wrap .etf-info .second-line .profit-price {
+            background-color: #ff9f1c;
+            border-radius: 5px;
+            padding: 25px 40px;
+            box-sizing: border-box;
+            color: #fff;
+        }
+        .firstInfo .info-wrap .etf-info .second-line .profit-price .profit-tit {
+            display: flex;
+            gap: 14px;
+            justify-content: space-between;
+        }
+        .firstInfo .info-wrap .etf-info .second-line .profit-price .month {
+            font-size: 14px;
+        }
+        .firstInfo .info-wrap .etf-info .second-line .percentage {
+            color: #e11c2c;
+            font-size: 20px;
+            margin-top: 70px;
+            margin-left: 165px;
+        }
+        /* 거래량 */
+        .firstInfo .info-wrap .etf-info .second-line .trade-quantity {
+            background-color: #fff;
+            border-radius: 5px;
+            padding: 25px 40px;
+            box-sizing: border-box;
+            border: 1px solid #e5e5e5;
+        }
+        .firstInfo .info-wrap .etf-info .second-line .trade-quantity .trade-tit {
+            display: flex;
+            gap: 14px;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .firstInfo .info-wrap .etf-info .second-line .trade-quantity .quantity {
+            font-size: 20px;
+            margin-top: 85px;
+            margin-left: 125px;
+            white-space: nowrap;
+        }
+        .firstInfo .info-wrap .etf-info .tracking-time {
+            margin-top: 10px;
+            margin-left: 430px;
+            white-space: nowrap;
+            font-size: 15px;
+            color: #666;
+        }
+
+        /* 탭메뉴 */
+        .tab-info {
+            width: 100%;
+            margin-top: 70px;
+            padding-bottom: 150px;
+            box-sizing: border-box;
+        }
+
+        .tab-info .tab-category {
+            width: 1520px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            list-style: none;
+            padding: 0;
+        }
+
+        .tab-info .tab-category .tab-btn {
+            width: 180px;
+            height: 55px;
+            background-color: #f5f5f5;
+            border-radius: 999px;
+            color: #1a1a1a;
+            border: none;
+            font-size: 22px;
+            text-align: center;
+            line-height: 55px;
+            cursor: pointer;
+            box-sizing: border-box;
+            transition: all 0.25s ease;
+        }
+
+        .tab-info .tab-category .tab-btn.on {
+            background-color: #2f855a;
+            color: white;
+        }
+
+        .tab-info .tab-category .tab-btn:hover {
+            background-color: #e6f0ed;
+        }
+
+        .tab-info .tab-panels .tab-cont {
+            display: none;
+            width: 100%;
+        }
+
+        .tab-info .tab-panels .tab-cont.on {
+            display: block;
+        }
+        /* 기본정보 */
+
+        #standard-info {
+            width: 1300px;
+            margin: 0 auto;
+            box-sizing: border-box;
+        }
+        .info-table {
+            margin-top: 80px;
+        }
+        form {
+            margin: 0 auto;
+            margin-top: 50px;
+        }
+        .tit-wrap {
+            margin: 0 auto;
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .prodTit {
+            font-size: 35px;
+            font-weight: 500;
+        }
+        .prodtxt {
+            font-size: 18px;
+            font-weight: 400;
+        }
+
+        /* 항목 내용 */
+        .cont-table {
+            width: 950px;
+            margin: 0 auto;
+            margin-top: 35px;
+            border-collapse: collapse;
+        }
+        .cont-table thead tr th {
+            font-size: 22px;
+            font-weight: 400;
+            color: #2f855a;
+            padding: 17px 0px;
+            border-bottom: 1px solid #dddddd;
+        }
+        .cont-table tr .check-icon > i {
+            color: #235850;
+            font-size: 18px;
+            padding-right: 50px;
+        }
+        .cont-table th:nth-child(1),
+        .cont-table td:nth-child(1) {
+            width: 20px;
+        }
+        .cont-table td:nth-child(2) {
+            width: 750px;
+            text-align: left;
+        }
+        .cont-table td:nth-child(3) {
+            width: 750px;
+            text-align: left;
+        }
+        .cont-table tbody .table-row {
+            height: 20px;
+            transition: background-color 0.2s;
+            border-bottom: 1px solid #e5e5e597;
+        }
+        .cont-table tbody .table-row:hover {
+            background-color: #f8f9f9;
+        }
+
+        .cont-table tbody .table-row .cont1 {
+            font-size: 18px;
+            padding: 17px 0px;
+            box-sizing: border-box;
+            color: #1a1a1a;
+        }
+        .cont-table tbody .table-row .cont2 {
+            font-size: 18px;
+            padding: 17px 0px;
+            box-sizing: border-box;
+            color: #4b4b4b;
+        }
+        .cont-table tbody .table-row:last-child {
+            border-bottom: 1px solid #e5e5e5;
+        }
+        .firstInfo .info-wrap .etf-info .first-line .present-price,
+        .firstInfo .info-wrap .etf-info .first-line .standard-price,
+        .firstInfo .info-wrap .etf-info .second-line .profit-price,
+        .firstInfo .info-wrap .etf-info .second-line .trade-quantity {
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .firstInfo .info-wrap .etf-info .first-line .present-price:hover,
+        .firstInfo .info-wrap .etf-info .first-line .standard-price:hover,
+        .firstInfo .info-wrap .etf-info .second-line .profit-price:hover,
+        .firstInfo .info-wrap .etf-info .second-line .trade-quantity:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+        }
+
+        /* ===============================
+        [1] 상단 요약 카드 크기 통일
+        ================================ */
+
+        .firstInfo .etf-info .present-price,
+        .firstInfo .etf-info .standard-price,
+        .firstInfo .etf-info .profit-price,
+        .firstInfo .etf-info .trade-quantity {
+            width: 350px;
+            height: 200px;
+        }
+
+        /* 탭 수익률 */
+        .tab-info .tab-panels #profit {
+            width: 100%;
+            margin: 0 auto;
+        }
+        .tab-info .tab-panels #profit .profit-chartbg {
+            margin-top: 50px;
+        }
+        .tab-info .tab-panels .profit-table table {
+            width: 800px;
+            margin-top: 70px;
+            text-align: center;
+            border-collapse: collapse;
+        }
+
+        .tab-info .tab-panels .profit-table thead th {
+            font-size: 18px;
+            font-weight: 500;
+            padding: 20px 0;
+            border-bottom: 1px solid #3e9975ab;
+            color: #676363;
+        }
+
+        .tab-info .tab-panels .profit-table tbody td {
+            font-size: 18px;
+            padding: 10px 0;
+            color: #676363;
+        }
+
+        .tab-info .tab-panels .profit-table .first-cell,
+        .tab-info .tab-panels .profit-table .property-tit {
+            width: 150px;
+            text-align: left;
+            color: #676363;
+            font-weight: 500;
+            border-right: 1px solid #3e9975ab;
+            padding-left: 10px;
+        }
+
+        .tab-info .tab-panels .profit-table table caption {
+            caption-side: bottom;
+            text-align: left;
+            padding-top: 20px;
+        }
+
+        .tab-info .tab-panels .profit-table .caution {
+            text-align: left;
+            color: #666;
+            font-size: 14px;
+            margin-top: 15px;
+            display: block;
+        }
+
+        /*구성정보 */
+        #container {
+            width: 1200px;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 28px 0px;
+            margin-top: 30px;
+        }
+        #container .setup-header {
+            width: 800px;
+            margin: 0 auto;
+            font-size: 30px;
+            font-weight: 500;
+            padding: 20px 0;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+        }
+        #container .setup-header .cat-btn1 {
+            width: 170px;
+            height: 40px;
+            border: 1px solid #b5b2b2;
+            background-color: #f5f5f5;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        #container .chart-container-custom {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+            margin: 0px auto;
+        }
+
+        #container .chart-container-custom .chart-caption {
+            font-size: 28px;
+            font-weight: 700;
+            color: #235850;
+            white-space: nowrap;
+        }
+        #container .chart-caption2 {
+            width: 100%;
+            text-align: center;
+            font-size: 13px;
+            color: #666;
+            margin-top: 16px;
+        }
+        #container .chart-container-custom .chart-center-area {
+            width: 450px;
+            height: 450px;
+            margin: 0 auto;
+        }
+        #container .chart-container-custom .chart-right-list ul {
+            width: 300px;
+            margin: 0;
+        }
+        #container .chart-container-custom .chart-right-list ul > li {
+            display: flex;
+            justify-content: space-between;
+            padding: 14px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        #container .chart-container-custom .chart-right-list h3 {
+            font-size: 20px;
+            color: #2f855a;
+            padding-bottom: 20px;
+            box-sizing: border-box;
+            font-weight: 600;
+        }
+        #setup {
+            padding: 20px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 0.75fr;
+            gap: 16px;
+            align-items: center;
+        }
+        .chart-box {
+            height: 420px;
+        }
+        .name {
+            font-weight: 700;
+        }
+
+        .weight {
+            font-weight: 800;
+            color: #3c7a61;
+        }
+
+        /* ===============================
+        [슬라이더] 위험등급 초록색 강제
+        ================================ */
+        .risk-slider {
+            accent-color: #2f855a !important;
+        }
+
+        /* 등급 텍스트도 톤 맞추기 */
+        .range-wrap .flex span {
+            color: #2f855a;
+            font-weight: 500;
+        }
+
+        /* ===============================
+        [3] ETF / ISIN 코드 박스 폭 확장
+        ================================ */
+
+        .firstInfo .etf-theme {
+            width: auto;
+            min-width: 120px;
+            padding: 0 16px;
+            white-space: nowrap;
+            text-align: center;
+        }
+
+        .cat-btn {
+            width: auto;
+            min-width: 120px;
+            padding: 0 8px;
+            white-space: nowrap;
+            text-align: center;
+            color: white;
+            border-radius: 6px !important;
+        }
+
+        /* ===============================
+        [카드] 내부 정렬 통일
+        ================================ */
+        .present-price,
+        .standard-price,
+        .profit-price,
+        .trade-quantity {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* ===============================
+        [수익률] 가독성 개선
+        ================================ */
+        .profit-price .percentage {
+            color: #ffffff !important;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        /* 현재가 / 기준가 / 수익률 / 거래량 숫자 공통 */
+        .real-price,
+        .real-price2,
+        .percentage,
+        .quantity {
+            margin: 0 !important;
+            align-self: flex-end;
+            text-align: right;
+        }
+
+        /* 기준가(NAV) 숫자 위치 보정 */
+        .standard-price .real-price2 {
+            font-size: 22px;
+            font-weight: 600;
+        }
+
+        /* 화살표 강조 */
+        .updown-wrap i {
+            font-size: 18px;
+            margin-right: 6px;
+        }
+
+        /* ===============================
+        [기준일] 오른쪽 정렬
+        ================================ */
+        .tracking-time {
+            margin-left: 0 !important;
+            width: 100%;
+            text-align: right;
+            padding-right: 10px;
+        }
+
+        /* ===============================
+        [수익률] 화살표 + 수치 정렬
+        ================================ */
+        .profit-updown-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 6px;
+        }
+
+        .profit-updown-wrap i {
+            font-size: 18px;
+        }
+
+        /* 주황 배경 대비용 (숫자는 흰색) */
+        .profit-price .percentage {
+            color: #ffffff;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .cont-table .check-icon i {
+            color: #2f855a;
+        }
+
+        .trade-value {
+            text-align: left;
+            display: inline-block;
+        }
+
+        /* ===============================
+        수익률 탭: 모드 / 기간 버튼
+        =============================== */
+        .mode-btn,
+        .period-btn,
+        a.mode-btn,
+        a.period-btn {
+            min-width: 90px;
+            height: 38px;
+            margin: 0 6px;
+            border-radius: 999px;
+            border: 1px solid #d1d5db;
+            background-color: #f5f5f5;
+            color: #374151;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        /* hover */
+        .mode-btn:hover,
+        .period-btn:hover {
+            background-color: #e6f0ed;
+            border-color: #2f855a;
+            color: #2f855a;
+        }
+
+        /* active 상태 */
+        .mode-btn.active,
+        .period-btn.active {
+            background-color: #2f855a;
+            border-color: #2f855a;
+            color: #ffffff;
+            font-weight: 600;
+            box-shadow: 0 6px 14px rgba(47, 133, 90, 0.35);
+        }
+
+        /* 버튼 그룹 간격 정리 */
+        #profit > div {
+            user-select: none;
+        }
+
+        /* 수익률 탭 상단 여백 조정 */
+        #profit {
+            padding-top: 40px;
+        }
+
+        #profit > div:nth-of-type(1) {
+            margin-bottom: 18px !important;
+        }
+
+        #profit > div:nth-of-type(2) {
+            margin-bottom: 36px !important;
+        }
+
+        /* ===============================
+        수익률 차트 크기 확대 (1.5배)
+        =============================== */
+
+        .profit-chart-wrap {
+            width: 1275px;
+            height: 630px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .profit-chart-wrap {
+            margin-bottom: 20px;
+        }
+
+        /* a 태그를 버튼처럼 */
+        a.btn-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            cursor: pointer;
+            border-radius: 999px;
+            border: none;
+            box-sizing: border-box;
+        }
+
+        @media (max-width: 900px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: headerFragment}"></div>
+
+<div style="position: relative; z-index: 1;">
+    <section class="firstInfo">
+        <div class="info-wrap">
+            <ul class="prod-name">
+                <li class="etf-theme">
+                    <button
+                            class="cat-btn w-[80px] h-[30px] transition-transform duration-300 btn cursor-default bg-[#ff9f1c] text-[#fff] px-8 py-2 text-sm font-light tracking-wide"
+                    >
+                        <span th:text="${etf.assetType}">해외주식</span>
+                    </button>
+                    <button
+                            class="cat-btn code w-[80px] h-[30px] transition-transform duration-300 btn cursor-default bg-[#2f855a] text-[#fff] px-8 py-2 text-sm font-light tracking-wide"
+                    >
+                        <span th:text="${etf.isinCd}">0035T0</span>
+                    </button>
+                </li>
+                <li class="etf-name">
+                    <p class="etf-Tit" th:text="${etf.name}">
+                        PLUS 글로벌<br />
+                        휴머노이드로봇액티브
+                    </p>
+                    <a
+                            th:href="@{/simulate/{isin}(isin=${etf.isinCd})}"
+                            class="cat-btn btn-link w-[200px] h-[40px]
+         hover:scale-105 transition-transform duration-300
+         bg-[#2f855a] text-[#fff] px-0 py-6
+         text-[14px] font-light tracking-wide"
+                    >
+                        투자 시뮬레이션 하러 가기
+                    </a>
+                </li>
+                <li class="range-wrap profit border-gray-300 pt-6">
+                    <p class="text-sm font-bold mb-4">위험등급</p>
+                    <div class="px-2">
+                        <input
+                                type="range"
+                                min="1"
+                                max="4"
+                                th:value="${etf.riskLevel}"
+                                disabled
+                                class="w-full h-1 risk-slider"
+                        />
+                        <div class="flex justify-between text-[11px] text-gray-400 mt-3">
+                            <span>4등급</span><span>3등급</span><span>2등급</span>
+                            <span>1등급</span>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <ul class="etf-info">
+                <li>
+                    <ul class="first-line">
+                        <li class="present-price cont-back">
+                            <div class="price-tit">
+                                <p class="bg-tit2">현재가</p>
+                            </div>
+                            <div class="updown-wrap">
+                                <i class="fa-solid"
+                                   th:classappend="${flucRate != null && flucRate >= 0}
+                                ? ' fa-caret-up text-red-500'
+                                : ' fa-caret-down text-blue-500'"></i>
+                                <p class="updown"
+                                   th:classappend="${flucRate != null && flucRate >= 0}
+                                ? ' text-red-500'
+                                : ' text-blue-500'">
+                                    <span th:text="${flucRate != null ? flucRate : '-'}">-0.55</span>%
+                                </p>
+                            </div>
+                            <p class="real-price">
+                                현재가 :
+                                <b th:text="${price != null ? #numbers.formatInteger(price.clpr, 3, 'COMMA') : '-'}">
+                                    123,456
+                                </b> 원
+                            </p>
+                        </li>
+                        <li class="standard-price cont-back">
+                            <div class="nav-tit">
+                                <p class="bg-tit">기준가(NAV)</p>
+                            </div>
+                            <p class="real-price2">
+                                <span th:text="${price != null ? #numbers.formatInteger(price.clpr, 3, 'COMMA') : '-'}"></span>
+                                <span class="won">원</span>
+                            </p>
+                        </li>
+                    </ul>
+                    <ul class="second-line">
+                        <li class="profit-price cont-back">
+                            <div class="profit-tit">
+                                <p class="bg-tit">수익률</p>
+                            </div>
+                            <p class="month">(1개월 수익률)</p>
+                            <div class="profit-updown-wrap">
+                                <i class="fa-solid"
+                                   th:classappend="${returnRate != null && returnRate >= 0}
+                                ? ' fa-caret-up text-red-500'
+                                : ' fa-caret-down text-blue-500'"></i>
+                                <p class="percentage"
+                                   th:text="${returnRate != null ? returnRate + '%' : '-'}">
+                                    13.3%
+                                </p>
+                            </div>
+                        </li>
+                        <li class="trade-quantity cont-back">
+                            <div class="trade-tit">
+                                <p class="bg-tit2">거래량</p>
+                            </div>
+                            <p class="quantity trade-card"
+                               th:text="${price != null ? price.trPrc : '-'}">
+                            </p>
+                        </li>
+                    </ul>
+                </li>
+                <li class="tracking-time"
+                    th:text="${price != null ? price.basDt + ' (장중)' : '-'}">
+                    26.01.15 (장중)
+                </li>
+            </ul>
+        </div>
+    </section>
+    <section class="tab-info">
+        <div class="tit-wrap">
+            <div class="prodtxt" th:text="${etf.isinCd}">한화자산운용</div>
+            <div class="prodTit" th:text="${etf.name}">PLUS 글로벌휴머노이드로봇액티브</div>
+        </div>
+        <ul class="tab-category">
+            <li class="tab-btn on" data-tab="standard-info">기본정보</li>
+            <li class="tab-btn" data-tab="profit">수익률</li>
+            <li class="tab-btn" data-tab="container">구성정보</li>
+        </ul>
+
+        <div class="tab-panels">
+            <div id="standard-info" class="tab-cont on">
+                <form>
+                    <table class="cont-table">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th class="table-head">항목</th>
+                            <th class="table-head">내용</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="table-row">
+                            <td class="check-icon"><i class="fa-solid fa-check"></i></td>
+                            <td class="cont1">기초자산</td>
+                            <td class="cont2" th:text="${etf.assetType}">주식</td>
+                        </tr>
+
+                        <tr class="table-row">
+                            <td class="check-icon"><i class="fa-solid fa-check"></i></td>
+                            <td class="cont1">ETF 이름</td>
+                            <td class="cont2" th:text="${etf.name}">ETF 이름</td>
+                        </tr>
+
+                        <tr class="table-row">
+                            <td class="check-icon"><i class="fa-solid fa-check"></i></td>
+                            <td class="cont1">ISIN 코드</td>
+                            <td class="cont2" th:text="${etf.isinCd}">KRXXXXXXXX</td>
+                        </tr>
+
+                        <tr class="table-row">
+                            <td class="check-icon"><i class="fa-solid fa-check"></i></td>
+                            <td class="cont1">ETF 테마</td>
+                            <td class="cont2" th:text="${etf.theme != null ? etf.theme : '-'}">테마</td>
+                        </tr>
+
+                        <tr class="table-row">
+                            <td class="check-icon"><i class="fa-solid fa-check"></i></td>
+                            <td class="cont1">위험등급</td>
+                            <td class="cont2">
+                                <span th:text="${etf.riskLevel}"></span>등급
+                            </td>
+                        </tr>
+
+                        <tr class="table-row">
+                            <td class="check-icon"><i class="fa-solid fa-check"></i></td>
+                            <td class="cont1">거래량</td>
+                            <td class="cont2">
+                            <span class="trade-value"
+                                  th:attr="data-value=${price != null ? price.trPrc : 0}">
+                            </span>
+                            </td>
+                        </tr>
+                        <tr class="table-row">
+                            <td class="check-icon"><i class="fa-solid fa-check"></i></td>
+                            <td class="cont1">보수 수준</td>
+                            <td class="cont2">
+                            <span th:switch="${etf.expenseLevel}">
+                                <span th:case="'low'">낮음</span>
+                                <span th:case="'middle'">보통</span>
+                                <span th:case="'high'">높음</span>
+                                <span th:case="*">-</span>
+                            </span>
+                            </td>
+                        </tr>
+
+                        <tr class="table-row">
+                            <td class="check-icon"><i class="fa-solid fa-check"></i></td>
+                            <td class="cont1">전일 대비</td>
+                            <td class="cont2">
+                                <span th:text="${price.vs > 0 ? '+' + price.vs : price.vs}"></span>원
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+            <div id="profit" class="tab-cont">
+
+                <div style="text-align:center; margin-bottom:10px;">
+                    <button class="mode-btn active" onclick="setMode(event, 'price')">가격</button>
+                    <button class="mode-btn" onclick="setMode(event, 'volatility')">변동성</button>
+                </div>
+
+                <div style="text-align:center; margin-bottom:20px;">
+                    <button class="period-btn" onclick="setPeriod(event, '1M')">1개월</button>
+                    <button class="period-btn" onclick="setPeriod(event, '3M')">3개월</button>
+                    <button class="period-btn active" onclick="setPeriod(event, '1Y')">1년</button>
+                </div>
+
+                <div class="profit-chart-wrap">
+                    <canvas id="etfChart"></canvas>
+
+                    <div id="tooltip-card"
+                         style="position:absolute; display:none; background:white; border:1px solid #ddd;
+             padding:16px 24px; border-radius:6px; font-size:16px;
+             box-shadow:0 2px 8px rgba(0,0,0,0.12);
+             pointer-events:none; white-space:nowrap; z-index:10;">
+                    </div>
+                </div>
+
+            </div>
+
+            <div id="container" class="tab-cont">
+                <div class="setup-header">
+                    <div class="chart-caption">
+                        ETF 구성정보 <span class="top5-text">TOP5</span>
+                    </div>
+                    <div class="actions">
+                        <button type="button" class="cat-btn1" onclick="downloadPDF()">
+                            전체구성 PDF 다운 >
+                        </button>
+                    </div>
+                </div>
+                <div id="setup" class="chart-container-custom">
+                    <div class="chart-center-area grid">
+                        <div class="chart-box">
+                            <canvas id="top-chart"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-right-list">
+                        <h3>TOP5 구성 비중</h3>
+                        <ul id="top5-list">
+                            <li>
+                                <span class="name">TESLA INC</span>
+                                <span class="weight">40%</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="chart-caption2 foot">
+            <span
+                    th:text="${#temporals.format(T(java.time.LocalDate).now(), 'yyyy년 M월')}"
+            ></span>
+                    기준 : 가상데이터
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<div th:replace="~{fragments/footer :: footerFragment}"></div>
+
+<script th:src="@{/js/common.js}"></script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    const isin = /*[[${etf.isinCd}]]*/ '';
+    /*]]>*/
+
+    // 서버 사이드 데이터 (TOP5 구성종목)
+    window.SERVER_TOP5 = /*[[${top5}]]*/ [];
+
+    let currentMode = 'price';
+    let currentPeriod = '1Y';
+    let chart = null;
+
+    let topChart = null;
+
+    const COLORS = ["#4E7664", "#5CB389", "#A3E496", "#92D050", "#76AF4B"];
+
+    const chartLabelPlugin = {
+        id: 'chartLabelPlugin',
+        afterDraw(chart) {
+            const { ctx, data } = chart;
+            ctx.save();
+
+            chart.getDatasetMeta(0).data.forEach((arc, i) => {
+                const angle = (arc.startAngle + arc.endAngle) / 2;
+                const radius = (arc.innerRadius + arc.outerRadius) / 2;
+                const x = arc.x + Math.cos(angle) * radius;
+                const y = arc.y + Math.sin(angle) * radius;
+
+                const [name, percent] = data.labels[i].split(" - ");
+
+                ctx.fillStyle = "#fff";
+                ctx.textAlign = "center";
+                ctx.textBaseline = "middle";
+
+                ctx.font = "bold 12px sans-serif";
+                ctx.fillText(name, x, y - 8);
+
+                ctx.font = "11px sans-serif";
+                ctx.fillText(percent, x, y + 10);
+            });
+
+            ctx.restore();
+        }
+    };
+
+    function renderCompositionChart(top5) {
+        const canvas = document.getElementById("top-chart");
+        if (!canvas || !Array.isArray(top5) || top5.length === 0) return;
+
+        const labels = top5.map(i => `${i.name} - ${i.weight}%`);
+        const values = top5.map(i => i.weight);
+
+        const ctx = document.getElementById("top-chart").getContext("2d");
+
+        if (topChart) topChart.destroy();
+
+        topChart = new Chart(ctx, {
+            type: "doughnut",
+            data: {
+                labels,
+                datasets: [{
+                    data: values,
+                    backgroundColor: COLORS,
+                    borderColor: "#fff",
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: "45%",
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        enabled: false,
+                        external: pieExternalTooltipHandler
+                    }
+                }
+            },
+            plugins: [chartLabelPlugin]
+        });
+    }
+
+    function renderCompositionList(top5) {
+        const ul = document.getElementById("top5-list");
+        if (!ul || !Array.isArray(top5)) return;
+
+        ul.innerHTML = "";
+
+        top5.forEach(item => {
+            const li = document.createElement("li");
+            li.innerHTML = `
+            <span class="name">${item.name}</span>
+            <span class="weight">${item.weight}%</span>
+        `;
+            ul.appendChild(li);
+        });
+    }
+
+    // 유틸리티 함수들
+    function parseYMD(label) {
+        if (!label) return null;
+        const s = String(label);
+
+        if (s.includes('-')) {
+            const [y, m, d] = s.split('-').map(Number);
+            return new Date(y, m - 1, d);
+        }
+        if (s.length === 8) {
+            const y = Number(s.slice(0, 4));
+            const m = Number(s.slice(4, 6));
+            const d = Number(s.slice(6, 8));
+            return new Date(y, m - 1, d);
+        }
+        return null;
+    }
+
+    function subtractMonths(date, months) {
+        const d = new Date(date);
+        const y = d.getFullYear();
+        const m = d.getMonth();
+        const day = d.getDate();
+
+        const target = new Date(y, m - months, 1);
+        const lastDay = new Date(target.getFullYear(), target.getMonth() + 1, 0).getDate();
+        target.setDate(Math.min(day, lastDay));
+        return target;
+    }
+
+    function filterByPeriodFromLastValid(labels, values, period) {
+        function toNumber(v) {
+            if (v == null) return null;
+            const num = Number(String(v).replaceAll(',', '').trim());
+            return Number.isFinite(num) ? num : null;
+        }
+
+        let lastIdx = -1;
+        for (let i = values.length - 1; i >= 0; i--) {
+            const v = values[i];
+            if (v != null && !Number.isNaN(v)) { lastIdx = i; break; }
+        }
+        if (lastIdx === -1) return { labels: [], values: [], baseLabel: '-' };
+
+        const baseLabel = labels[lastIdx];
+        const baseDate = parseYMD(baseLabel);
+        if (!baseDate) return { labels: [], values: [], baseLabel };
+
+        let cutoff;
+        if (period === '1M') cutoff = subtractMonths(baseDate, 1);
+        else if (period === '3M') cutoff = subtractMonths(baseDate, 3);
+        else if (period === '1Y') cutoff = new Date(baseDate.getFullYear() - 1, baseDate.getMonth(), baseDate.getDate());
+        else cutoff = new Date(0);
+
+        const outL = [];
+        const outV = [];
+        for (let i = 0; i <= lastIdx; i++) {
+            const num = toNumber(values[i]);
+            if (num == null) continue;
+
+            const dt = parseYMD(labels[i]);
+            if (!dt) continue;
+
+            if (dt >= cutoff && dt <= baseDate) {
+                outL.push(labels[i]);
+                outV.push(num);
+            }
+        }
+
+        return { labels: outL, values: outV, baseLabel };
+    }
+
+    // 툴팁 핸들러
+    function externalTooltipHandler(context) {
+        const { chart, tooltip } = context;
+        const el = document.getElementById('tooltip-card');
+        if (!el) return;
+
+        if (tooltip.opacity === 0) {
+            el.style.display = 'none';
+            return;
+        }
+
+        const title = tooltip.title?.[0] ?? '';
+        const lines = (tooltip.body || []).map(b => b.lines?.[0]).filter(Boolean);
+        const dp = tooltip.dataPoints?.[0];
+        const dataIndex = dp?.dataIndex ?? -1;
+
+        if (currentMode === 'volatility') {
+            const volVal = Number(dp?.raw);
+            const prevVal = dataIndex > 0 ? Number(dp?.dataset?.data?.[dataIndex - 1]) : NaN;
+
+            const hasVol = Number.isFinite(volVal);
+            const delta = (Number.isFinite(prevVal) && hasVol) ? (volVal - prevVal) : NaN;
+
+            const volStr = hasVol ? `${volVal.toFixed(3)}%` : '-';
+            const deltaAbsStr = Number.isFinite(delta) ? `${Math.abs(delta).toFixed(3)}%` : '-';
+
+            const isUp = Number.isFinite(delta) && delta >= 0;
+            const arrow = isUp ? '▲' : '▼';
+            const color = isUp ? '#e11d48' : '#0078ff';
+
+            el.innerHTML = `
+      <div style="font-weight:700; margin-bottom:8px;">${title}</div>
+      <div style="margin:4px 0;">20일 변동성 (%): <b>${volStr}</b></div>
+      <div style="margin:4px 0;">
+        <span style="color:${color}; font-weight:700;">
+          ${arrow} ${deltaAbsStr}
+        </span>
+      </div>
+    `;
+        } else {
+            el.innerHTML = `
+      <div style="font-weight:700; margin-bottom:8px;">${title}</div>
+      ${lines.map(l => `<div style="margin:4px 0;">${l}</div>`).join('')}
+    `;
+        }
+
+        const { offsetLeft: posX, offsetTop: posY } = chart.canvas;
+        el.style.display = 'block';
+        el.style.left = (posX + tooltip.caretX + 14) + 'px';
+        el.style.top  = (posY + tooltip.caretY + 14) + 'px';
+    }
+
+    function computeDailyReturn(prices) {
+        const returns = [null];
+        for (let i = 1; i < prices.length; i++) {
+            const prev = prices[i - 1];
+            const cur = prices[i];
+            if (!Number.isFinite(prev) || !Number.isFinite(cur) || prev === 0) {
+                returns.push(null);
+                continue;
+            }
+            returns.push(((cur / prev) - 1) * 100);
+        }
+        return returns;
+    }
+
+    function computeVolatility(returns, window = 20) {
+        const result = Array(returns.length).fill(null);
+        for (let i = 1; i < returns.length; i++) {
+            const start = Math.max(1, i - window + 1);
+            const slice = returns.slice(start, i + 1).filter(v => Number.isFinite(v));
+            if (slice.length < 2) continue;
+            const mean = slice.reduce((a, b) => a + b, 0) / slice.length;
+            const variance = slice.reduce((a, b) => a + (b - mean) ** 2, 0) / slice.length;
+            result[i] = Math.sqrt(variance);
+        }
+        return result;
+    }
+
+    function computeDelta(values) {
+        const delta = Array(values.length).fill(null);
+        for (let i = 1; i < values.length; i++) {
+            const prev = values[i - 1];
+            const cur = values[i];
+            if (!Number.isFinite(prev) || !Number.isFinite(cur)) continue;
+            delta[i] = cur - prev;
+        }
+        return delta;
+    }
+
+    function setMode(e, mode) {
+        e.preventDefault();
+        currentMode = mode;
+        document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+        loadChart();
+    }
+
+    function setPeriod(e, period) {
+        e.preventDefault();
+        currentPeriod = period;
+        document.querySelectorAll('.period-btn')
+            .forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+        loadChart();
+    }
+
+    function loadChart() {
+        fetch(`/api/etf/chart?isin=${encodeURIComponent(isin)}&period=${currentPeriod}`)
+            .then(res => res.json())
+            .then(drawChart)
+            .catch(err => console.error(err));
+    }
+
+    function drawChart(res) {
+        const canvas = document.getElementById('etfChart');
+        if (!canvas) return;
+        if (chart) chart.destroy();
+
+        const filtered = filterByPeriodFromLastValid(res.labels, res.data, currentPeriod);
+        const labels = filtered.labels;
+        const prices = filtered.values;
+
+        if (!labels.length || !prices.length) return;
+
+        const dailyReturn = computeDailyReturn(prices);
+        const volatility = computeVolatility(dailyReturn, 20);
+        const volDelta = computeDelta(volatility);
+        const volColors = volDelta.map(d => {
+            if (d == null) return 'rgba(0,120,255,0.15)';
+            return d >= 0 ? 'rgba(225,29,72,0.65)' : 'rgba(0,120,255,0.65)';
+        });
+
+        if (currentMode === 'price') {
+            chart = new Chart(canvas.getContext('2d'), {
+                data: {
+                    labels,
+                    datasets: [
+                        {
+                            type: 'line', label: '가격', data: prices,
+                            borderColor: '#2563eb', borderWidth: 2, pointRadius: 0, yAxisID: 'yPrice'
+                        },
+                        {
+                            type: 'bar', label: '일간 수익률(%)', data: dailyReturn,
+                            backgroundColor: dailyReturn.map(v => v == null ? 'transparent' : (v >= 0 ? 'rgba(255,80,80,0.6)' : 'rgba(0,120,255,0.6)')),
+                            yAxisID: 'yReturn'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    interaction: { mode: 'index', intersect: false },
+                    scales: {
+                        yPrice: { position: 'left', title: { display: true, text: '가격(원)' }, ticks: { callback: v => v.toLocaleString() + '원' } },
+                        yReturn: { position: 'right', title: { display: true, text: '일간 수익률(%)' }, grid: { drawOnChartArea: false }, ticks: { callback: v => v + '%' } }
+                    },
+                    plugins: { tooltip: { enabled: false, external: externalTooltipHandler } }
+                }
+            });
+            return;
+        }
+
+        chart = new Chart(canvas.getContext('2d'), {
+            type: 'bar',
+            data: { labels, datasets: [{ label: '20일 변동성 (%)', data: volatility, backgroundColor: volColors }] },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                interaction: { mode: 'index', intersect: false },
+                scales: { y: { title: { display: true, text: '변동성(%)' } } },
+                plugins: { tooltip: { enabled: false, external: externalTooltipHandler } }
+            }
+        });
+    }
+
+    function formatKoreanWon(value) {
+        if (!value || isNaN(value)) return '-';
+        const eok = Math.floor(value / 100000000);
+        const man = Math.floor((value % 100000000) / 10000);
+        const won = value % 10000;
+        let result = '';
+        if (eok > 0) result += `${eok}억 `;
+        if (man > 0) result += `${man}만 `;
+        if (won > 0) result += `${won}원`;
+        return result.trim();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-cont');
+
+        tabButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const target = btn.dataset.tab;
+                tabButtons.forEach(b => b.classList.remove('on'));
+                btn.classList.add('on');
+                tabContents.forEach(c => c.classList.remove('on'));
+                const active = document.getElementById(target);
+                if (active) active.classList.add('on');
+
+                if (target === 'profit') {
+                    currentMode = 'price';
+                    currentPeriod = '1Y';
+                    document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+                    document.querySelector('.mode-btn[onclick*="price"]')?.classList.add('active');
+                    document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
+                    document.querySelector('.period-btn[onclick*="1Y"]')?.classList.add('active');
+                    setTimeout(loadChart, 0);
+                }
+                if (target === 'container') {
+                    setTimeout(() => {
+                        renderCompositionChart(window.SERVER_TOP5);
+                        renderCompositionList(window.SERVER_TOP5);
+                    }, 0);
+                }
+            });
+        });
+
+        document.querySelectorAll('.trade-value').forEach(el => {
+            const v = Number(el.dataset.value);
+            el.textContent = formatKoreanWon(v);
+        });
+    });
+
+    async function downloadPDF() {
+        const { jsPDF } = window.jspdf;
+        const element = document.getElementById("setup");
+        const style = document.createElement('style');
+        style.innerHTML = `* { color: rgb(0,0,0) !important; background-color: transparent !important; border-color: rgb(200,200,200) !important; }`;
+        document.head.appendChild(style);
+        const canvas = await html2canvas(element, { scale: 2, backgroundColor: "#ffffff", useCORS: true, allowTaint: true });
+        document.head.removeChild(style);
+        const imgData = canvas.toDataURL("image/png");
+        const pdf = new jsPDF("p", "mm", "a4");
+        const width = 190;
+        const height = canvas.height * width / canvas.width;
+        pdf.addImage(imgData, "PNG", 10, 10, width, height);
+        pdf.save("ETF_구성정보_TOP5.pdf");
+    }
+
+    function pieExternalTooltipHandler(context) {
+        const { chart, tooltip } = context;
+        const el = document.getElementById('tooltip-card');
+        if (!el) return;
+        if (tooltip.opacity === 0) { el.style.display = 'none'; return; }
+        const dp = tooltip.dataPoints?.[0];
+        if (!dp) return;
+        const label = dp.label || '';
+        const value = dp.raw;
+        const [name, percent] = label.split(' - ');
+        const count = Math.round(value);
+        el.innerHTML = `
+        <div style="font-weight:700; font-size:18px; margin-bottom:10px;">${name}</div>
+        <div style="font-size:16px;">비중 : <b>${percent}</b></div>
+        <div style="margin-top:6px; font-size:16px;">구성 수 : <b>${count}개</b></div>
+    `;
+        const { offsetLeft: posX, offsetTop: posY } = chart.canvas;
+        el.style.display = 'block';
+        el.style.left = (posX + tooltip.caretX + 14) + 'px';
+        el.style.top  = (posY + tooltip.caretY + 14) + 'px';
+    }
+</script>
+</body>
+</html>

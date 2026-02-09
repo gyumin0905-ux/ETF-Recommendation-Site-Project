@@ -1,0 +1,225 @@
+@charset "UTF-8";
+
+    /* 전체 배경 */
+    section.account-page{
+    width: 100%;
+    min-height: 100vh;
+    /* background:#fff; */
+    }
+
+    /* 레이아웃 */
+    .layout{
+    display:flex;
+    min-height:100vh;
+    }
+
+    /*-----왼쪽 사이드바-----*/
+    .side-menu{
+        width: 260px;
+        background-color: #4f7766;
+        padding: 40px 24px;
+        box-sizing: border-box;
+    }
+
+    /*-----로고-----*/
+    .side-menu .logo{
+        width: 200px;
+        height: 80px;
+        margin-bottom: 30px;
+    }
+    .side-menu .logo img{
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+    /*-----사이드 메뉴-----*/
+    .menu-list{
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.menu-list li{
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.menu-list li:hover a{
+    opacity: 1;
+    font-weight: 700;
+}
+.menu-list li a{
+    font-size: 18px;
+    color: #ffffff;
+    opacity: 0.6;
+}
+
+    /* ===== CONTENT ===== */
+    .content{
+    flex:1;
+    padding: 70px 90px;
+    box-sizing:border-box;
+    }
+
+    .form-card{
+    max-width: 850px;
+    }
+
+    .section-title{
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0 0 18px;
+    }
+    .section-title.mt{ margin-top: 42px; }
+
+    /* grid: label / field / hint */
+    .form-grid{
+    display:flex;
+    flex-direction:column;
+    gap: 18px;
+    }
+
+    .row{
+    display:grid;
+    grid-template-columns: 140px 1fr 320px;
+    align-items:start;
+    column-gap: 18px;
+    }
+
+    .label{
+    font-size: 14px;
+    font-weight: 700;
+    color:#1a1a1a;
+    padding-top: 10px;
+    }
+
+    .field{ min-width: 0; }
+
+    .hint{
+    font-size: 13px;
+    color:#666;
+    padding-top: 10px;
+    line-height: 1.4;
+    }
+    .hint-stack{
+    padding-top: 42px; /* 주소 옆 설명 라인 맞추기 */
+    display:flex;
+    flex-direction:column;
+    gap: 28px;
+    }
+
+    /* inputs */
+    .input{
+    width: 340px;
+    height: 34px;
+    border:1px solid #d9d9d9;
+    padding: 0 10px;
+    box-sizing:border-box;
+    outline:none;
+    font-size: 14px;
+    background:#fff;
+    }
+    .input:focus{ border-color:#97b2a8; }
+
+    .email{ width: 340px; }
+
+    .select{
+    height: 34px;
+    border:1px solid #d9d9d9;
+    padding: 0 8px;
+    background:#fff;
+    font-size: 14px;
+    }
+
+    /* 버튼 */
+    .btn-outline{
+    height: 34px;
+    padding: 0 14px;
+    border:1px solid #cfcfcf;
+    background:#fff;
+    cursor:pointer;
+    font-size: 13px;
+    }
+    .btn-outline:hover{ border-color:#aaa; }
+
+    .btn-primary{
+    height: 40px;
+    padding: 0 34px;
+    border: none;
+    border-radius: 24px;
+    background:#2f5f50;
+    color:#fff;
+    font-weight: 700;
+    cursor:pointer;
+    }
+    .btn-primary:hover{ filter: brightness(.95); }
+
+    /* 주소 */
+    .field-line{
+    display:flex;
+    align-items:center;
+    gap: 10px;
+    }
+    .w-zip{ width: 220px; }
+
+    .field-stack{
+    margin-top: 8px;
+    display:flex;
+    flex-direction:column;
+    gap: 8px;
+    }
+
+    /* 전화 */
+    .tel{
+    display:flex;
+    align-items:center;
+    gap: 8px;
+    }
+    .tel .input{
+    width: 94px;
+    }
+    .dash{
+    color:#777;
+    }
+
+    /* 라디오 */
+    .radio-line{
+    display:flex;
+    align-items:center;
+    gap: 18px;
+    margin-top: 6px;
+    }
+    .radio-line.compact{ gap: 12px; margin-left: 10px; }
+
+    .radio{
+    display:flex;
+    align-items:center;
+    gap: 6px;
+    font-size: 13px;
+    color:#222;
+    }
+    .desc{
+    margin: 8px 0 0;
+    font-size: 12px;
+    color:#333;
+    line-height: 1.5;
+    }
+
+    /* 생년월일 */
+    .birth{
+    display:flex;
+    align-items:center;
+    flex-wrap:wrap;
+    gap: 8px;
+    }
+    .year{ width: 110px; }
+    .md{ width: 70px; }
+    .unit{ font-size: 13px; color:#333; margin-right: 8px; }
+
+    /* 하단 버튼 위치 */
+    .actions{
+    display:flex;
+    justify-content:center;
+    margin-top: 60px;
+    }

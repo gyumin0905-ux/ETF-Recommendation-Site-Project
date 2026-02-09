@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MY ETF - 포트폴리오 제안</title>
+    <link rel="icon" th:href="@{/images/favi.png}">
+
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/portfolio.css}">
+
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: headerFragment}"></div>
+
+<div class="my-etfsection">
+    <section class="myetf">
+        <div class="left-nav">
+            <h2 class="section-title">MY ETF</h2>
+            <ul class="tab-menu" data-default-tab="content2">
+                <li onclick="location.href='/myetf/personal'">개인 맞춤형 ETF 추천</li>
+                <li class="tab-on" onclick="location.href='/myetf/portfolio'">포트폴리오 제안서</li>
+            </ul>
+        </div>
+
+        <div class="content-wrapper">
+            <div class="content2 current" style="display: block;">
+                <div class="textarea1">
+                    <h1><span th:text="${session.loginUser.username}" style="color:inherit;">AAA</span>님의 성향은 <span>위험중립형</span>입니다.</h1>
+                    <p>수익과 위험의 균형을 중시하는 회원님을 위해
+                        다양한 자산군으로 구성된 최적의 포트폴리오를 제안합니다.<br>
+                        주식과 채권을 중심으로 안정성과 성장성 모두를 고려해,
+                        시장 변동성 속에서 비교적 안정적인 수익을 <br>추구하도록 설계되었습니다.
+                        국내외 자산을 균형 있게 분산하여 특정 시장에 대한 의존도를 낮추고,
+                        <br>중장기적인 자산 성장을 목표로 꾸준한 운용이 가능하도록 구성하였습니다.
+                    </p>
+                </div>
+                <div class="flex justify-center items-center gap-0.5 py-0.5">
+                    <button class="modibtn btn btn-xs btn-success
+                    !bg-[#055C4D] !text-white border-none shadow-none
+                    px-4 py-3 w-40 min-h-[56px] rounded-[13px]" onclick="alert('준비중입니다.');">
+                        테스트 하러가기
+                    </button>
+                </div>
+                <div class="slogan">
+                    <div class="leftquote"><img th:src="@{/images/“.png}" alt="따옴표"></div>
+                    <h3><span>위험중립형</span>인 <span th:text="${session.loginUser.username}">AAA</span>님을 위한 맞춤 포트폴리오 제안</h3>
+                    <div class="rightquote"><img th:src="@{/images/”.png}" alt="따옴표"></div>
+                </div>
+
+                <div class="chart">
+                    <div class="chart-grid-container">
+                        <img th:src="@{/images/leaf1.png}" class="deco-leaf leaf-pos1" alt="deco">
+                        <div class="chart-item-wrapper pos1">
+                            <canvas id="portfolioChart0"></canvas>
+                            <div class="chart-title">1. 안정형</div>
+                            <img th:src="@{/images/leaf7.png}" class="deco-leaf leaf-pos4" alt="deco">
+                            <div class="seed-box"><img th:src="@{/images/seed1.png}" alt="seed"></div>
+                        </div>
+                        <div class="chart-item-wrapper pos2">
+                            <canvas id="portfolioChart1" width="500" height="500"></canvas>
+                            <div class="chart-title">2. 성장 집중형</div>
+                            <img th:src="@{/images/leaf2.png}" class="deco-leaf leaf-pos2" alt="deco">
+                            <div class="seed-box"><img th:src="@{/images/seed2.png}" alt="seed"></div>
+                        </div>
+
+                        <img th:src="@{/images/leaf3.png}" class="deco-leaf leaf-pos3" alt="deco">
+                        <div class="chart-item-wrapper pos3">
+                            <canvas id="portfolioChart2" width="550" height="550"></canvas>
+                            <div class="chart-title">3. 해외 투자형</div>
+                            <div class="seed-box"><img th:src="@{/images/seed3.png}" alt="seed"></div>
+                            <img th:src="@{/images/leaf4.png}" class="deco-leaf leaf-pos4" alt="deco">
+                        </div>
+                        <img th:src="@{/images/leaf8.png}" class="deco-leaf leaf-pos8" alt="deco">
+                        <div class="chart-item-wrapper pos4">
+                            <canvas id="portfolioChart3"></canvas>
+                            <div class="chart-title">4. 국내 투자형</div>
+                            <div class="seed-box"><img th:src="@{/images/seed4.png}" alt="seed"></div>
+                            <img th:src="@{/images/leaf5.png}" class="deco-leaf leaf-pos4" alt="deco">
+                        </div>
+                        <div class="chart-item-wrapper pos5">
+                            <canvas id="portfolioChart4"></canvas>
+                            <div class="chart-title">5. 균형형</div>
+                            <img th:src="@{/images/leaf6.png}" class="deco-leaf leaf-pos4" alt="deco">
+                            <div class="seed-box"><img th:src="@{/images/seed5.png}" alt="seed"></div>
+                        </div>
+                    </div>
+                    <div id="detailInfoBox" class="detail-display-box">
+                        <h3 id="detailTitle">클릭해서 상세 정보를 확인하세요.</h3>
+                        <ul id="detailList" class="detail-list"></ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+</div>
+
+<div th:replace="~{fragments/footer :: footerFragment}"></div>
+
+<script th:src="@{/js/common.js}"></script>
+<script th:src="@{/js/portfolio.js}"></script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>경영 정보 - Verte ETF</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/company.css}">
+
+    <link rel="icon" th:href="@{/images/favi.png}">
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: headerFragment}"></div>
+
+<div class="hero-section bg-management">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <h2>투명하고 건전한 경영</h2>
+        <h3>신뢰를 바탕으로 지속 가능한 성장을 이룹니다</h3>
+        <p>
+            Verte ETF는 주주와 고객의 가치를 최우선으로 생각합니다.<br>
+            엄격한 윤리 규범 준수와 투명한 의사결정 구조를 통해<br>
+            시장에서 가장 신뢰받는 금융 투자 파트너가 되겠습니다.
+        </p>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer :: footerFragment}"></div>
+
+<script th:src="@{/js/common.js}"></script>
+</body>
+</html>

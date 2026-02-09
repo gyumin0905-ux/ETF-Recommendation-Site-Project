@@ -1,0 +1,61 @@
+@charset "UTF-8";
+
+section{
+    padding-top: 100px;
+    padding-bottom: 100px;
+    background-color: #055C4D;
+    position: relative;
+}
+/*----테스트박스------*/
+section .test-container{
+    position: relative;
+    max-width: 950px;
+    margin: 180px auto 80px;
+    padding: 70px;
+    border-radius: 20px;
+    box-shadow: 1px 1px 35px #2c2c2cc2;
+    background-color: #fff;
+}
+/* 제목 */
+section .test-container h2{
+    font-size: 50px;
+    font-weight: 500;
+    padding-bottom: 5px;
+}
+section .test-container>p {
+    color: #055C4D;
+    font-weight: 500;
+    padding-bottom: 50px;
+    margin-left: 8px;
+    font-size: 14px;
+}
+/*---------라인----*/
+section .test-container p::after {
+    content: "";
+    display: block;
+    width: 830px;
+    height: 2px;
+    background-color: #a7a7a7a6;
+    position: absolute;
+    top: 190px; left: 50%;
+    transform: translateX(-50%);
+}
+/*---문제---*/
+section .test-container>div{
+    margin-bottom: 40px;
+    padding-left: 20px;
+}
+/*-----버튼----*/
+section .test-container .btnWrap button{
+    margin-top: 50px;
+}
+section .test-container::after{
+    content: "";
+    display: block;
+    width: 1920px;
+    height: 1px;
+    background-color: #a7a7a762;
+    position: absolute;
+    bottom: -180px; left: 50%;
+    transform: translateX(-50%);
+}

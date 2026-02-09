@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${event.title} + ' - 상세정보'">이벤트 상세</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/event.css}">
+    <script th:src="@{/js/common.js}"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="icon" th:href="@{/images/favi.png}">
+</head>
+<body>
+
+<header th:replace="~{fragments/header :: headerFragment}"></header>
+
+<main style="position: relative; z-index: 1; padding-top: 150px;">
+    <div class="event-detail-wrap">
+        <div class="event-detail-head">
+            <h2 th:text="${event.title}">이벤트 제목</h2>
+            <div class="badge-wrap">
+                <span th:if="${event.status == 'ING'}" class="badge-ing-detail">진행중</span>
+                <span th:if="${event.status == 'ENDED'}" class="badge-end-detail">종료</span>
+                <span th:if="${event.status == 'SCHEDULED'}" class="badge-end-detail">예정</span>
+            </div>
+        </div>
+
+        <div class="event-detail-info">
+            <p th:text="'📅 이벤트 기간 : ' + ${event.startDate} + ' ~ ' + ${event.endDate}">기간</p>
+        </div>
+
+        <div class="event-detail-content">
+            <img th:src="@{/images/} + ${event.thumbnailUrl}" th:alt="${event.title}">
+        </div>
+
+        <div class="event-btn-group">
+            <a th:href="@{/event}" class="btn-list">목록으로</a>
+            <a th:href="${event.linkUrl}" target="_blank" class="btn-link">이벤트 참여하러 가기 🔗</a>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/footer :: footerFragment}"></footer>
+
+</body>
+</html>

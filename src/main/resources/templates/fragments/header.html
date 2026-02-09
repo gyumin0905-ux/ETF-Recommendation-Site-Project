@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="headerFragment">
+    <header>
+        <div class="header-wrap">
+            <h1 class="logo">
+                <a th:href="@{/}">
+                    <img th:src="@{/images/logo-header.png}" alt="베르트 로고">
+                </a>
+            </h1>
+
+            <nav>
+                <ul class="gnb">
+                    <li>
+                        <a href="#">회사 소개</a>
+                        <ul class="sub">
+                            <li><a th:href="@{/company/intro}">Verte ETF 소개</a></li>
+                            <li><a th:href="@{/company/management}">경영 정보</a></li>
+                            <li><a th:href="@{/company/recruit}">채용 정보</a></li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="#">ETF 정보</a>
+                        <ul class="sub">
+                            <li><a th:href="@{/compare}">ETF 비교·랭킹</a></li>
+                            <li><a th:href="@{/etf/list}">ETF 라인업</a></li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="#">MY ETF</a>
+                        <ul class="sub">
+                            <li th:if="${session.loginUser != null}">
+                                <a th:href="@{/myetf/personal}">개인 맞춤형 추천</a>
+                            </li>
+                            <li th:if="${session.loginUser == null}">
+                                <a th:href="@{/login}" onclick="alert('로그인이 필요한 서비스입니다.');">개인 맞춤형 추천</a>
+                            </li>
+
+                            <li th:if="${session.loginUser != null}">
+                                <a th:href="@{/myetf/portfolio}">포트폴리오 제안</a>
+                            </li>
+                            <li th:if="${session.loginUser == null}">
+                                <a th:href="@{/login}" onclick="alert('로그인이 필요한 서비스입니다.');">포트폴리오 제안</a>
+                            </li>
+
+                            <li><a th:href="@{/fortune}">오늘의 투자 운세</a></li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="#">투자 정보</a>
+                        <ul class="sub">
+                            <li><a th:href="@{/terms/chat}">AI 챗봇 가이드</a></li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="#">커뮤니티</a>
+                        <ul class="sub">
+                            <li><a th:href="@{/notice}">ETF 뉴스(공지)</a></li>
+                            <li><a th:href="@{/event}">이벤트</a></li>
+                            <li><a th:href="@{/board}">종토방</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="header-btn">
+                <th:block th:if="${session.loginUser == null}">
+                    <button><a th:href="@{/signup}">회원가입</a></button>
+                    <button><a th:href="@{/login}">로그인</a></button>
+                </th:block>
+
+                <th:block th:if="${session.loginUser != null}">
+                    <button th:if="${session.loginUser.isAdmin()}">
+                        <a th:href="@{/admin}">관리자</a>
+                    </button>
+
+                    <button><a th:href="@{/logout}">로그아웃</a></button>
+                    <button><a th:href="@{/mypage}">마이페이지</a></button>
+                </th:block>
+            </div>
+        </div>
+    </header>
+</div>
+</html>

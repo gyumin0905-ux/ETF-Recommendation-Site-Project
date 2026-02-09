@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>ADMIN · 대시보드</title>
+
+    <!-- UI -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://kit.fontawesome.com/4aff7483c9.js" crossorigin="anonymous"></script>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            color: #1a1a1a;
+        }
+
+        .adminpage { width:100%; min-height:100vh; }
+        .adminpage-wrap { display:flex; min-height:100vh; }
+
+        /* ===== SIDEBAR ===== */
+        .side-menu {
+            width:260px;
+            background:#055c4d;
+            padding:40px 24px;
+        }
+
+        .side-menu .logo {
+            margin-bottom:40px;
+        }
+
+        .side-menu .logo img {
+            width:100%;
+        }
+
+        .menu-list {
+            display:flex;
+            flex-direction:column;
+            gap:24px;
+        }
+
+        .menu-list a {
+            color:#fff;
+            opacity:.6;
+            font-size:18px;
+        }
+
+        .menu-list a:hover {
+            opacity:1;
+            font-weight:700;
+        }
+
+        /* ===== CONTENT ===== */
+        .controlpanel-wrap {
+            flex:1;
+            padding:40px;
+            background:#f1f3f5;
+        }
+
+        .dash-tit {
+            font-size:48px;
+            font-weight:700;
+            color:#055c4d;
+            margin-bottom:0; /* 기존 32px -> 0 */
+        }
+
+        /* ===== GRID ===== */
+        .control-firstline,
+        .control-secondline {
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:24px;
+            margin-bottom:24px;
+        }
+
+        /* ===== CARD ===== */
+        .tablesection {
+            background:#fff;
+            border-radius:12px;
+            border:1px solid #ddd;
+            display:flex;
+            flex-direction:column;
+            height:420px;
+            overflow:hidden;
+        }
+
+        .usertit-wrap {
+            padding:16px 20px;
+            border-bottom:1px solid #e5e7eb;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            cursor:pointer;
+        }
+
+        .user-tit {
+            font-size:20px;
+            font-weight:700;
+            color:#055c4d;
+        }
+
+        .a-btn {
+            font-size:18px;
+            color:#055c4d;
+        }
+
+        /* ===== TABLE ===== */
+        table {
+            width:100%;
+            border-collapse:collapse;
+            table-layout:fixed;
+        }
+
+        thead {
+            background:#f9f9f9;
+        }
+
+        th, td {
+            padding:12px 10px;
+            font-size:14px;
+            text-align:center;
+            white-space:nowrap;
+            overflow:hidden;
+            text-overflow:ellipsis;
+        }
+
+        tbody {
+            display:block;
+            overflow-y:auto;
+            flex:1;
+        }
+
+        thead, tr {
+            display:table;
+            width:100%;
+            table-layout:fixed;
+        }
+    </style>
+</head>
+
+<body>
+<section class="adminpage">
+    <div class="adminpage-wrap">
+
+        <!-- ===== SIDEBAR ===== -->
+        <aside class="side-menu">
+            <div class="logo">
+                <a href="/admin">
+                    <img src="/images/logo-footer.png" alt="VERTE ADMIN">
+                </a>
+            </div>
+
+            <ul class="menu-list">
+                <li><a href="/admin">HOME</a></li>
+                <li><a href="/admin/users">회원관리</a></li>
+                <li><a href="/admin/etf">ETF 시세관리</a></li>
+                <li><a href="/admin/meta">ETF 종목 관리</a></li>
+                <li><a href="/admin/events">이벤트 관리</a></li>
+            </ul>
+        </aside>
+
+        <!-- ===== CONTENT ===== -->
+        <div class="controlpanel-wrap">
+            <div class="flex justify-between items-center mb-8">
+                <div class="dash-tit mb-0">대시보드</div>
+
+                <a href="/"
+                   class="inline-flex items-center gap-2
+              px-5 py-2
+              bg-[#055c4d] text-white
+              rounded-lg text-sm font-semibold
+              hover:bg-[#044a3f]
+              transition">
+                    <i class="fa-solid fa-house"></i>
+                    메인 페이지로
+                </a>
+            </div>
+
+            <!-- 1 ROW -->
+            <div class="control-firstline">
+
+                <!-- USER -->
+                <div class="tablesection" onclick="location.href='/admin/users'">
+                    <div class="usertit-wrap">
+                        <h2 class="user-tit">최근 가입회원</h2>
+                        <i class="fa-solid fa-plus a-btn"></i>
+                    </div>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>NO</th>
+                            <th>아이디</th>
+                            <th>이메일</th>
+                            <th>유형</th>
+                            <th>가입일</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="u : ${users}">
+                            <td th:text="${u.id}"></td>
+                            <td th:text="${u.username}"></td>
+                            <td th:text="${u.email}"></td>
+                            <td th:text="${u.userRole}"></td>
+                            <td th:text="${#temporals.format(u.createdAt,'yyyy-MM-dd')}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- META -->
+                <div class="tablesection" onclick="location.href='/admin/meta'">
+                    <div class="usertit-wrap">
+                        <h2 class="user-tit">최근 ETF 종목</h2>
+                        <i class="fa-solid fa-plus a-btn"></i>
+                    </div>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>종목명</th>
+                            <th>위험</th>
+                            <th>보수</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="m : ${metas}">
+                            <td th:text="${m.isinCd}"></td>
+                            <td th:text="${m.name}"></td>
+                            <td th:text="${m.riskLevel}"></td>
+                            <td th:text="${m.expenseLevel}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 2 ROW -->
+            <div class="control-secondline">
+
+                <!-- PRICE -->
+                <div class="tablesection" onclick="location.href='/admin/etf'">
+                    <div class="usertit-wrap">
+                        <h2 class="user-tit">최근 ETF 시세</h2>
+                        <i class="fa-solid fa-plus a-btn"></i>
+                    </div>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>기준일</th>
+                            <th>종목</th>
+                            <th>종가</th>
+                            <th>등락률</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="p : ${prices}">
+                            <td th:text="${p.basDt}"></td>
+                            <td th:text="${p.isinCd}"></td>
+                            <td th:text="${p.clpr}"></td>
+                            <td th:text="${p.flucRt}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- EVENT -->
+                <div class="tablesection" onclick="location.href='/admin/events'">
+                    <div class="usertit-wrap">
+                        <h2 class="user-tit">최근 이벤트</h2>
+                        <i class="fa-solid fa-plus a-btn"></i>
+                    </div>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>NO</th>
+                            <th>상태</th>
+                            <th>제목</th>
+                            <th>기간</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="e : ${events}">
+                            <td th:text="${e.id}"></td>
+                            <td th:text="${e.status}"></td>
+                            <td th:text="${e.title}"></td>
+                            <td th:text="${e.startDate + ' ~ ' + e.endDate}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

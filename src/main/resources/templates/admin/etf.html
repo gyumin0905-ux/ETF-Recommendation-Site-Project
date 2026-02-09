@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>ADMIN · ETF 시세관리</title>
+
+    <!-- UI -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://kit.fontawesome.com/4aff7483c9.js" crossorigin="anonymous"></script>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            color: #1a1a1a;
+        }
+
+        .adminpage {
+            width: 100%;
+            min-height: 100vh;
+        }
+
+        .adminpage-wrap {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* ===== SIDEBAR ===== */
+        .side-menu {
+            width: 260px;
+            background: #055c4d;
+            padding: 40px 24px;
+        }
+
+        .side-menu .logo img {
+            width: 100%;
+        }
+
+        .menu-list {
+            margin-top: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .menu-list a {
+            color: #fff;
+            opacity: .6;
+            font-size: 18px;
+        }
+
+        .menu-list .priceControl a,
+        .menu-list a:hover {
+            opacity: 1;
+            font-weight: 700;
+        }
+
+        /* ===== CONTENT ===== */
+        .tablesection {
+            flex: 1;
+            padding: 40px;
+            background: #f1f3f5;
+        }
+
+        .title-wrap {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+
+        .page-title {
+            font-size: 48px;
+            color: #055c4d;
+            font-weight: 700;
+        }
+
+        /* ===== SEARCH ===== */
+        .search-box {
+            background: #fff;
+            padding: 24px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            display: flex;
+            gap: 16px;
+            align-items: end;
+        }
+
+        .search-box label {
+            font-size: 14px;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .search-box input {
+            border: 1px solid #ccc;
+            padding: 8px 12px;
+            border-radius: 6px;
+            min-width: 180px;
+        }
+
+        .search-btn {
+            padding: 10px 18px;
+            background: #467261;
+            color: #fff;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .reset-btn {
+            padding: 10px 18px;
+            background: #dee2e6;
+            border-radius: 6px;
+        }
+
+        /* ===== TABLE ===== */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border-top: 2px solid #c2c2c2;
+            background: #fff;
+        }
+
+        th, td {
+            height: 70px;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+            font-size: 15px;
+            padding: 0 12px;
+        }
+
+        th {
+            background: #f9f9f9;
+            font-weight: 700;
+        }
+
+        tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+        .up { color: #e03131; font-weight: 600; }
+        .down { color: #1c7ed6; font-weight: 600; }
+        .steady { color: #333; }
+        .null-data { color: #adb5bd; }
+
+        /* ===== BUTTONS ===== */
+        .btn-area {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .btn-edit {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 12px;
+            background: #228be6;
+            color: white;
+            font-size: 14px;
+            border-radius: 6px;
+        }
+
+        .btn-del {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 12px;
+            background: #fa5252;
+            color: white;
+            font-size: 14px;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+
+<body>
+<section class="adminpage">
+    <div class="adminpage-wrap">
+
+        <!-- ===== SIDEBAR ===== -->
+        <aside class="side-menu">
+            <div class="logo">
+                <a href="/"><img src="/images/logo-footer.png" alt="VERTE"/></a>
+            </div>
+
+            <ul class="menu-list">
+                <li><a href="/admin">HOME</a></li>
+                <li><a href="/admin/users">회원관리</a></li>
+                <li class="priceControl"><a href="/admin/etf">ETF 시세관리</a></li>
+                <li><a href="/admin/meta">ETF 종목 관리</a></li>
+                <li><a href="/admin/events">이벤트 관리</a></li>
+            </ul>
+        </aside>
+
+        <!-- ===== CONTENT ===== -->
+        <section class="tablesection">
+
+            <div class="title-wrap">
+                <h2 class="page-title">ETF 시세관리</h2>
+            </div>
+
+            <!-- 검색 -->
+            <form method="get" action="/admin/etf" class="search-box">
+                <div>
+                    <label>시작일</label>
+                    <input type="date" name="startDate" th:value="${startDate}">
+                </div>
+
+                <div>
+                    <label>종료일</label>
+                    <input type="date" name="endDate" th:value="${endDate}">
+                </div>
+
+                <div>
+                    <label>ISIN 코드</label>
+                    <input type="text" name="isin" th:value="${isin}" placeholder="KR**********">
+                </div>
+
+                <button type="submit" class="search-btn">검색</button>
+                <a href="/admin/etf" class="reset-btn">초기화</a>
+            </form>
+
+            <!-- 테이블 -->
+            <table>
+                <thead>
+                <tr>
+                    <th>기준일자</th>
+                    <th>종목코드</th>
+                    <th>종가</th>
+                    <th>등락률</th>
+                    <th>관리</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="e : ${etfPrices}">
+                    <td th:text="${e.basDt}"></td>
+                    <td th:text="${e.isinCd}"></td>
+
+                    <td th:text="${e.clpr != null ? #numbers.formatInteger(e.clpr,0,'COMMA') : '-'}"></td>
+
+                    <td th:if="${e.flucRt != null}"
+                        th:class="${e.flucRt > 0 ? 'up' : (e.flucRt < 0 ? 'down' : 'steady')}"
+                        th:text="${e.flucRt + '%'}"></td>
+
+                    <td th:if="${e.flucRt == null}" class="null-data">-</td>
+
+                    <td>
+                        <div class="btn-area">
+                            <a th:href="@{/admin/etf/edit(isin=${e.isinCd}, date=${e.basDt})}" class="btn-edit">
+                                <i class="fa-solid fa-pen"></i> 수정
+                            </a>
+
+                            <a th:href="@{/admin/etf/delete(isin=${e.isinCd}, date=${e.basDt})}"
+                               onclick="return confirm('정말 삭제하시겠습니까?');"
+                               class="btn-del">
+                                <i class="fa-solid fa-trash"></i> 삭제
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <!-- ================= 페이징 ================= -->
+            <div class="flex justify-center mt-8 gap-2">
+
+                <a th:if="${page.number > 0}"
+                   th:href="@{/admin/etf(page=0, startDate=${startDate}, endDate=${endDate}, isin=${isin})}"
+                   class="px-3 py-1 border rounded">
+                    &laquo;
+                </a>
+
+                <a th:if="${page.number >= 10}"
+                   th:href="@{/admin/etf(page=${page.number - 10}, startDate=${startDate}, endDate=${endDate}, isin=${isin})}"
+                   class="px-3 py-1 border rounded">
+                    &lsaquo;
+                </a>
+
+                <a th:each="i : ${#numbers.sequence(
+        (page.number / 10) * 10,
+        T(java.lang.Math).min(((page.number / 10) * 10 + 9), page.totalPages - 1)
+    )}"
+                   th:href="@{/admin/etf(page=${i}, startDate=${startDate}, endDate=${endDate}, isin=${isin})}"
+                   th:text="${i + 1}"
+                   th:classappend="${i == page.number} ? 'bg-[#055c4d] text-white' : ''"
+                   class="px-3 py-1 border rounded">
+                </a>
+
+                <a th:if="${page.number + 10 < page.totalPages}"
+                   th:href="@{/admin/etf(page=${page.number + 10}, startDate=${startDate}, endDate=${endDate}, isin=${isin})}"
+                   class="px-3 py-1 border rounded">
+                    &rsaquo;
+                </a>
+
+                <a th:if="${page.number < page.totalPages - 1}"
+                   th:href="@{/admin/etf(page=${page.totalPages - 1}, startDate=${startDate}, endDate=${endDate}, isin=${isin})}"
+                   class="px-3 py-1 border rounded">
+                    &raquo;
+                </a>
+            </div>
+        </section>
+    </div>
+</section>
+</body>
+</html>

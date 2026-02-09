@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>로그인 - Verte ETF</title>
+    <link rel="icon" th:href="@{/images/favi.png}" />
+
+    <link rel="stylesheet" th:href="@{/css/reset.css}" />
+    <link rel="stylesheet" th:href="@{/css/common.css}" />
+    <link rel="stylesheet" th:href="@{/css/login.css}" />
+
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: headerFragment}"></div>
+
+<div style="position: relative; z-index: 1;">
+    <section>
+        <div class="login-container">
+            <h2>로그인</h2>
+            <p>
+                당신의 첫걸음부터 함께합니다.<br />
+                로그인하시면 더 자세한 안내를 받으실 수 있습니다.
+            </p>
+
+            <div class="login-box">
+                <form th:action="@{/login}" method="post">
+
+                    <div th:if="${param.error}" class="text-red-500 text-sm mb-4 text-left pl-6 font-bold">
+                        🚨 아이디 또는 비밀번호가 올바르지 않습니다.
+                    </div>
+
+                    <p>이메일</p>
+                    <input
+                            type="email"
+                            name="email"
+                            placeholder="example@gmail.com"
+                            class="input"
+                            required
+                    />
+
+                    <p>비밀번호</p>
+                    <input
+                            type="password"
+                            name="password"
+                            placeholder="비밀번호를 입력하세요."
+                            class="input"
+                            required
+                    />
+
+                    <button type="submit" class="w-[430px] h-[48px] bg-[#055C4D] text-white rounded-md text-[15px] font-medium transition hover:bg-[#055C4D69]">
+                        로그인
+                    </button>
+                </form>
+                <div class="link-area">
+                    <a th:href="@{/signup}">회원가입</a>　|　<a href="#">아이디 찾기</a>
+                    　|　<a href="#">비밀번호 찾기</a>
+                </div>
+
+                <div class="social-title">간편 로그인</div>
+
+                <div class="flex flex-col gap-3 w-full max-w-md mx-auto social-login">
+
+                    <a th:href="@{/oauth2/authorization/kakao}" class="block w-full">
+                        <button class="relative w-full h-[48px] ring-1 ring-gray-300 rounded-md bg-white text-sm font-medium text-gray-900 transition hover:bg-gray-50 flex items-center justify-center gap-3">
+                            <img th:src="@{/images/kakao.png}" alt="카카오" class="h-5"/>
+                            <span>카카오톡 로그인</span>
+                        </button>
+                    </a>
+
+                    <a th:href="@{/oauth2/authorization/google}" class="block w-full">
+                        <button class="relative w-full h-[48px] ring-1 ring-gray-300 rounded-md bg-white text-sm font-medium text-gray-900 transition hover:bg-gray-50 flex items-center justify-center gap-3">
+                            <img th:src="@{/images/google.png}" alt="구글" class="h-5"/>
+                            <span>구글 로그인</span>
+                        </button>
+                    </a>
+
+                    <a th:href="@{/oauth2/authorization/naver}" class="block w-full">
+                        <button class="relative w-full h-[48px] ring-1 ring-gray-300 rounded-md bg-white text-sm font-medium text-gray-900 transition hover:bg-gray-50 flex items-center justify-center gap-3">
+                            <img th:src="@{/images/naver.png}" alt="네이버" class="h-5" />
+                            <span>네이버 로그인 </span>
+                        </button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<div th:replace="~{fragments/footer :: footerFragment}"></div>
+
+<script th:src="@{/js/common.js}"></script>
+</body>
+</html>

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>개인정보 수정</title>
+    <link rel="icon" href="/images/favi.png">
+    <style>
+        body{margin:0;font-family:'Noto Sans KR',sans-serif;background:#fff}
+        .layout{display:flex;min-height:100vh}
+
+        .logo {
+            display: block;
+            cursor: pointer;
+        }
+
+        .logo img {
+            display: block;
+            height: 80px;   /* 기존 로고 크기에 맞게 */
+        }
+
+        /* SIDEBAR */
+        .side-menu{
+            width:260px;
+            background:#4f7766;
+            padding:40px 24px;
+            color:#fff;
+        }
+        .side-menu .logo{
+            height:80px;
+            background:url(/images/logo-footer.png) no-repeat center/contain;
+            margin-bottom:40px;
+        }
+        .menu-list li{margin-bottom:24px}
+        .menu-list a{color:#fff;opacity:.6;font-size:18px;text-decoration:none}
+        .menu-list a:hover{opacity:1;font-weight:600}
+
+        /* CONTENT */
+        .content{flex:1;padding:70px 90px}
+        .form-card{max-width:850px}
+
+        .section-title{
+            font-size:18px;
+            font-weight:700;
+            margin:0 0 24px;
+        }
+
+        .form-grid{display:flex;flex-direction:column;gap:18px}
+        .row{
+            display:grid;
+            grid-template-columns:140px 1fr;
+            gap:18px;
+            align-items:center;
+        }
+
+        .label{font-size:14px;font-weight:700}
+        .input,.select{
+            width:340px;
+            height:36px;
+            border:1px solid #d9d9d9;
+            padding:0 10px;
+            font-size:14px;
+        }
+
+        .actions{
+            margin-top:50px;
+            display:flex;
+            justify-content:center;
+            gap:16px;
+        }
+
+        .btn-primary{
+            height:42px;
+            padding:0 36px;
+            border-radius:24px;
+            border:none;
+            background:#2f5f50;
+            color:#fff;
+            font-weight:700;
+            cursor:pointer;
+        }
+        .btn-outline{
+            height:42px;
+            padding:0 36px;
+            border-radius:24px;
+            border:1px solid #ccc;
+            background:#fff;
+            cursor:pointer;
+        }
+    </style>
+</head>
+
+<body>
+<div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="side-menu">
+        <a href="/" class="logo"></a>
+        <ul class="menu-list">
+            <li><a href="/mypage">MY Page</a></li>
+            <li><a href="/mypage/edit">개인정보 관리</a></li>
+        </ul>
+    </aside>
+
+    <!-- CONTENT -->
+    <main class="content">
+        <form action="/mypage/edit" method="post" class="form-card">
+
+            <h2 class="section-title">기본 정보</h2>
+
+            <div class="form-grid">
+                <div class="row">
+                    <div class="label">이름</div>
+                    <input class="input" name="username"
+                           th:value="${user.username}" />
+                </div>
+
+                <div class="row">
+                    <div class="label">이메일</div>
+                    <input class="input" type="email" name="email"
+                           th:value="${user.email}" />
+                </div>
+
+                <!-- ===============================
+                비밀번호 설정 영역
+                =============================== -->
+                <div style="margin-top:40px;">
+
+                    <h2 class="section-title">비밀번호 설정</h2>
+
+                    <!-- 🔹 SOCIAL 계정 안내 -->
+                    <div th:if="${user.provider != 'LOCAL'}"
+                         style="margin-top:12px; color:#666; font-size:14px;">
+                        소셜 로그인 계정은 비밀번호 변경이 불가능합니다.
+                    </div>
+
+                    <!-- 🔹 LOCAL 계정 비밀번호 변경 -->
+                    <div th:if="${user.provider == 'LOCAL'}">
+
+                        <div class="form-grid">
+
+                            <div class="row">
+                                <div class="label">현재 비밀번호</div>
+                                <div>
+                                    <input class="input" type="password" name="currentPassword"
+                                           placeholder="현재 비밀번호 입력" />
+
+                                    <div th:if="${currentPasswordError}"
+                                         style="color:red; font-size:13px; margin-top:6px;">
+                                        <span th:text="${currentPasswordError}"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="label">새 비밀번호</div>
+                                <input class="input" type="password" name="newPassword"
+                                       placeholder="변경 시에만 입력" />
+                            </div>
+
+                            <div class="row">
+                                <div class="label">새 비밀번호 확인</div>
+                                <div>
+                                    <input class="input" type="password" name="confirmPassword"
+                                           placeholder="새 비밀번호 다시 입력" />
+
+                                    <div th:if="${confirmPasswordError}"
+                                         style="color:red; font-size:13px; margin-top:6px;">
+                                        <span th:text="${confirmPasswordError}"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="section-title" style="margin-top:40px">투자 성향</h2>
+
+            <div class="form-grid">
+                <div class="row">
+                    <div class="label">투자 경험</div>
+                    <select class="select" name="experience">
+                        <option value="beginner" th:selected="${user.experience=='beginner'}">입문</option>
+                        <option value="intermediate" th:selected="${user.experience=='intermediate'}">중급</option>
+                        <option value="advanced" th:selected="${user.experience=='advanced'}">고급</option>
+                    </select>
+                </div>
+
+                <div class="row">
+                    <div class="label">관심 자산</div>
+                    <select class="select" name="asset">
+                        <option value="stock" th:selected="${user.asset=='stock'}">주식</option>
+                        <option value="etf" th:selected="${user.asset=='etf'}">ETF</option>
+                        <option value="bonds" th:selected="${user.asset=='bonds'}">채권</option>
+                        <option value="real_estate" th:selected="${user.asset=='real_estate'}">부동산</option>
+                    </select>
+                </div>
+
+                <div class="row">
+                    <div class="label">투자 목적</div>
+                    <select class="select" name="goal">
+                        <option value="short_term" th:selected="${user.goal=='short_term'}">단기 수익</option>
+                        <option value="mid_term" th:selected="${user.goal=='mid_term'}">중기 수익</option>
+                        <option value="income" th:selected="${user.goal=='income'}">인컴형</option>
+                    </select>
+                </div>
+
+                <div class="row">
+                    <div class="label">위험 성향</div>
+                    <select class="select" name="risk">
+                        <option value="conservative" th:selected="${user.risk=='conservative'}">보수</option>
+                        <option value="neutral" th:selected="${user.risk=='neutral'}">중립</option>
+                        <option value="aggressive" th:selected="${user.risk=='aggressive'}">공격적</option>
+                    </select>
+                </div>
+
+                <div class="row">
+                    <div class="label">지식 수준</div>
+                    <select class="select" name="knowledge">
+                        <option value="basic" th:selected="${user.knowledge=='basic'}">기초</option>
+                        <option value="intermediate" th:selected="${user.knowledge=='intermediate'}">중급</option>
+                        <option value="advanced" th:selected="${user.knowledge=='advanced'}">고급</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="actions">
+                <button type="submit" class="btn-primary">저장하기</button>
+                <a href="/mypage">
+                    <button type="button" class="btn-outline">취소</button>
+                </a>
+            </div>
+
+        </form>
+    </main>
+</div>
+</body>
+</html>

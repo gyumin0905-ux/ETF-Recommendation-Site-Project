@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>글 작성</title>
+
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        /* ===== 글쓰기 페이지 전용 스타일 ===== */
+        .tab-location{
+            padding-top:100px;
+            text-align:center;
+        }
+        .tab-location h2{
+            font-size:70px;
+            font-weight:500;
+            margin:70px 0;
+            color:#055C4D;
+        }
+
+        /* ===== 중앙 래퍼 ===== */
+        .community-wrap{
+            width:100%;
+            display:flex;
+            justify-content:center;
+        }
+
+        /* ===== write area ===== */
+        .writeDetail{
+            width:1520px;
+            height:500px;
+            border:1px solid #1d7a5548;
+            border-radius:30px;
+            margin-bottom:70px;
+            background:#fff;
+        }
+        .writeTitle{
+            height:70px;
+            border-bottom:1px solid #1d7a5548;
+            display:flex;
+            align-items:center;
+        }
+        .titLine{
+            width:100%;
+            padding:0 30px;
+            display:flex;
+            align-items:center;
+        }
+        .tit{
+            width:100%;
+            font-size:20px;
+            border:none;
+            outline:none;
+        }
+
+        .writeContent{
+            padding:30px;
+            height:calc(100% - 70px);
+        }
+        .writeContent textarea{
+            width:100%;
+            height:100%;
+            resize:none;
+            padding:15px;
+            border-radius:15px;
+            border:1px solid #ccc;
+            font-size:16px;
+        }
+    </style>
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: headerFragment}"></div>
+
+<div class="wrap" style="position: relative; z-index: 1;">
+    <section class="tab-location">
+        <h2>자유게시판</h2>
+    </section>
+
+    <div class="community-wrap">
+        <form th:action="@{/board/save}" method="post">
+
+            <section class="writeDetail">
+                <div class="writeTitle">
+                    <div class="titLine">
+                        <input type="text"
+                               name="title"
+                               class="tit"
+                               placeholder="제목을 입력하세요"
+                               required>
+                    </div>
+                </div>
+
+                <div class="writeContent">
+                    <textarea name="content"
+                              placeholder="내용을 입력하세요"
+                              required></textarea>
+                </div>
+            </section>
+
+            <div class="flex justify-center gap-6 mb-32">
+                <a href="/board" class="btn btn-outline">목록으로</a>
+                <button type="submit" class="btn btn-outline postBtn">등록</button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer :: footerFragment}"></div>
+
+<script th:src="@{/js/common.js}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded',()=>{
+        // 게시글 등록 확인
+        const submitBtn=document.querySelector('.postBtn');
+        if(submitBtn){
+            submitBtn.addEventListener('click',(e)=>{
+                if(!confirm('게시글을 등록하시겠습니까?')){
+                    e.preventDefault();
+                }
+            });
+        }
+    });
+</script>
+
+</body>
+</html>

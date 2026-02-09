@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ETF 추천 결과 - Verte</title>
+    <link rel="icon" th:href="@{/images/favi.png}">
+
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        /* 페이지 전용 스타일 */
+        body {
+            background: #f7f7f7;
+            font-family: "Noto Sans KR", sans-serif;
+        }
+
+        .recommend-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .type-btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .type-btn {
+            padding: 10px 20px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 999px;
+            font-size: 15px;
+            font-weight: 500;
+            transition: 0.2s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .type-btn:hover {
+            background: #e8f0fe;
+            color: #055C4D;
+            border-color: #055C4D;
+        }
+
+        .status-bar {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #555;
+            font-size: 16px;
+        }
+
+        .reset-btn {
+            padding: 6px 16px;
+            background-color: #666;
+            color: white;
+            border-radius: 6px;
+            font-size: 13px;
+            margin-left: 10px;
+        }
+
+        /* ETF 카드 스타일 */
+        .etf-card {
+            background: white;
+            padding: 24px;
+            margin-bottom: 16px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            transition: transform 0.2s;
+        }
+
+        .etf-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .etf-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .etf-name {
+            font-size: 20px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .signal-light {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .GREEN { background-color: #28a745; box-shadow: 0 0 6px #28a745; }
+        .YELLOW { background-color: #ffc107; box-shadow: 0 0 6px #ffc107; }
+        .RED { background-color: #dc3545; box-shadow: 0 0 6px #dc3545; }
+
+        .etf-meta {
+            color: #888;
+            font-size: 14px;
+        }
+
+        .score {
+            font-size: 15px;
+            color: #055C4D;
+            font-weight: 600;
+        }
+
+        .reason {
+            background: #f0fdf4;
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 4px solid #055C4D;
+            font-size: 14px;
+            line-height: 1.5;
+            color: #333;
+        }
+
+        .theme-tag {
+            display: inline-block;
+            padding: 4px 10px;
+            background: #e0f2f1;
+            color: #00695c;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 6px;
+            width: fit-content;
+        }
+
+        .compare-btn {
+            align-self: flex-end;
+            padding: 8px 24px;
+            background: white;
+            border: 1px solid #055C4D;
+            color: #055C4D;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .compare-btn:hover {
+            background: #055C4D;
+            color: white;
+        }
+
+        /* 테마 선택 버튼 */
+        .theme-selection-area {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .theme-selection-area h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .theme-btn {
+            display: inline-block;
+            margin: 6px;
+            padding: 10px 20px;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            color: #333;
+            transition: 0.2s;
+        }
+
+        .theme-btn:hover {
+            border-color: #055C4D;
+            color: #055C4D;
+            background: #f0fdf4;
+        }
+    </style>
+</head>
+
+<body>
+
+<div th:replace="~{fragments/header :: headerFragment}"></div>
+
+<div style="position: relative; z-index: 1; padding-top: 120px;">
+    <div class="recommend-container">
+        <h1>📊 ETF 추천 결과</h1>
+
+        <div class="type-btn-group">
+            <a th:href="@{/recommend/{userId}(userId=${userId}, type='POPULAR')}" class="type-btn">
+                🔥 인기(거래대금)
+            </a>
+            <a th:href="@{/recommend/{userId}(userId=${userId}, type='SAFE')}" class="type-btn">
+                🛡️ 안정형
+            </a>
+            <a th:href="@{/recommend/{userId}(userId=${userId}, type='THEME_POPULAR')}" class="type-btn">
+                🎯 테마+인기
+            </a>
+            <a th:href="@{/recommend/{userId}(userId=${userId}, type='THEME_POPULAR_SAFE')}" class="type-btn">
+                🛡️ 테마+안전
+            </a>
+        </div>
+
+        <div class="status-bar">
+            현재 추천 타입: <b th:text="${type}" style="color:#055C4D;">POPULAR</b>
+            <span th:if="${theme != null}">
+                / 선택 테마: <b th:text="${theme}" style="color:#055C4D;"></b>
+            </span>
+            <button class="reset-btn" onclick="localStorage.removeItem('compare_one'); alert('비교 상태가 초기화되었습니다.');">
+                비교함 비우기
+            </button>
+        </div>
+
+        <div th:if="${(type == 'THEME_POPULAR' or type == 'THEME_POPULAR_SAFE') and theme == null}"
+             class="theme-selection-area">
+            <h3>🎯 관심있는 테마를 선택해주세요</h3>
+            <div>
+                <a th:each="t : ${themes}"
+                   th:if="${!(
+                       type == 'THEME_POPULAR_SAFE' and
+                       (t.contains('파생') or t.contains('해외') or t.contains('원자재'))
+                   )}"
+                   class="theme-btn"
+                   th:text="${t}"
+                   th:href="@{/recommend/{userId}(
+                       userId=${userId},
+                       type=${type},
+                       theme=${t}
+                   )}">
+                </a>
+            </div>
+        </div>
+
+        <div th:if="${!(
+            (type == 'THEME_POPULAR' and theme == null) or
+            (type == 'THEME_POPULAR_SAFE' and theme == null)
+        )}">
+
+            <div th:if="${results.isEmpty()}" style="text-align:center; padding:50px; color:#888;">
+                <p>조건에 맞는 추천 결과가 없습니다.</p>
+            </div>
+
+            <div th:each="etf : ${results}" class="etf-card">
+                <div class="etf-header">
+                    <div class="etf-name">
+                        <span th:class="'signal-light ' + ${etf.signal}"></span>
+                        <span th:text="${etf.etfName}">ETF 이름</span>
+                    </div>
+                    <div class="score">
+                        추천 점수: <span th:text="${etf.score}"></span>점
+                    </div>
+                </div>
+
+                <div class="etf-meta">
+                    ISIN: <span th:text="${etf.isinCd}"></span>
+                </div>
+
+                <div class="reason">
+                    <strong>💡 추천 이유:</strong> <span th:text="${etf.reason}"></span>
+                </div>
+
+                <div class="theme-tag" th:text="${etf.theme}"></div>
+
+                <button class="compare-btn"
+                        th:attr="data-isin=${etf.isinCd}"
+                        onclick="compareSelect(this.dataset.isin)">
+                    비교 담기
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer :: footerFragment}"></div>
+
+<script th:src="@{/js/common.js}"></script>
+<script>
+    function compareSelect(isin) {
+        let first = localStorage.getItem("compare_one");
+
+        // 첫 번째 선택
+        if (!first) {
+            localStorage.setItem("compare_one", isin.trim());
+            alert("첫 번째 ETF가 선택되었습니다.\n비교할 두 번째 ETF를 선택해주세요.");
+            return;
+        }
+
+        // 공백 제거
+        first = first.trim();
+        isin = isin.trim();
+
+        // 같은 상품 중복 체크
+        if (first === isin) {
+            alert("동일한 ETF는 비교할 수 없습니다.");
+            return;
+        }
+
+        // 비교 페이지로 이동
+        window.location.href = `/compareEtf?left=${first}&right=${isin}`;
+
+        // 비교 후 스토리지 초기화
+        localStorage.removeItem("compare_one");
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>투자 성향 설정</title>
+
+    <link rel="icon" th:href="@{/images/favi.png}">
+
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        /* 페이지 전용 스타일 */
+        body {
+            background: #467261;
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        /* z-index 확보를 위해 감싸는 div에 적용 예정 */
+        .test-container {
+            max-width: 950px;
+            margin: 180px auto 120px;
+            padding: 70px;
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 1px 1px 35px rgba(0,0,0,.2);
+        }
+
+        h2 { font-size: 48px; font-weight: 500; }
+        .desc { color: #467261; margin-bottom: 50px; }
+        .q { margin-bottom: 40px; }
+        .q h3 { font-weight: 600; margin-bottom: 12px; }
+        label { cursor: pointer; }
+    </style>
+</head>
+
+<body>
+
+<div th:replace="~{fragments/header :: headerFragment}"></div>
+
+<div style="position: relative; z-index: 1;">
+    <section>
+        <form th:action="@{/settings/investment}" method="post">
+
+            <div class="test-container">
+                <h2>투자성향 TEST</h2>
+                <p class="desc">ETF 추천 정확도를 높이기 위한 설문입니다.</p>
+
+                <div class="q">
+                    <h3>Q1. 투자 경험은 어느 정도인가요?</h3>
+                    <label><input type="radio" name="experience" value="beginner"
+                                  th:checked="${user != null and user.experience=='beginner'}"> 초보</label><br>
+                    <label><input type="radio" name="experience" value="intermediate"
+                                  th:checked="${user != null and user.experience=='intermediate'}"> 중급</label><br>
+                    <label><input type="radio" name="experience" value="advanced"
+                                  th:checked="${user != null and user.experience=='advanced'}"> 고급</label>
+                </div>
+
+                <div class="q">
+                    <h3>Q2. ETF / 금융 지식 수준은?</h3>
+                    <label><input type="radio" name="knowledge" value="basic"
+                                  th:checked="${user != null and user.knowledge=='basic'}"> 기본</label><br>
+                    <label><input type="radio" name="knowledge" value="intermediate"
+                                  th:checked="${user != null and user.knowledge=='intermediate'}"> 중급</label><br>
+                    <label><input type="radio" name="knowledge" value="advanced"
+                                  th:checked="${user != null and user.knowledge=='advanced'}"> 고급</label>
+                </div>
+
+                <div class="q">
+                    <h3>Q3. 투자 목표는?</h3>
+                    <label><input type="radio" name="goal" value="short_term"
+                                  th:checked="${user != null and user.goal=='short_term'}"> 단기 수익</label><br>
+                    <label><input type="radio" name="goal" value="mid_term"
+                                  th:checked="${user != null and user.goal=='mid_term'}"> 중기 성장</label><br>
+                    <label><input type="radio" name="goal" value="income"
+                                  th:checked="${user != null and user.goal=='income'}"> 안정 수익</label>
+                </div>
+
+                <div class="q">
+                    <h3>Q4. 위험 성향은?</h3>
+                    <label><input type="radio" name="risk" value="conservative"
+                                  th:checked="${user != null and user.risk=='conservative'}"> 보수적</label><br>
+                    <label><input type="radio" name="risk" value="neutral"
+                                  th:checked="${user != null and user.risk=='neutral'}"> 중립</label><br>
+                    <label><input type="radio" name="risk" value="aggressive"
+                                  th:checked="${user != null and user.risk=='aggressive'}"> 공격적</label>
+                </div>
+
+                <div class="q">
+                    <h3>Q5. 선호 자산은?</h3>
+                    <label><input type="radio" name="asset" value="etf"
+                                  th:checked="${user != null and user.asset=='etf'}"> ETF</label><br>
+                    <label><input type="radio" name="asset" value="stock"
+                                  th:checked="${user != null and user.asset=='stock'}"> 주식</label><br>
+                    <label><input type="radio" name="asset" value="bonds"
+                                  th:checked="${user != null and user.asset=='bonds'}"> 채권</label><br>
+                    <label><input type="radio" name="asset" value="real_estate"
+                                  th:checked="${user != null and user.asset=='real_estate'}"> 부동산</label>
+                </div>
+
+                <div class="flex justify-center mt-16">
+                    <button type="submit"
+                            class="w-[260px] h-[60px] bg-[#467261] text-white text-lg font-semibold rounded-md hover:bg-[#365a4c] transition">
+                        저장하고 추천 보기
+                    </button>
+                </div>
+            </div>
+
+        </form>
+    </section>
+</div>
+
+<div th:replace="~{fragments/footer :: footerFragment}"></div>
+
+<script th:src="@{/js/common.js}"></script>
+</body>
+</html>

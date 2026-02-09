@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>마이페이지</title>
+    <link rel="icon" href="/images/favi.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        body{margin:0;font-family:'Noto Sans KR',sans-serif;background:#f5f5f5}
+        .mypage-wrap{display:flex;min-height:100vh}
+
+        .logo {
+            display: block;
+            cursor: pointer;
+        }
+
+        .logo img {
+            display: block;
+            height: 80px;   /* 기존 로고 크기에 맞게 */
+        }
+
+        /* 사이드바 */
+        .side-menu{
+            width:260px;
+            background:#4f7766;
+            padding:40px 24px;
+            color:#fff;
+        }
+        .side-menu .logo{
+            height:80px;
+            background:url(/images/logo-footer.png) no-repeat center/contain;
+            margin-bottom:40px;
+        }
+        .menu-list li{margin-bottom:24px}
+        .menu-list a{color:#fff;opacity:.6;font-size:18px}
+        .menu-list a:hover{opacity:1;font-weight:600}
+
+        /* 컨텐츠 */
+        .content-wrap{flex:1;padding:40px}
+
+        /* ===== 프로필 ===== */
+        .profile-area{
+            background:#fff;
+            padding:40px;
+            border-radius:20px;
+            box-shadow:0 2px 10px rgba(0,0,0,.08);
+            display:flex;
+            align-items:center;
+            gap:50px;
+        }
+        .profile-img{
+            width:90px;height:90px;
+            background:#ddd;
+            border-radius:16px;
+        }
+        .id{font-size:20px;font-weight:700}
+        .level{
+            margin-left:10px;
+            font-size:12px;
+            padding:4px 10px;
+            background:#e6f3ea;
+            color:#2f6b4f;
+            border-radius:20px;
+        }
+        .type{color:#777;margin-top:6px}
+
+        /* 북마크 */
+        .favorite-area{margin-top:50px}
+        .favorite-title{
+            font-size:22px;
+            font-weight:700;
+            margin-bottom:20px;
+        }
+        .favorite-list{
+            display:flex;
+            gap:20px;
+            flex-wrap:wrap;
+        }
+        .favorite-item{
+            width:220px;
+            background:#fff;
+            border-radius:16px;
+            padding:20px;
+            border:2px solid #eee;
+            transition:.2s;
+        }
+        .favorite-item:hover{
+            border-color:#2f6b4f;
+            box-shadow:0 6px 18px rgba(0,0,0,.08);
+        }
+
+        /* ===============================
+           섹션 스타일 (북마크 & 내가 쓴 글)
+           =============================== */
+        .section-box {
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 1px solid #ddd;
+        }
+
+        .empty {
+            color: #888;
+            font-size: 14px;
+            margin-top: 10px;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        /* ETF 카드 */
+        .etf-card {
+            background: white;
+            padding: 16px;
+            margin-bottom: 12px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+
+        .etf-name {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .etf-meta {
+            color: #555;
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
+        .theme {
+            display: inline-block;
+            margin-top: 6px;
+            padding: 4px 8px;
+            background: #e8f0fe;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #1a73e8;
+        }
+
+        /* [규민] 게시글 리스트 스타일 */
+        .board-list {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+
+        .board-item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .board-item:last-child { border-bottom: none; }
+
+        .board-title {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .board-meta {
+            font-size: 13px;
+            color: #888;
+        }
+        .brand{font-size:13px;font-weight:700;color:#2f6b4f}
+        .name{font-size:15px;font-weight:600;margin-top:10px}
+        .code{font-size:13px;color:#888;margin-top:4px}
+        .empty{color:#888;font-size:14px;margin-top:10px}
+    </style>
+</head>
+
+<body>
+<section class="mypage">
+    <div class="mypage-wrap">
+
+        <!-- 사이드바 -->
+        <aside class="side-menu">
+            <a href="/" class="logo"></a>
+            <ul class="menu-list">
+                <li><a href="/mypage">MY Page</a></li>
+                <li><a href="/mypage/edit">개인정보 관리</a></li>
+            </ul>
+        </aside>
+
+        <!-- 컨텐츠 -->
+        <main class="content-wrap">
+
+            <!-- ===== 프로필 (재구성됨) ===== -->
+            <div class="profile-area">
+
+                <!-- 왼쪽 : 이미지 + 기본 정보 -->
+                <div style="display:flex;gap:24px;align-items:center;">
+                    <div class="profile-img"></div>
+
+                    <div>
+                        <div class="id">
+                            <span th:text="${user.username}"></span>
+                            <span class="level" th:text="${user.experience}"></span>
+                        </div>
+                        <div class="type">
+                            <span th:text="${user.risk}"></span> 투자 성향
+                        </div>
+                        <div style="margin-top:8px;font-size:14px;color:#555">
+                            <span th:text="${user.email}"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 가운데 라인 -->
+                <div style="width:1px;height:90px;background:#eee;"></div>
+
+                <!-- 오른쪽 : 액션 / 확장 영역 -->
+                <div style="flex:1;">
+                    <div style="text-align:right;">
+                        <a href="/mypage/edit"
+                           class="inline-block text-sm text-blue-600 font-medium">
+                            내 정보 수정 →
+                        </a>
+                    </div>
+
+                    <!-- 2번 HTML 감성의 퀵 메뉴 구조 -->
+                    <div style="margin-top:18px;display:flex;justify-content:flex-end;gap:16px;">
+                        <span style="font-size:13px;color:#777;">MY Menu</span>
+                        <span style="font-size:13px;color:#777;">내 관심 종목</span>
+                        <span style="font-size:13px;color:#777;">내가 쓴 글(자유게시판)</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- ⭐ 북마크 ETF -->
+            <div class="favorite-area">
+                <h3 class="favorite-title">내 관심 종목</h3>
+
+                <!-- 없을 때 -->
+                <div th:if="${#lists.isEmpty(bookmarkedEtfs)}" class="empty">
+                    아직 북마크한 ETF가 없습니다.
+                </div>
+
+                <!-- 있을 때 -->
+                <ul class="favorite-list">
+                    <li th:each="etf : ${bookmarkedEtfs}" class="favorite-item">
+                        <a th:href="@{/etf/{isin}(isin=${etf.isinCd})}"
+                           style="color:inherit;text-decoration:none">
+                            <div class="brand" th:text="${etf.assetType}"></div>
+                            <div class="name" th:text="${etf.name}"></div>
+                            <div class="code" th:text="${etf.isinCd}"></div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="section-box">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <h3 style="margin: 0;">📝 내가 쓴 글 (자유게시판)</h3>
+                    <a href="/board" style="font-size: 14px; color: #4263eb; text-decoration: none; font-weight: bold;">
+                        자유게시판 바로가기 ➜
+                    </a>
+                </div>
+
+                <div th:if="${#lists.isEmpty(myBoards)}" class="empty">
+                    작성한 게시글이 없습니다.
+                </div>
+
+                <div th:unless="${#lists.isEmpty(myBoards)}" class="board-list">
+                    <div th:each="board : ${myBoards}" class="board-item">
+                        <a th:href="@{/board/{id}(id=${board.id})}" class="board-title" th:text="${board.title}">
+                            게시글 제목
+                        </a>
+                        <div class="board-meta">
+                            조회수 <span th:text="${board.views}">0</span> |
+                            <span th:text="${#temporals.format(board.createdDate, 'yyyy-MM-dd')}">2026-01-01</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</section>
+</body>
+</html>

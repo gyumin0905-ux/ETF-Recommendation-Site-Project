@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>500 Server Error - Verte ETF</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/error.css}">
+    <script th:src="@{/js/common.js}"></script>
+
+    <link rel="icon" th:href="@{/images/favi.png}">
+</head>
+<body>
+
+<header th:replace="~{fragments/header :: headerFragment}"></header>
+
+<main class="error-wrap">
+    <div class="error-code">500</div>
+    <div class="error-title">서비스 이용에 불편을 드려 죄송합니다.</div>
+    <p class="error-desc">
+        서버 내부에서 일시적인 오류가 발생했습니다.<br>
+        잠시 후 다시 시도해 주시기 바랍니다.<br>
+        문제가 지속되면 고객센터로 문의해 주세요.
+    </p>
+    <div style="display: flex; gap: 15px;">
+        <a href="javascript:location.reload()" class="error-home-btn" style="background: transparent; color: #055C4D;">새로고침</a>
+        <a th:href="@{/}" class="error-home-btn">메인으로 가기</a>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/footer :: footerFragment}"></footer>
+
+</body>
+</html>

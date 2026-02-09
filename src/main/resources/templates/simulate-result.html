@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>투자 시뮬레이션 결과</title>
+    <link rel="icon" th:href="@{/images/favi.png}">
+
+    <link rel="stylesheet" th:href="@{/css/reset.css}"/>
+    <link rel="stylesheet" th:href="@{/css/common.css}"/>
+    <link rel="stylesheet" th:href="@{/css/simulation.css}"/>
+
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+
+<body>
+
+<div th:replace="~{fragments/header :: headerFragment}"></div>
+
+<div style="position: relative; z-index: 1; padding-top: 100px;">
+    <section class="section3">
+        <div class="inner">
+
+            <h2>시뮬레이션 결과</h2>
+
+            <div class="summary-strip">
+                <div class="summary-item">
+                    <span class="k">총 투자금</span>
+                    <strong class="v"
+                            th:text="${#numbers.formatInteger(result.totalInvested,0,'COMMA')} + '원'"></strong>
+                </div>
+                <div class="summary-item">
+                    <span class="k">최종 평가금액</span>
+                    <strong class="v"
+                            th:text="${#numbers.formatInteger(result.finalValue,0,'COMMA')} + '원'"></strong>
+                </div>
+                <div class="summary-item">
+                    <span class="k">수익률</span>
+                    <strong class="v"
+                            th:text="${#numbers.formatDecimal(result.roi*100,1,2)} + '%'"></strong>
+                </div>
+            </div>
+
+            <div class="chart-panel">
+                <canvas id="resultChart"></canvas>
+            </div>
+        </div>
+    </section>
+</div>
+
+<div th:replace="~{fragments/footer :: footerFragment}"></div>
+
+<script th:src="@{/js/common.js}"></script>
+<script th:inline="javascript">
+    document.addEventListener("DOMContentLoaded", () => {
+        /*<![CDATA[*/
+        const seriesData = /*[[${result.series}]]*/ [];
+        /*]]>*/
+
+        if(seriesData && seriesData.length > 0) {
+            const labels = seriesData.map(p => p.month);
+            const values = seriesData.map(p => p.value);
+
+            new Chart(document.getElementById("resultChart"), {
+                type: "line",
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: "누적 평가금액",
+                        data: values,
+                        borderWidth: 2,
+                        tension: 0.3,
+                        borderColor: '#055C4D',
+                        backgroundColor: '#055C4D20'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+        }
+    });
+</script>
+
+</body>
+</html>

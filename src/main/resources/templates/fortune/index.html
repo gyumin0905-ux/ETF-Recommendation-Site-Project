@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>오늘의 투자 운세</title>
+    <link rel="stylesheet" th:href="@{/css/fortune.css}">
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <link rel="icon" type="image/png" th:href="@{/images/favi.png}">
+</head>
+<body>
+<div class="bg-layer">
+    <h1>✨ 오늘의 투자 운세 ✨</h1>
+    <p class="subtitle">당신의 별자리가 우주의 기운으로 운명의 종목을 연결해 줄 거에요</p>
+
+    <div class="zodiac-grid">
+        <a th:href="@{/fortune/result(sign='물병자리')}" class="zodiac-card">
+            <div class="icon"><img th:src="@{/images/aqua1.png}" alt="물병자리"></div>
+            <div class="name">물병자리</div>
+        </a>
+        <a th:href="@{/fortune/result(sign='물고기자리')}" class="zodiac-card">
+            <div class="icon"><img th:src="@{/images/pisces2.png}" alt="물고기자리"></div>
+            <div class="name">물고기자리</div>
+        </a>
+        <a th:href="@{/fortune/result(sign='양자리')}" class="zodiac-card">
+            <div class="icon"><img th:src="@{/images/aries3.png}" alt="양자리"></div>
+            <div class="name">양자리</div>
+        </a>
+        <a th:href="@{/fortune/result(sign='황소자리')}" class="zodiac-card">
+            <div class="icon"><img th:src="@{/images/tautus4.png}" alt="황소자리"></div>
+            <div class="name">황소자리</div>
+        </a>
+        <a th:href="@{/fortune/result(sign='쌍둥이자리')}" class="zodiac-card">
+            <div class="icon"><img th:src="@{/images/gemini5.png}" alt="쌍둥이자리"></div>
+            <div class="name">쌍둥이자리</div>
+        </a>
+        <a th:href="@{/fortune/result(sign='게자리')}" class="zodiac-card">
+            <div class="icon"><img th:src="@{/images/cancer6.png}" alt="게자리"></div>
+            <div class="name">게자리</div>
+        </a>
+        <a th:href="@{/fortune/result(sign='사자자리')}" class="zodiac-card">
+            <div class="icon"><img th:src="@{/images/leo7.png}" alt="사자자리"></div>
+            <div class="name">사자자리</div>
+        </a>
+        <a th:href="@{/fortune/result(sign='처녀자리')}" class="zodiac-card">
+            <div class="icon"><img th:src="@{/images/virgo8.png}" alt="처녀자리"></div>
+            <div class="name">처녀자리</div>
+        </a>
+        <a th:href="@{/fortune/result(sign='천칭자리')}" class="zodiac-card">
+            <div class="icon"><img th:src="@{/images/libra9.png}" alt="천칭자리"></div>
+            <div class="name">천칭자리</div>
+        </a>
+        <a th:href="@{/fortune/result(sign='전갈자리')}" class="zodiac-card">
+            <div class="icon"><img th:src="@{/images/scropius10.png}" alt="전갈자리"></div>
+            <div class="name">전갈자리</div>
+        </a>
+        <a th:href="@{/fortune/result(sign='사수자리')}" class="zodiac-card">
+            <div class="icon"><img th:src="@{/images/Sagittarius11.png}" alt="사수자리"></div>
+            <div class="name">사수자리</div>
+        </a>
+        <a th:href="@{/fortune/result(sign='염소자리')}" class="zodiac-card">
+            <div class="icon"><img th:src="@{/images/Capricornus12.png}" alt="염소자리"></div>
+            <div class="name">염소자리</div>
+        </a>
+    </div>
+
+    <a th:href="@{/}" class="home-btn">메인으로 돌아가기</a>
+</div>
+</body>
+</html>

@@ -1,0 +1,411 @@
+@charset "UTF-8";
+
+/*-----전체-----*/
+section.mypage{
+    width: 100%;
+    min-height: 100vh;
+    /* background-color: #f5f5f5; */
+}
+
+.mypage-wrap{
+    display: flex;
+    min-height: 100vh;
+}
+
+/*-----왼쪽 사이드바-----*/
+.side-menu{
+    width: 260px;
+    background-color: #4f7766;
+    padding: 40px 24px;
+    box-sizing: border-box;
+}
+
+/*-----로고-----*/
+.side-menu .logo{
+    width: 200px;
+    height: 80px;
+    margin-bottom: 30px;
+}
+
+/*-----사이드 메뉴-----*/
+.menu-list{
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.menu-list li{
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.menu-list li:hover a{
+    opacity: 1;
+    font-weight: 700;
+}
+.menu-list li a{
+    font-size: 18px;
+    color: #ffffff;
+    opacity: 0.6;
+}
+/*-----오른쪽 전체-----*/
+.content-wrap{
+    flex: 1;
+    padding: 30px 40px;
+    box-sizing: border-box;
+}
+
+/*-----프로필 영역-----*/
+.profile-area{
+    width: 1400px;  height: 220px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    background-color: #ffffff;
+    padding: 23px 50px;
+    margin-left: 50px;
+    border-radius: 16px;
+    box-sizing: border-box;
+    box-shadow: 2px 2px 15px #55555543;
+}
+
+/*-----프로필 왼쪽-----*/
+.profile-left{
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 420px;
+}
+
+/* 프로필 이미지 */
+.profile-img-wrap{
+    position: relative;
+    margin-right: 20px;
+}
+
+.profile-img{
+    width: 95px;
+    height: 95px;
+    border-radius: 20px;
+    background-color: #ddd;
+    border: 2px solid #2f6b4f;
+}
+
+/* 카메라 버튼 */
+.camera-btn{
+    position: absolute;
+    right: -5px; bottom: -5px;
+    width: 35px; height: 35px;
+    background-color: #ffffff;
+    border: 1px solid #4f7766;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.camera-btn i{
+    font-size: 14px;
+    color: #4f7766;
+}
+/* 프로필 정보 */
+.profile-info{
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+}
+
+.id-line{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.id{
+    font-weight: 700;
+    font-size: 20px;
+}
+
+.level{
+    font-size: 12px;
+    padding: 4px 12px;
+    background-color: #e6f3ea;
+    color: #2f6b4f;
+    border-radius: 20px;
+}
+
+.type{
+    font-size: 14px;
+    color: #777;
+    margin-top: 6px;
+}
+
+/*-----이동 버튼 공통-----*/
+.movebtn{
+    position: absolute;
+    top: 35px; right: 45px;
+    font-size: 13px;
+    font-weight: 300;
+    color: #777;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.right, .left{top: -25px; right: 20px;}
+.left{right: -145px;}
+
+/*-----가운데 라인-----*/
+.profile-line{
+    width: 2px;
+    height: 160px;
+    background-color: #e0e0e0;
+    margin: 0 100px 0 190px;
+}
+
+/*-----프로필 오른쪽-----*/
+.profile-right{
+    position: relative;
+    flex: 1;
+}
+
+.quick-menu{
+    display: flex;
+    gap: 10px;
+    margin-top: 40px;
+}
+
+.quick-item{
+    width: 130px;
+    padding: 14px 0px;
+    text-align: center;
+    border: 1px solid #4f7766;
+    border-radius: 10px;
+    font-size: 14px;
+    cursor: pointer;
+}
+.quick-item:hover{
+    background-color: #2f6b4f;
+    color: #fff;
+}
+/* ===== 2번 영역(반반 레이아웃) ===== */
+.info-area{
+    max-width: 1400px;
+    width: 100%;
+    display: flex;
+    gap: 40px;
+    margin-top: 40px;
+    margin-left: 50px;
+    align-items: stretch;
+}
+
+/* 공통 박스 */
+.info-box{
+    position: relative;
+    flex: 1;
+    background-color: #ffffff;
+    border-radius: 16px;
+    padding: 30px 35px 35px 35px;
+    box-sizing: border-box;
+    box-shadow: 2px 2px 15px #55555543;
+}
+
+/* 박스 제목 */
+.info-title{
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+/* ===== 목표 영역 ===== */
+.goal-content{
+    display: flex;
+    align-items: center;
+    gap: 70px;
+    padding-left: 70px;
+}
+
+/* 도넛 그래프 */
+.donut-graph{
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: conic-gradient(
+        #2f6b4f 0% 25%,
+        #b4f5b4 25% 55%,
+        #527a52 55% 70%,
+        #163b16 70% 90%,
+        #e5e5e5 90% 100%
+    );
+    position: relative;
+    margin-top: 20px;
+}
+
+/* 도넛 라벨 공통 */
+.donut-graph .label{
+    position: absolute;
+    font-size: 11px;
+    font-weight: 600;
+    color: #ffffff;
+    background-color: #0000004d;
+    text-align: center;
+    padding: 5px 8px;
+}
+
+/* 라벨 위치 */
+.label.l1{ top: 30px; right: -5px; }
+.label.l2{ bottom: 10px; right: 5px; }
+.label.l3{ bottom: 10px; left: 5px; }
+.label.l4{ top: 40px; left: -60px; }
+.label.l5{ top: -10px; left: 40px; }
+
+/* 도넛 가운데 */
+.donut-inner{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100px;
+    height: 100px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 비율 리스트 */
+.goal-ratio{
+    width: 230px;
+    background-color: #e6e6e6a1;
+    border-radius: 12px;
+    padding: 5px 18px 20px;
+    box-sizing: border-box;
+    margin-top: 5px;
+}
+
+.goal-ratio p{
+    width: 60px;
+    height: 25px;
+    text-align: center;
+    margin: 5px auto 20px;
+    background-color: #4f7766;
+    color: #fff;
+    line-height: 25px;
+}
+
+.goal-ratio li{
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.goal-ratio li:last-child{
+    margin-bottom: 0;
+}
+
+.goal-ratio .value{
+    font-weight: 600;
+    color: #2f6b4f;
+}
+/*-----3번 영역-----*/
+.favorite-area{
+    margin-top: 40px;
+}
+
+/* 제목 */
+.favorite-title{
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    margin-left: 50px;
+}
+
+/* 리스트 */
+.favorite-list{
+    display: flex;
+    gap: 20px;
+    padding-left: 40px;
+}
+
+/* 카드 공통 */
+.favorite-item{
+    width: 220px;
+    height: 260px;
+    background-color: #ffffff;
+    border-radius: 16px;
+    padding: 20px;
+    box-sizing: border-box;
+    border: 2px solid #eee;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.favorite-item:hover{
+    border-color: #2f6b4f;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+/* 브랜드 */
+.favorite-item .brand{
+    font-size: 13px;
+    font-weight: 700;
+    color: #2f6b4f;
+}
+
+/* 종목명 */
+.favorite-item .name{
+    font-size: 15px;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+/* 코드 */
+.favorite-item .code{
+    font-size: 13px;
+    color: #888;
+    margin-top: 4px;
+}
+
+/* ⭐ 하단 아이콘 영역 */
+.item-icons{
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.item-icons .icon{
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background-size: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* 아이콘 타입 예시 */
+.icon.ai{background-image: url(../images/aa2.png);}
+.icon.space{background-image: url(../images/aa1.png);}
+.icon.car{background-image: url(../images/aa.png);}
+
+/* 추가 카드 */
+.favorite-item.add{
+    justify-content: center;
+    align-items: center;
+    color: #999;
+    font-size: 14px;
+}
+
+.favorite-item.add .plus{
+    font-size: 36px;
+    margin-bottom: 10px;
+    margin-left: 30px;
+}
+.favorite-item.add:hover{
+    border-color: #2f6b4f;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    color: #2f6b4f;
+}

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>404 Not Found - Verte ETF</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/error.css}">
+    <script th:src="@{/js/common.js}"></script>
+
+    <link rel="icon" th:href="@{/images/favi.png}">
+</head>
+<body>
+
+<header th:replace="~{fragments/header :: headerFragment}"></header>
+
+<main class="error-wrap">
+    <div class="error-code">404</div>
+    <div class="error-title">페이지를 찾을 수 없습니다.</div>
+    <p class="error-desc">
+        요청하신 페이지가 삭제되었거나, 주소가 변경되어 찾을 수 없습니다.<br>
+        입력하신 주소가 정확한지 다시 한번 확인해 주세요.
+    </p>
+    <a th:href="@{/}" class="error-home-btn">메인으로 돌아가기</a>
+</main>
+
+<footer th:replace="~{fragments/footer :: footerFragment}"></footer>
+
+</body>
+</html>

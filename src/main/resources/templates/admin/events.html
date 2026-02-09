@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>ADMIN · 이벤트 관리</title>
+
+    <!-- UI -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://kit.fontawesome.com/4aff7483c9.js" crossorigin="anonymous"></script>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            color: #1a1a1a;
+        }
+
+        .adminpage {
+            width: 100%;
+            min-height: 100vh;
+        }
+
+        .adminpage-wrap {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* ===== SIDEBAR ===== */
+        .side-menu {
+            width: 260px;
+            background: #055c4d;
+            padding: 40px 24px;
+        }
+
+        .side-menu .logo img {
+            width: 100%;
+        }
+
+        .menu-list {
+            margin-top: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .menu-list a {
+            color: #fff;
+            opacity: .6;
+            font-size: 18px;
+        }
+
+        .menu-list .eventControl a,
+        .menu-list a:hover {
+            opacity: 1;
+            font-weight: 700;
+        }
+
+        /* ===== CONTENT ===== */
+        .tablesection {
+            flex: 1;
+            padding: 40px;
+            background: #f1f3f5;
+        }
+
+        .title-wrap {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .page-title {
+            font-size: 48px;
+            color: #055c4d;
+            font-weight: 700;
+        }
+
+        .btn-add {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 18px;
+            background: #40c057;
+            color: #fff;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .btn-add:hover {
+            background: #37b24d;
+        }
+
+        /* ===== TABLE ===== */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border-top: 2px solid #c2c2c2;
+            background: #fff;
+        }
+
+        th, td {
+            height: 70px;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+            font-size: 15px;
+            padding: 0 12px;
+        }
+
+        th {
+            background: #f9f9f9;
+            font-weight: 700;
+        }
+
+        tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+        /* ===== STATUS BADGE ===== */
+        .badge {
+            padding: 6px 14px;
+            border-radius: 9999px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .ing { background: #d3f9d8; color: #2b8a3e; }
+        .ended { background: #f1f3f5; color: #868e96; }
+        .scheduled { background: #e3fafc; color: #0c8599; }
+
+        /* ===== BUTTONS ===== */
+        .btn-area {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .btn-edit {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 12px;
+            background: #228be6;
+            color: white;
+            font-size: 14px;
+            border-radius: 6px;
+        }
+
+        .btn-edit:hover {
+            background: #1c7ed6;
+        }
+
+        .btn-del {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 12px;
+            background: #fa5252;
+            color: white;
+            font-size: 14px;
+            border-radius: 6px;
+        }
+
+        .btn-del:hover {
+            background: #e03131;
+        }
+    </style>
+</head>
+
+<body>
+<section class="adminpage">
+    <div class="adminpage-wrap">
+
+        <!-- ===== SIDEBAR ===== -->
+        <aside class="side-menu">
+            <div class="logo">
+                <a href="/"><img src="/images/logo-footer.png" alt="VERTE"/></a>
+            </div>
+
+            <ul class="menu-list">
+                <li><a href="/admin">HOME</a></li>
+                <li><a href="/admin/users">회원관리</a></li>
+                <li><a href="/admin/etf">ETF 시세관리</a></li>
+                <li><a href="/admin/meta">ETF 종목 관리</a></li>
+                <li class="eventControl"><a href="/admin/events">이벤트 관리</a></li>
+            </ul>
+        </aside>
+
+        <!-- ===== CONTENT ===== -->
+        <section class="tablesection">
+
+            <div class="title-wrap">
+                <h2 class="page-title">이벤트 관리</h2>
+
+                <a href="/admin/events/new" class="btn-add">
+                    <i class="fa-solid fa-plus"></i>
+                    새 이벤트 등록
+                </a>
+            </div>
+
+            <form method="get" action="/admin/events"
+                  class="bg-white p-6 rounded-xl mb-8 flex gap-4 items-end">
+
+                <div>
+                    <label class="text-sm mb-1 block">제목</label>
+                    <input type="text" name="keyword"
+                           th:value="${keyword}"
+                           class="border px-3 py-2 rounded w-60"
+                           placeholder="이벤트 제목">
+                </div>
+
+                <div>
+                    <label class="text-sm mb-1 block">상태</label>
+                    <select name="status" class="border px-3 py-2 rounded">
+                        <option value="">전체</option>
+                        <option value="ING" th:selected="${status == 'ING'}">진행중</option>
+                        <option value="SCHEDULED" th:selected="${status == 'SCHEDULED'}">예정</option>
+                        <option value="ENDED" th:selected="${status == 'ENDED'}">종료</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="text-sm mb-1 block">시작일</label>
+                    <input type="date" name="startDate"
+                           th:value="${startDate}"
+                           class="border px-3 py-2 rounded">
+                </div>
+
+                <div>
+                    <label class="text-sm mb-1 block">종료일</label>
+                    <input type="date" name="endDate"
+                           th:value="${endDate}"
+                           class="border px-3 py-2 rounded">
+                </div>
+
+                <button class="px-5 py-2 bg-[#055c4d] text-white rounded">
+                    검색
+                </button>
+
+                <a href="/admin/events"
+                   class="px-5 py-2 bg-gray-200 rounded">
+                    초기화
+                </a>
+            </form>
+
+            <table>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>상태</th>
+                    <th>제목</th>
+                    <th>기간</th>
+                    <th>관리</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="event : ${events}">
+                    <td th:text="${event.id}"></td>
+
+                    <td>
+                        <span th:if="${event.status == 'ING'}" class="badge ing">진행중</span>
+                        <span th:if="${event.status == 'ENDED'}" class="badge ended">종료</span>
+                        <span th:if="${event.status == 'SCHEDULED'}" class="badge scheduled">예정</span>
+                    </td>
+
+                    <td th:text="${event.title}" class="text-left px-4 font-semibold"></td>
+
+                    <td>
+                        <span th:text="${event.startDate}"></span>
+                        ~
+                        <span th:text="${event.endDate}"></span>
+                    </td>
+
+                    <td>
+                        <div class="btn-area">
+                            <a th:href="@{/admin/events/{id}/edit(id=${event.id})}"
+                               class="btn-edit">
+                                <i class="fa-solid fa-pen"></i> 수정
+                            </a>
+
+                            <form th:action="@{/admin/events/{id}/delete(id=${event.id})}"
+                                  method="post"
+                                  onsubmit="return confirm('정말 삭제하시겠습니까?');">
+                                <button type="submit" class="btn-del">
+                                    <i class="fa-solid fa-trash"></i> 삭제
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <div class="flex justify-center mt-8 gap-2">
+
+                <!-- ⏮ 맨 처음 -->
+                <a th:if="${page.number > 0}"
+                   th:href="@{/admin/events(
+            page=0,
+            keyword=${keyword},
+            status=${status},
+            startDate=${startDate},
+            endDate=${endDate}
+       )}"
+                   class="px-3 py-1 border rounded">
+                    &laquo;
+                </a>
+
+                <!-- ◀ 이전 블록 -->
+                <a th:if="${(page.number / 10) * 10 > 0}"
+                   th:href="@{/admin/events(
+            page=${(page.number / 10) * 10 - 1},
+            keyword=${keyword},
+            status=${status},
+            startDate=${startDate},
+            endDate=${endDate}
+       )}"
+                   class="px-3 py-1 border rounded">
+                    &lsaquo;
+                </a>
+
+                <!-- 🔢 페이지 숫자 -->
+                <a th:each="i : ${#numbers.sequence(
+            (page.number / 10) * 10,
+            T(java.lang.Math).min((page.number / 10) * 10 + 9, page.totalPages - 1)
+        )}"
+                   th:href="@{/admin/events(
+            page=${i},
+            keyword=${keyword},
+            status=${status},
+            startDate=${startDate},
+            endDate=${endDate}
+       )}"
+                   th:text="${i + 1}"
+                   th:classappend="${i == page.number} ? 'bg-[#055c4d] text-white' : ''"
+                   class="px-3 py-1 border rounded">
+                </a>
+
+                <!-- ▶ 다음 블록 -->
+                <a th:if="${(page.number / 10) * 10 + 10 < page.totalPages}"
+                   th:href="@{/admin/events(
+            page=${(page.number / 10) * 10 + 10},
+            keyword=${keyword},
+            status=${status},
+            startDate=${startDate},
+            endDate=${endDate}
+       )}"
+                   class="px-3 py-1 border rounded">
+                    &rsaquo;
+                </a>
+
+                <!-- ⏭ 맨 끝 -->
+                <a th:if="${page.number < page.totalPages - 1}"
+                   th:href="@{/admin/events(
+            page=${page.totalPages - 1},
+            keyword=${keyword},
+            status=${status},
+            startDate=${startDate},
+            endDate=${endDate}
+       )}"
+                   class="px-3 py-1 border rounded">
+                    &raquo;
+                </a>
+            </div>
+
+        </section>
+    </div>
+</section>
+</body>
+</html>

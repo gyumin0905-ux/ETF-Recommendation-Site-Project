@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>자유게시판</title>
+
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        /* ===== 리스트 페이지 전용 스타일 ===== */
+        .tab-location{padding-top:100px;text-align:center;}
+        .boardName{
+            font-size:70px;
+            margin:70px 0 40px;
+            text-align:center;
+            color:#055C4D;
+            font-weight:500;
+        }
+
+        /* ================= WRAP ================= */
+        .community-wrap{display:flex;justify-content:center;}
+        .freeboard{width:1520px;}
+
+        /* ================= BEST ================= */
+        .bestArea{display:flex;gap:40px;margin-bottom:120px;}
+        .bestbg{
+            width:400px;
+            cursor:pointer;
+            transition:0.3s;
+        }
+        .bestbg:hover{
+            transform:translateY(-6px);
+            box-shadow:0 12px 30px rgba(5,92,77,0.15);
+        }
+
+        .window-header{
+            border:1px solid #b8dbc7;
+            border-bottom:none;
+            border-radius:20px 20px 0 0;
+        }
+        .dot-group{display:flex;gap:6px;padding:15px;}
+        .dot-group span{
+            width:10px;height:10px;border-radius:50%;
+            background:#055C4D;
+        }
+
+        .bestcont{
+            border:1px solid #b8dbc7;
+            border-top:none;
+            border-radius:0 0 20px 20px;
+            padding:40px 30px;
+            text-align:center;
+        }
+        .profile{
+            width:120px;height:120px;
+            border-radius:50%;
+            background:#eee;
+            margin:0 auto 15px;
+        }
+        .nickName{font-size:22px;margin-bottom:10px;font-weight:600;}
+        .besttit{font-size:15px;color:#555;line-height:1.6;}
+
+        .num1{
+            display:flex;
+            justify-content:center;
+            gap:20px;
+            margin-top:20px;
+            font-size:14px;
+        }
+        .num1 li:first-child{color:#055C4D;}
+        .num1 li:last-child{color:#e64980;}
+
+        /* ================= POST BUTTON ================= */
+        .postWrap{
+            display:flex;
+            justify-content:center;
+            margin-bottom:80px;
+        }
+        .postBtn{
+            padding:10px 38px;
+            border-radius:999px;
+            border:1px solid #b8dbc7;
+            color:#055C4D;
+            font-size:13px;
+            transition:0.25s;
+        }
+        .postBtn:hover{
+            background:#055C4D;
+            color:#fff;
+            box-shadow:0 6px 20px rgba(5,92,77,0.25);
+        }
+
+        /* ================= TABLE ================= */
+        table{width:100%;border-collapse:collapse;margin-bottom:120px;}
+        th,td{
+            border-bottom:1px solid #ddd;
+            height:70px;
+            text-align:center;
+            font-size:14px;
+        }
+        .realtit{text-align:left;padding-left:20px;}
+    </style>
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: headerFragment}"></div>
+
+<div class="wrap" style="position: relative; z-index: 1;">
+    <section class="tab-location">
+        <h2 class="boardName">자유게시판</h2>
+    </section>
+
+    <div class="community-wrap">
+        <div class="freeboard">
+
+            <nav class="bestArea">
+                <ul class="bestbg"
+                    th:each="board : ${boards.subList(0, T(java.lang.Math).min(3, boards.size()))}"
+                    th:onclick="|location.href='/board/${board.id}'|">
+                    <li class="window-header">
+                        <div class="dot-group"><span></span><span></span><span></span></div>
+                    </li>
+                    <li class="bestcont">
+                        <div class="profile"></div>
+                        <div class="nickName" th:text="${board.username}">작성자</div>
+                        <div class="besttit" th:text="${board.title}">제목</div>
+                        <ul class="num1">
+                            <li>👁 <span th:text="${board.views}">0</span></li>
+                            <li>♥ <span th:text="${board.likeCount}">0</span></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="postWrap">
+                <a href="/board/write" class="postBtn">POST</a>
+            </div>
+
+            <table>
+                <thead>
+                <tr>
+                    <th>제목</th>
+                    <th>조회수</th>
+                    <th>좋아요</th>
+                    <th>등록일</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="board : ${boards}">
+                    <td class="realtit">
+                        <a th:href="@{/board/{id}(id=${board.id})}"
+                           th:text="${board.title}">제목</a>
+                    </td>
+                    <td th:text="${board.views}">0</td>
+                    <td th:text="${board.likeCount}">0</td>
+                    <td th:text="${#temporals.format(board.createdDate,'yyyy-MM-dd')}"></td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer :: footerFragment}"></div>
+
+<script th:src="@{/js/common.js}"></script>
+</body>
+</html>

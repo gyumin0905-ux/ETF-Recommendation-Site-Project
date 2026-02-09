@@ -1,0 +1,210 @@
+@charset "UTF-8";
+
+/* ========전체 컨테이너========= */
+section .join-container {
+    max-width: 720px;
+    margin: 180px auto 80px;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 1px 1px 25px #b4b4b4;
+}
+
+/* 제목 */
+section .join-container h2 {
+    font-size: 45px;
+    margin-left: 30px;
+    font-weight: 500;
+}
+
+section .join-container .sub-text {
+    color: #055C4D;
+    font-weight: 500;
+    margin-bottom: 30px;
+    font-size: 15px;
+    margin-left: 32px;
+}
+
+/* ========join-box=============== */
+section .join-container .join-box {
+    padding: 0 50px;
+    position: relative;
+}
+
+section .join-container .join-box::after {
+    content: "";
+    display: block;
+    width: 580px;
+    height: 2px;
+    background-color: #a7a7a7;
+    position: absolute;
+    top: 0px; left: 50%;
+    transform: translateX(-50%);
+}
+
+section .join-container .join-box h3 {
+    font-size: 18px;
+    margin: 15px 0;
+    padding-top: 15px;
+}
+
+/* ===========공통 input 영역========== */
+section .join-container .join-box .input-wrap {
+    margin-bottom: 15px;
+}
+
+section .join-container .join-box .input-wrap .label {
+    font-size: 14px;
+    margin: 15px 0 3px;
+    font-weight: 500;
+}
+
+section .join-container .join-box .input-wrap input {
+    width: 100%;
+    height: 45px;
+    padding-left: 12px;
+    border: 1px solid #055C4D69;
+    border-radius: 10px;
+    font-size: 13px;
+}
+
+/* =========아이디 + 중복확인========== */
+section .join-container .join-box .form-row {
+    display: flex;
+    gap: 15px;
+    align-items: flex-end;
+}
+
+section .join-container .join-box .form-row .input-wrap input {
+    width: 400px;
+}
+
+section .join-container .join-box .form-row .btn-dup {
+    width: 120px;
+    height: 45px;
+    background: #055C4D;
+    color: #fff;
+    border-radius: 10px;
+    font-weight: 400;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+section .join-container .join-box .form-row .btn-dup:hover{
+    background-color: #055c4ebb;
+    border: 2px solid #055c4e59;
+}
+/* ===========이메일========== */
+section .join-container .join-box .email-wrap {
+    margin-bottom: 15px;
+}
+
+section .join-container .join-box .email-wrap .label {
+    font-size: 14px;
+    margin: 15px 0 3px;
+    font-weight: 500;
+}
+
+section .join-container .join-box .email-wrap .email-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+}
+
+section .join-container .join-box .email-wrap .email-row input,
+section .join-container .join-box .email-wrap .email-row select {
+    height: 45px;
+    padding: 0 10px;
+    border: 1px solid #055C4D69;
+    border-radius: 10px;
+    color: #a7a7a7;
+}
+section .join-container .join-box .email-wrap .email-row select{ border: 1px solid #86868669;}
+section .join-container .join-box .email-wrap .email-row input.email-id {
+    width: 220px;
+}
+
+section .join-container .join-box .email-wrap .email-row input.email-domain-input {
+    width: 200px;
+}
+
+section .join-container .join-box .email-wrap .email-row input:disabled {
+    color: #777;
+}
+
+section .join-container .join-box .email-wrap .email-row select {
+    width: 200px;
+    cursor: pointer;
+    color: #fff;
+}
+
+section .join-container .join-box .email-wrap .email-row span {
+    font-weight: 600;
+}
+
+/* ===============약관 영역============ */
+section .join-container .join-box .agreeWrap .agree-txt {
+    font-size: 13px;
+    font-weight: 400;
+    color: #1a1a1a;
+    margin: 30px 0 10px 10px;
+}
+
+section .join-container .join-box .agreeWrap .agree-box {
+    padding: 15px 20px 5px 20px;
+    border: 1px solid #055C4D69;
+    border-radius: 10px;
+    margin-bottom: 50px;
+}
+
+section .join-container .join-box .agreeWrap .agree-box .agree-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+section .join-container .join-box .agreeWrap .agree-box .agree-item .see {
+    color: #055C4D;
+    font-weight: 500;
+    text-decoration: underline #055C4D;
+    font-size: 12px;
+}
+
+section .join-container .join-box .agreeWrap .agree-box .agree-item .see:hover {
+    font-weight: 600;
+    text-decoration: none;
+}
+
+/* ===========이전 & 가입 버튼================ */
+section .join-container .join-box .btnWrap {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+/* 다음 버튼 (Tailwind 미사용) */
+section .join-container .join-box .btnWrap .signup-btn {
+    width: 50%;
+    height: 50px;
+    border: 2px solid #055C4D;
+    background: transparent;
+    color: #055C4D;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+section .join-container .join-box .btnWrap .signup-btn:hover {
+    background: #055C4D;
+    color: #fff;
+}
+
+/* 이메일 select 기본 */
+section .join-container .join-box .email-wrap .email-row select {
+    background-color: #f2f2f2;
+    color: #333;
+    cursor: pointer;
+}

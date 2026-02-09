@@ -1,0 +1,134 @@
+@charset "UTF-8";
+
+/* 로그인 컨테이너 전체 정렬 */
+section {
+    padding-top: 100px;
+    padding-bottom: 100px;
+}
+.login-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 80px auto;
+    text-align: center;
+}
+
+/* 제목 */
+.login-container h2 {
+    margin-bottom: 15px;
+    font-size: 50px;
+}
+
+.login-container > p {
+    color: #055C4D;
+    font-weight: 500;
+    padding-bottom: 50px;
+}
+
+/* 로그인 박스 */
+.login-box {
+    background: #fff;
+    padding: 60px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+/*로그인 글씨*/
+.login-box p {
+    text-align: left;
+    font-size: 14px;
+    padding-left: 25px;
+    padding-bottom: 5px;
+}
+/* 입력창 스타일 */
+.input {
+    width: 90%;
+    height: 50px;
+    margin-bottom: 20px;
+    padding-left: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 12px;
+}
+
+/* 일반 로그인 버튼 */
+.login-btn {
+    width: 90%;
+    height: 50px;
+    background: #1D7A55;
+    color: #fff;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.login-btn:hover {
+    background: #365a4c;
+}
+
+/* 하단 링크 영역 */
+.link-area {
+    margin: 30px 0;
+    font-size: 14px;
+}
+.link-area a:hover{
+    color: #365a4c;
+}
+/*Line*/
+.social-title::before {
+    content: "";
+    display: block;
+    width: 152px;
+    height: 1px;
+    background-color: #ff514e34;
+    position: absolute;
+    top: 425px; left: 83px;
+}
+.social-title::after {
+    content: "";
+    display: block;
+    width: 152px;
+    height: 1px;
+    background-color: #a7a7a7;
+    position: absolute;
+    top: 425px;
+    right: 90px;
+}
+/* 소셜 로그인 타이틀 */
+.social-title {
+    margin: 50px 0 25px 0;
+    font-weight: bold;
+}
+
+/* 소셜 로그인 영역 */
+.social-login {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* 소셜 버튼 공통 스타일 */
+.social-login button {
+    width: 90%;
+    height: 45px;
+    border-radius: 5px;
+    margin-left: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+
+    border: 1px solid #ddd;
+    background: #fff;
+}
+
+/* 버튼 안 이미지 크기 통일 */
+.social-login button img {
+    height: 22px;
+}
+
+/* 버튼 안 텍스트 전용 스타일 */
+.social-login button p {
+    color: #1a1a1a;
+    margin: 0;
+    padding: 0;
+}

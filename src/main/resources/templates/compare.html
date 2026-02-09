@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>ETF 비교 - 상세</title>
+    <link rel="icon" th:href="@{/images/favi.png}">
+
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        body {
+            font-family: "Noto Sans KR", sans-serif;
+            background: #f7f7f7;
+        }
+
+        .compare-wrap {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #055C4D;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .sub {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+        }
+
+        .warn {
+            background: #fff3cd;
+            color: #856404;
+            padding: 16px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .compare-container {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .etf-box {
+            background: white;
+            width: 400px;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: transform 0.2s;
+        }
+
+        .etf-box:hover {
+            transform: translateY(-5px);
+        }
+
+        .etf-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #333;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            font-size: 13px;
+            border-radius: 6px;
+            margin-right: 6px;
+            font-weight: 600;
+        }
+
+        .badge-theme { background: #e8f0fe; color: #1a73e8; }
+        .badge-risk { background: #ffecec; color: #d93025; }
+
+        .item { margin-top: 15px; font-size: 15px; color: #555; }
+
+        .strengths {
+            margin-top: 20px;
+            background: #f9f9f9;
+            padding: 16px;
+            border-radius: 10px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .strengths-title {
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #055C4D;
+        }
+
+        .vs {
+            font-size: 40px;
+            font-weight: 900;
+            color: #ddd;
+            font-style: italic;
+        }
+
+        .back {
+            margin-top: 60px;
+            text-align: center;
+        }
+        .back a {
+            padding: 12px 24px;
+            background: #055C4D;
+            color: white;
+            border-radius: 999px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+        .back a:hover {
+            background: #04463a;
+        }
+    </style>
+</head>
+
+<body>
+
+<div th:replace="~{fragments/header :: headerFragment}"></div>
+
+<div style="position: relative; z-index: 1; padding-top: 100px;">
+    <div class="compare-wrap">
+        <h1>📊 ETF 비교 상세</h1>
+
+        <div th:if="${errorMessage != null}" class="warn">
+            ⚠️ <span th:text="${errorMessage}"></span>
+        </div>
+
+        <div th:if="${result != null}">
+            <div class="sub">
+                비교 테마: <b th:text="${result.theme}"></b> /
+                비교 방식: <b th:text="${result.mode}"></b>
+            </div>
+
+            <div class="compare-container">
+
+                <div class="etf-box">
+                    <div class="etf-title" th:text="${result.left.name}"></div>
+
+                    <div>
+                        <span class="badge badge-theme" th:text="${result.left.theme}"></span>
+                        <span class="badge badge-risk">
+                        위험도 <span th:text="${result.left.riskLevel}"></span>
+                    </span>
+                    </div>
+
+                    <div class="item">ISIN: <b th:text="${result.left.isinCd}"></b></div>
+
+                    <div class="strengths">
+                        <div class="strengths-title">📌 장점 요약</div>
+                        <ul>
+                            <li th:each="s : ${result.left.strengths}" th:text="${s}"></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="vs">VS</div>
+
+                <div class="etf-box">
+                    <div class="etf-title" th:text="${result.right.name}"></div>
+
+                    <div>
+                        <span class="badge badge-theme" th:text="${result.right.theme}"></span>
+                        <span class="badge badge-risk">
+                        위험도 <span th:text="${result.right.riskLevel}"></span>
+                    </span>
+                    </div>
+
+                    <div class="item">ISIN: <b th:text="${result.right.isinCd}"></b></div>
+
+                    <div class="strengths">
+                        <div class="strengths-title">📌 장점 요약</div>
+                        <ul>
+                            <li th:each="s : ${result.right.strengths}" th:text="${s}"></li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="back">
+            <a th:href="@{/compare}">← 비교 목록으로 돌아가기</a>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer :: footerFragment}"></div>
+
+<script th:src="@{/js/common.js}"></script>
+
+</body>
+</html>

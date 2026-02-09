@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" data-theme="light">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>ETF 비교·랭킹</title>
+    <link rel="icon" th:href="@{/images/favi.png}">
+
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        /* ===== 페이지 전용 스타일 ===== */
+        /* 헤더/푸터 CSS는 common.css에서 불러오므로 삭제함 */
+
+        body {
+            background-color: #f5f7fb;
+            font-family: "Noto Sans KR", sans-serif;
+        }
+
+        /* 본문 영역 */
+        .section1Wrap{
+            width: 1620px; height: 700px;
+            margin: 0 auto;
+            /* padding-top: 100px; */ /* 상단 여백은 wrapper에서 처리 */
+        }
+        .section1Wrap h1{
+            text-align: center;
+            font-size: 60px;
+            font-weight: 500;
+            color: #055C4D;
+            padding-top: 80px;
+            letter-spacing: 2px;
+        }
+        .section1Wrap p{
+            text-align: center;
+            letter-spacing: 2px;
+            color: #1D7A55;
+            font-weight: 400;
+        }
+        .section1Wrap .comparecontent{
+            width: 1600px; height: 470px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            position: relative;
+        }
+        .section1Wrap .comparecontent>div{
+            width: 600px; height: 330px;
+            border:2px dashed #86868646;
+            margin: auto 0;
+        }
+        .section1Wrap .comparecontent img{
+            width: 50px; height: 50px;
+            margin: auto 0;
+            opacity: 80%;
+        }
+        .section1Wrap .comparecontent>div .boxintxt{
+            font-size: 18px;
+            line-height: 330px;
+            text-align: center;
+            color: #888;
+        }
+        .section1Wrap button{
+            height: 65px;
+            background-color: #055C4D;
+            color: #fff;
+            position: absolute;
+            bottom: 230px; /* 위치 조정 */
+            left: 50%; transform: translateX(-50%);
+            font-size: 1.4em;
+            font-weight: 400;
+        }
+
+        .resultBox{
+            display: none;
+            background-color: #F6FCFB;
+            padding-bottom: 50px;
+        }
+        .resultBox .result1{
+            width: 1620px;
+            margin: 0px auto;
+        }
+        .resultBox .result1 h3{
+            color: #055C4D;
+            font-size: 35px;
+            font-weight: 500;
+            padding: 50px 0;
+            padding-top: 100px;
+            padding-left: 150px;
+            margin-top: 15px;
+        }
+        .resultBox .result1 .resultChart{
+            width: 80%; height: 420px;
+            margin: 0 auto;
+            box-shadow: 5px 10px 20px #9b9b9b60;
+            background-color: #FFF;
+            border-radius: 40px;
+            padding: 20px;
+            position: relative;
+        }
+
+        .resultBox .result2{
+            width: 1620px;
+            margin: 0 auto;
+            position: relative;
+            margin-bottom: 80px;
+        }
+        /* 탭 UI 구조 유지 (숨김) */
+        .resultBox .result2 .tab-btn{
+            width: 730px; height: 65px;
+            border-radius: 40px;
+            box-shadow: 5px 10px 10px #c0c0c028;
+            display: flex;
+            justify-content: space-between;
+            margin: 0 auto;
+            position: absolute;
+            top: 20px; left: 50%;
+            transform: translateX(-50%);
+            background-color: #fff;
+            opacity: 0;
+            pointer-events: none;
+        }
+        .resultBox .result2 .tab-btn>li{
+            text-align: center;
+            height: 65px; width: 200px;
+            line-height: 65px;
+            font-size: 17px;
+            border-radius: 60px;
+            margin: auto 0;
+        }
+
+        .resultBox .result2 .tab-view{
+            height: auto;
+            margin-top: 100px;
+        }
+        .resultBox .result2 .tab-view>li{
+            width: 85%;
+            position: relative;
+            top: auto; left: auto;
+            transform: none;
+            text-align: left;
+            font-size: 20px;
+            display: block;
+            border-radius: 20px;
+            box-shadow: 5px 5px 20px #afafaf23;
+            background-color: #fff;
+            margin: 0 auto;
+            padding: 30px 0;
+        }
+
+        .compareList{
+            width: 1500px;
+            margin: 80px auto;
+        }
+        .compareList h3{
+            color: #055C4D;
+            font-size: 35px;
+            font-weight: 500;
+            margin-left: 100px;
+            margin-top: 30px;
+        }
+        .compareList .top10content{
+            display: flex;
+            width: 1350px;
+            margin: 0 auto;
+            gap: 120px;
+        }
+        .compareList .top10content>ul{
+            width: 650px;
+            margin: 20px auto;
+        }
+        .compareList .top10content>ul>li{
+            display: flex;
+            height: 70px;
+            line-height: 70px;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: 0.2s;
+            padding: 0 20px;
+        }
+        .compareList .top10content>ul>li:hover {
+            background-color: #f0fdf4;
+        }
+        .compareList .top10content>ul>li.is-selected{
+            background: #E5F9F6;
+            outline: 2px solid #055C4D;
+        }
+        .compareList .top10content>ul>li .rankin{
+            color: #055C4D;
+            width: 90px;
+            font-size: 15px;
+            font-weight: 400;
+        }
+        .compareList .top10content>ul>li .prutit{
+            font-weight: 400;
+            font-size: 20px;
+            width: 310px;
+            overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+        }
+        .compareList .top10content>ul>li .code{
+            font-size: 12px;
+            width: 120px;
+            color: #979797;
+            text-align: right;
+        }
+
+        .section1Wrap .compareBtn.is-disabled{
+            opacity: 0.4;
+            background-color: #dddddd7e;
+            cursor: not-allowed;
+            color: #000000;
+            border: 2px solid #46464686;
+        }
+
+        .section1Wrap .comparecontent .picked{
+            width: 400px; height: 230px;
+            padding: 30px;
+            border: 2px solid #FFC107;
+            border-radius: 20px;
+            margin: 50px auto;
+            padding-top: 80px;
+            background: #fff;
+        }
+        .section1Wrap .comparecontent .picked-title{
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #4e4e4e;
+            text-align: center;
+        }
+        .section1Wrap .comparecontent .picked-code{
+            font-size: 12px;
+            color: #979797;
+            margin-bottom: 8px;
+            font-style: italic;
+            text-align: center;
+        }
+
+        #RecommendWrap{padding-bottom: 150px;}
+        #RecommendWrap .title{
+            text-align: center;
+            margin-top: 80px;
+            color: #055C4D;
+            letter-spacing: -2px;
+        }
+        #RecommendWrap .title h1{
+            font-size: 70px;
+            font-weight: 500;
+        }
+
+        #RecommendWrap .section2Wrap{
+            width: 1620px;
+            display: flex;
+            margin: 0 auto;
+            margin-top: 60px;
+        }
+
+        #RecommendWrap .section2Wrap .leftVS{
+            width: 850px;
+            margin-right: 40px;
+        }
+        #RecommendWrap .section2Wrap .leftVS .chart-left{
+            height: 260px; width: 550px;
+            box-shadow: 5px 5px 30px #b9b9b94d;
+            margin: 0 auto;
+            margin-top: 10px;
+            border-radius: 10px;
+            padding: 15px;
+            position: relative;
+            background: #fff;
+        }
+        #RecommendWrap .section2Wrap .leftVS .inform1{
+            width: 550px;
+            text-align: left;
+            margin: 30px auto;
+        }
+        #RecommendWrap .section2Wrap .leftVS .inform1 th{
+            height: 40px;
+            font-size: 18px;
+            line-height: 40px;
+            padding: 5px 5px 10px;
+            font-weight: 500;
+        }
+        #RecommendWrap .section2Wrap .leftVS .inform1 td{
+            font-size: 15px;
+            padding-left: 30px;
+            font-weight: 300;
+        }
+
+        #RecommendWrap .section2Wrap .rightList .proList>li{
+            border: 4px solid #cacaca52;
+            height: 150px;
+            border-bottom: none;
+            border-radius: 20px;
+            display: flex;
+            padding: 20px 30px;
+            margin: 0;
+            margin-top: -20px;
+            background-color: #fff;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s;
+            z-index: 1;
+        }
+        #RecommendWrap .section2Wrap .rightList .proList>li:nth-child(5){
+            border-bottom: 4px solid #cacaca52;
+        }
+        #RecommendWrap .section2Wrap .rightList .proList>li>div{ padding-top: 5px; }
+        #RecommendWrap .section2Wrap .rightList .proList>li .number{
+            color: #055C4D;
+            margin-right: 50px;
+        }
+        #RecommendWrap .section2Wrap .rightList .proList>li .center{
+            width: 40px;
+            height: 40px;
+            margin-top: 20px;
+            margin-left: -3%;
+        }
+        #RecommendWrap .section2Wrap .rightList .proList>li .maintxt{
+            width: 380px;
+            text-align: center;
+            font-size: 20px;
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden; text-overflow: ellipsis;
+        }
+        #RecommendWrap .section2Wrap .rightList .proList>li em{
+            font-size: 13px;
+            margin-left: 180px;
+        }
+        #RecommendWrap .section2Wrap .rightList .proList>li:hover:not(.on){
+            border: 4px solid #055C4D;
+            background-color: #f3f3f3;
+            color: #1a1a1a;
+            transform: translateY(-11px) scale(1.02);
+            z-index: 10;
+        }
+        #RecommendWrap .section2Wrap .rightList .proList>li.on{
+            border: 4px solid #055C4D;
+            background-color: #055C4D;
+            color: #fff;
+            transform: translateY(-11px);
+            box-shadow: 0 12px 28px #00000022;
+        }
+        #RecommendWrap .section2Wrap .rightList .proList>li.on .number{
+            color: #FFF;
+            font-size: 15px;
+        }
+        #RecommendWrap .section2Wrap .rightList .proList>li.on .maintxt{
+            color: #FFF;
+            font-size: 25px;
+        }
+        #RecommendWrap .section2Wrap .rightList .proList>li.on:hover{
+            transform: translateY(-14px) scale(1.03);
+            box-shadow: 0 16px 34px #0000002a;
+        }
+
+        #compareResultArea{
+            padding: 20px 40px 40px;
+        }
+        #resultCompareChart{
+            width: 100% !important;
+            height: 100% !important;
+        }
+    </style>
+</head>
+
+<body>
+
+<div th:replace="~{fragments/header :: headerFragment}"></div>
+
+<div style="position: relative; z-index: 1; padding-top: 100px;">
+
+    <section>
+        <div class="section1Wrap">
+            <h1>상품비교</h1>
+            <p>ETF를 선택하여 상품을 비교해보세요.</p>
+
+            <div class="comparecontent">
+                <div class="boxA">
+                    <p class="boxintxt">아래에서 상품을 선택해주세요.</p>
+                </div>
+
+                <img class="vs" th:src="@{/images/vs1.png}" alt="비교">
+
+                <div class="boxB">
+                    <p class="boxintxt">아래에서 상품을 선택해주세요.</p>
+                </div>
+            </div>
+
+            <button class="btn compareBtn border-2 border-transparent bg-[#055C4D] text-white hover:bg-[#fff] hover:text-[#1a1a1a] hover:border-[#055C4D] btn-wide transition-all duration-500">
+                비교하기
+            </button>
+        </div>
+
+        <div class="section2Wrap">
+            <div class="resultBox">
+                <div class="result1">
+                    <h3>주가비교차트(1년)</h3>
+                    <div class="resultChart">
+                        <canvas id="resultCompareChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="result2">
+                    <ul class="tab-btn">
+                        <li class="active"><a href="#">최근 1개월</a></li>
+                        <li><a href="#">최근 3개월</a></li>
+                        <li><a href="#">최근 1년</a></li>
+                        <li><a href="#">최근 5년</a></li>
+                    </ul>
+
+                    <ul class="tab-view">
+                        <li>
+                            <div id="compareResultArea">비교 결과가 여기에 표시됩니다.</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="compareList">
+                <h3>ETF상품 TOP10</h3>
+
+                <div class="top10content">
+                    <ul class="top5">
+                        <li th:each="etf, st : ${etfs}"
+                            th:if="${st.index < 5}"
+                            th:attr="data-isin=${etf.isinCd}">
+                            <p class="rankin" th:text="${st.index + 1} + '위'">1위</p>
+                            <p class="prutit" th:text="${etf.name}">ETF명</p>
+                            <p class="code" th:text="${etf.isinCd}">코드</p>
+                        </li>
+                    </ul>
+
+                    <ul class="top10">
+                        <li th:each="etf, st : ${etfs}"
+                            th:if="${st.index >= 5 and st.index < 10}"
+                            th:attr="data-isin=${etf.isinCd}">
+                            <p class="rankin" th:text="${st.index + 1} + '위'">6위</p>
+                            <p class="prutit" th:text="${etf.name}">ETF명</p>
+                            <p class="code" th:text="${etf.isinCd}">코드</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="RecommendWrap">
+            <div class="title">
+                <h1>오늘의 추천 비교</h1>
+            </div>
+
+            <div class="section2Wrap">
+                <div class="leftVS">
+                    <div class="chart-left">
+                        <canvas id="compareReturnChart"></canvas>
+                    </div>
+
+                    <table class="inform1">
+                        <tr>
+                            <th>상품명</th>
+                            <td id="leftName">-</td>
+                            <td id="rightName">-</td>
+                        </tr>
+                        <tr>
+                            <th>테마</th>
+                            <td id="leftTheme">-</td>
+                            <td id="rightTheme">-</td>
+                        </tr>
+                        <tr>
+                            <th>위험도</th>
+                            <td id="leftRisk">-</td>
+                            <td id="rightRisk">-</td>
+                        </tr>
+                        <tr>
+                            <th>ISIN</th>
+                            <td id="leftIsin">-</td>
+                            <td id="rightIsin">-</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="rightList">
+                    <ul class="proList">
+                        <li th:each="pair, st : ${randomTop5}"
+                            th:classappend="${st.index == 0} ? 'on' : ''"
+                            th:attr="
+                        data-left-name=${pair.left.name},
+                        data-left-theme=${pair.left.theme},
+                        data-left-risk=${pair.left.riskLevel},
+                        data-left-isin=${pair.left.isinCd},
+
+                        data-right-name=${pair.right.name},
+                        data-right-theme=${pair.right.theme},
+                        data-right-risk=${pair.right.riskLevel},
+                        data-right-isin=${pair.right.isinCd}
+                    ">
+
+                            <p class="number" th:text="${st.index + 1} + '.'">01.</p>
+
+                            <div class="vs1">
+                                <em th:text="${pair.left.isinCd}">000000</em>
+                                <p class="maintxt" th:text="${pair.left.name}">LEFT ETF</p>
+                            </div>
+
+                            <div class="center">
+                                <span style="color:#ffc107;font-weight:bold;">VS</span>
+                            </div>
+
+                            <div class="vs2">
+                                <em th:text="${pair.right.isinCd}">000000</em>
+                                <p class="maintxt" th:text="${pair.right.name}">RIGHT ETF</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<div th:replace="~{fragments/footer :: footerFragment}"></div>
+
+<script th:src="@{/js/common.js}"></script>
+
+<script>
+    $(document).ready(function () {
+
+        const $items = $(".compareList .top10content > ul > li");
+        const $boxA = $(".section1Wrap .comparecontent .boxA");
+        const $boxB = $(".section1Wrap .comparecontent .boxB");
+        const $btn = $(".section1Wrap .compareBtn");
+        const $resultBox = $(".section2Wrap .resultBox");
+
+        let selected = []; // 선택된 li 저장
+
+        // 결과는 처음 숨김
+        $resultBox.hide();
+
+        setBtnState();
+        renderBoxes();
+
+        // li 클릭 이벤트
+        $items.on("click", function () {
+            const $li = $(this);
+
+            const idx = selected.findIndex(el => el.is($li));
+            if (idx > -1) {
+                selected.splice(idx, 1);
+                $li.removeClass("is-selected");
+
+                renderBoxes();
+                setBtnState();
+                closeResultIfNotReady();
+                return;
+            }
+
+            if (selected.length >= 2) {
+                alert("비교는 2개까지만 선택할 수 있어요!");
+                return;
+            }
+
+            selected.push($li);
+            $li.addClass("is-selected");
+
+            renderBoxes();
+            setBtnState();
+        });
+
+        // box 클릭 → 선택 취소
+        $boxA.on("click", function () {
+            if (!selected[0]) return;
+            selected[0].removeClass("is-selected");
+            selected.splice(0, 1);
+            renderBoxes();
+            setBtnState();
+            closeResultIfNotReady();
+        });
+
+        $boxB.on("click", function () {
+            if (!selected[1]) return;
+            selected[1].removeClass("is-selected");
+            selected.splice(1, 1);
+            renderBoxes();
+            setBtnState();
+            closeResultIfNotReady();
+        });
+
+        // 비교하기 버튼 클릭
+        $btn.on("click", function () {
+            if (selected.length !== 2) {
+                alert("비교할 상품 2개를 먼저 선택해주세요!");
+                return;
+            }
+
+            const isin1 = selected[0].data("isin");
+            const isin2 = selected[1].data("isin");
+
+            if (!isin1 || !isin2) {
+                alert("ISIN 코드가 없습니다.");
+                return;
+            }
+
+            // 결과 영역 열기
+            $resultBox.stop(true, true).slideDown(400);
+
+            // 차트 로딩
+            loadReturnChartInto("resultCompareChart", isin1, isin2, "3M", "line");
+
+            // 결과 HTML 로딩
+            $("#compareResultArea").html("로딩중...");
+            $("#compareResultArea").load(
+                `/compare/result?isin=${encodeURIComponent(isin1)}&isin=${encodeURIComponent(isin2)} .compare-result-wrap`
+            );
+
+            // 스크롤 이동
+            $("html, body").animate({
+                scrollTop: $resultBox.offset().top - 120
+            }, 500);
+        });
+
+        function renderBoxes() {
+            const emptyHTML = `<p class="boxintxt">아래에서 상품을 선택해주세요.</p>`;
+
+            if (selected[0]) $boxA.html(makeBoxHTML(selected[0]));
+            else $boxA.html(emptyHTML);
+
+            if (selected[1]) $boxB.html(makeBoxHTML(selected[1]));
+            else $boxB.html(emptyHTML);
+        }
+
+        function makeBoxHTML($li) {
+            const title = $li.find(".prutit").text().trim();
+            const code = $li.find(".code").text().trim();
+
+            return `
+              <div class="picked">
+                <p class="picked-title">${title}</p>
+                <p class="picked-code">${code}</p>
+              </div>
+            `;
+        }
+
+        function setBtnState() {
+            const ok = selected.length === 2;
+            $btn.prop("disabled", !ok);
+            if (!ok) $btn.addClass("is-disabled");
+            else $btn.removeClass("is-disabled");
+        }
+
+        function closeResultIfNotReady() {
+            if (selected.length < 2) {
+                $resultBox.stop(true, true).slideUp(300);
+            }
+        }
+    });
+</script>
+
+<script>
+    /* 랜덤 TOP5 로직 */
+    $(document).ready(function () {
+        const $proLis = $("#RecommendWrap .proList > li");
+        if ($proLis.length > 0) fillDetail($proLis.eq(0));
+
+        $proLis.on("click", function () {
+            $proLis.removeClass("on");
+            $(this).addClass("on");
+            fillDetail($(this));
+        });
+
+        function fillDetail($li) {
+            const leftIsin  = $li.data("left-isin");
+            const rightIsin = $li.data("right-isin");
+
+            $("#leftName").text($li.data("left-name"));
+            $("#leftTheme").text($li.data("left-theme"));
+            $("#leftRisk").text($li.data("left-risk"));
+            $("#leftIsin").text(leftIsin);
+
+            $("#rightName").text($li.data("right-name"));
+            $("#rightTheme").text($li.data("right-theme"));
+            $("#rightRisk").text($li.data("right-risk"));
+            $("#rightIsin").text(rightIsin);
+
+            loadReturnChartInto("compareReturnChart", leftIsin, rightIsin, "1Y", "line");
+        }
+    });
+</script>
+
+<script>
+    /* 공용 차트 로더 */
+    const __charts = {};
+
+    function loadReturnChartInto(canvasId, isin1, isin2, period = "1Y", type = "line") {
+        $.getJSON(
+            "/compare/chart/return",
+            { isin1, isin2, period },
+            function (res) {
+                const canvas = document.getElementById(canvasId);
+                if (!canvas) return;
+                const ctx = canvas.getContext("2d");
+
+                if (__charts[canvasId]) {
+                    __charts[canvasId].destroy();
+                    __charts[canvasId] = null;
+                }
+
+                __charts[canvasId] = new Chart(ctx, {
+                    type: type,
+                    data: {
+                        labels: res.labels,
+                        datasets: [
+                            {
+                                label: res.left.label || "ETF A",
+                                data: res.left.data,
+                                borderWidth: 2,
+                                tension: 0.3,
+                                pointRadius: 0
+                            },
+                            {
+                                label: res.right.label || "ETF B",
+                                data: res.right.data,
+                                borderWidth: 2,
+                                tension: 0.3,
+                                pointRadius: 0
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        interaction: { mode: "index", intersect: false },
+                        plugins: {
+                            legend: { position: "top" },
+                            tooltip: {
+                                backgroundColor: "#1f2937",
+                                titleColor: "#ffffff",
+                                bodyColor: "#e5e7eb",
+                                borderColor: "#22c55e",
+                                borderWidth: 1,
+                                padding: 14,
+                                titleFont: { size: 16, weight: "bold" },
+                                bodyFont: { size: 15 },
+                                callbacks: {
+                                    title: (items) => items[0].label,
+                                    label: (c) => {
+                                        const name = c.dataset.label || "ETF";
+                                        const val = Number(c.parsed.y).toFixed(2);
+                                        return `${name} : ${val}%`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: { y: { ticks: { callback: (v) => v + "%" } } }
+                    }
+                });
+            }
+        );
+    }
+</script>
+
+</body>
+</html>

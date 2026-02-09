@@ -1,0 +1,93 @@
+.bg-layer{ 
+    width: 100%;
+    min-height: 100vh;
+    background: #11063f; 
+    background: linear-gradient(to right, #121216, #2e2d5a, #0c0644); 
+    color: white; 
+    text-align: center; 
+    padding: 50px 20px; 
+    overflow: hidden;
+}
+
+    h1 {
+    margin-bottom: 10px;
+    text-shadow: 0 0 20px #a29bfe;
+    font-size: 2.5rem;
+    animation: floatTitle 4s ease-in-out infinite;
+}
+@keyframes floatTitle {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-12px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+        .subtitle { color: #b2bec3; margin-bottom: 50px; font-weight: 300; }
+
+        .zodiac-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .zodiac-card {
+            border-radius: 15px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .zodiac-card img{
+            max-width: 100%;
+            width: 200px;
+            filter: drop-shadow(0 6px 12px rgba(0,0,0,0.2));
+            transition:
+                transform 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+                filter 0.6s ease;
+
+        }
+        .zodiac-card:hover img {
+    transform: translateY(-15px) ;
+    filter: drop-shadow(0 12px 30px rgba(116, 185, 255, 0.75));
+}
+        .icon { font-size: 40px; margin-bottom: 10px; }
+        .name { font-weight: 500; font-size: 16px; }
+
+        
+        .home-btn {
+    margin-top: 50px;
+    display: inline-block;
+    padding: 10px 22px;
+    border: 1px solid #6eb8ae;
+    color: #6eb8ae;
+    text-decoration: none;
+    border-radius: 30px;
+
+    animation: floatBtn 5s ease-in-out infinite;
+    transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes floatBtn {
+    0%   { transform: translateY(0); }
+    50%  { transform: translateY(-6px); }
+    100% { transform: translateY(0); }
+}
+
+.home-btn:hover {
+    transform: translateY(-12px) scale(1.05);
+    background: #6eb8ae;
+    color: white;
+    box-shadow: 0 15px 35px rgba(93, 120, 146, 0.6);
+}

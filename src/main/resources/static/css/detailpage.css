@@ -1,0 +1,519 @@
+@charset "UTF-8";
+
+.firstInfo {
+  width: 100%;
+  margin: 0 auto;
+  padding-top: 100px;
+  box-sizing: border-box;
+  background-color: #ffffff;
+}
+.firstInfo .info-wrap {
+  width: 1200px;
+  height: 700px;
+  padding: 100px 0px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  display: flex;
+  gap: 100px;
+  align-items: center;
+}
+.firstInfo .info-wrap .prod-name .etf-theme {
+  text-align: left;
+  font-size: 16px;
+}
+.firstInfo .info-wrap .prod-name .etf-name {
+  color: #1a1a1a;
+  font-weight: 600;
+  font-size: 40px;
+  letter-spacing: -2px;
+  line-height: 130%;
+  text-align: left;
+  width: 500px;
+  height: 300px;
+}
+.firstInfo .info-wrap .prod-name .etf-name .etf-Tit {
+  margin-bottom: 30px;
+  font-weight: 500;
+}
+
+.code {
+  /* color: #1a1a1a; */
+  /* font-size: 18px; */
+  /* font-weight: 400; */
+  /* text-align: center; */
+  margin: 10px 0px;
+}
+.firstInfo .info-wrap .prod-name {
+  white-space: nowrap;
+  /* text-align: center; */
+}
+
+.firstInfo .info-wrap .etf-info .first-line {
+  display: flex;
+  gap: 30px;
+}
+.firstInfo .info-wrap .etf-info > li > ul > li > div .bg-tit {
+  font-size: 20px;
+  font-weight: 500;
+  color: #ffffff;
+}
+.firstInfo .info-wrap .etf-info > li > ul > li > div .bg-tit2 {
+  font-size: 20px;
+  font-weight: 500;
+  color: #000000;
+}
+ .cont-back{
+  width: 280px; 
+  height: 200px;
+}
+.firstInfo .info-wrap .etf-info .first-line .present-price {
+  background-color: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 5px;
+  padding: 25px 40px;
+  box-sizing: border-box;
+}
+.firstInfo .info-wrap .etf-info .first-line .present-price .price-tit {
+  display: flex;
+  gap: 14px;
+  justify-content: space-between;
+  align-items: center;
+}
+.firstInfo .info-wrap .etf-info .first-line .present-price .price-tit .bg-tit {
+  font-size: 20px;
+  color: #1a1a1a;
+}
+.updown-wrap {
+  display: flex;
+  margin-top: 70px;
+  margin-left: 120px;
+  white-space: nowrap;
+}
+.firstInfo .info-wrap .etf-info .first-line .updown-wrap .updown,
+.firstInfo .info-wrap .etf-info .first-line .updown-wrap i {
+  color: #0800ff;
+  font-size: 14px;
+}
+.firstInfo .info-wrap .etf-info .first-line .updown-wrap p {
+  margin-left: 5px;
+}
+.firstInfo .info-wrap  .etf-info  .first-line  .present-price  .updown-wrap  .updown  > span {
+    color: #1a1a1a;
+}
+/*기준가 수익률*/
+.firstInfo .info-wrap .etf-info .first-line .standard-price {
+  background-color: #2f855a;
+  border-radius: 5px;
+  padding: 25px 40px;
+  box-sizing: border-box;
+}
+.firstInfo .info-wrap .etf-info .first-line .standard-price .nav-tit {
+  display: flex;
+  gap: 14px;
+  justify-content: space-between;
+  align-items: center;
+}
+.firstInfo .info-wrap .etf-info .first-line .standard-price .nav-tit .bg-tit {
+  font-size: 20px;
+  color: #ffffff;
+}
+.firstInfo .info-wrap .etf-info .first-line .updown-wrap .updown {
+  color: #0800ff;
+  font-size: 14px;
+}
+.firstInfo .info-wrap .etf-info .first-line .updown > span {
+  color: #ffffff;
+}
+.firstInfo .info-wrap .etf-info .first-line .real-price {
+  font-size: 20px;
+  margin-left: 120px;
+  white-space: nowrap;
+  margin-bottom: 40px;
+  box-sizing: border-box;
+  color: #1a1a1a;
+}
+.firstInfo .info-wrap .etf-info .first-line .real-price .won {
+  font-size: 20px;
+}
+.firstInfo .info-wrap .etf-info .first-line .real-price2 {
+  font-size: 20px;
+  margin-left: 180px;
+  white-space: nowrap;
+  margin-bottom: 40px;
+  box-sizing: border-box;
+  color: #ffffff;
+}
+.firstInfo .info-wrap .etf-info .first-line .real-price2 .won {
+  font-size: 20px;
+}
+
+/* 수익률 */
+.firstInfo .info-wrap .etf-info .second-line {
+  margin-top: 30px;
+  display: flex;
+  gap: 30px;
+}
+.firstInfo .info-wrap .etf-info .second-line .profit-price {
+  background-color: #ff9f1c;
+  border-radius: 5px;
+  padding: 25px 40px;
+  box-sizing: border-box;
+  color: #fff;
+}
+.firstInfo .info-wrap .etf-info .second-line .profit-price .profit-tit {
+  display: flex;
+  gap: 14px;
+  justify-content: space-between;
+}
+.firstInfo .info-wrap .etf-info .second-line .profit-price .month {
+  font-size: 14px;
+}
+.firstInfo .info-wrap .etf-info .second-line .percentage {
+  color: #e11c2c;
+  font-size: 20px;
+  margin-top: 70px;
+  margin-left: 165px;
+}
+/* 거래량 */
+.firstInfo .info-wrap .etf-info .second-line .trade-quantity {
+  background-color: #fff;
+  border-radius: 5px;
+  padding: 25px 40px;
+  box-sizing: border-box;
+  border: 1px solid #e5e5e5;
+}
+.firstInfo .info-wrap .etf-info .second-line .trade-quantity .trade-tit {
+  display: flex;
+  gap: 14px;
+  justify-content: space-between;
+  align-items: center;
+}
+.firstInfo .info-wrap .etf-info .second-line .trade-quantity .quantity {
+  font-size: 20px;
+  margin-top: 85px;
+  margin-left: 125px;
+  white-space: nowrap;
+}
+.firstInfo .info-wrap .etf-info .tracking-time {
+  margin-top: 10px;
+  margin-left: 430px;
+  white-space: nowrap;
+  font-size: 15px;
+  color: #666;
+}
+
+/* 탭메뉴 */
+.tab-info {
+  width: 100%;
+  margin-top: 70px;
+  padding-bottom: 150px;
+  box-sizing: border-box;
+}
+
+.tab-info .tab-category {
+  width: 1520px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  list-style: none;
+  padding: 0;
+}
+
+.tab-info .tab-category .tab-btn {
+  width: 180px;
+  height: 55px;
+  background-color: #f5f5f5;
+  border-radius: 999px;
+  color: #1a1a1a;
+  border: none;
+  font-size: 22px;
+  text-align: center;
+  line-height: 55px;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: all 0.25s ease;
+}
+
+.tab-info .tab-category .tab-btn.on {
+  background-color: #2f855a;
+  color: white;
+}
+
+.tab-info .tab-category .tab-btn:hover {
+  background-color: #e6f0ed;
+}
+
+
+.tab-info .tab-panels .tab-cont {
+  display: none;
+  width: 100%;
+}
+
+.tab-info .tab-panels .tab-cont.on {
+  display: block;
+}
+/* 기본정보 */
+
+
+#standard-info {
+  width: 1300px;
+  margin: 0 auto;
+  /* padding: 100px; */
+  box-sizing: border-box;
+}
+.info-table{
+  margin-top: 80px;
+}
+form{
+  /* width: 00px; */
+  margin: 0 auto;
+  margin-top: 50px;
+}
+.tit-wrap{
+  margin: 0 auto;
+  text-align: center;
+  margin-bottom: 50px;
+}
+.prodTit{
+  /* text-align: center; */
+  /* margin-left: 70px; */
+  font-size: 35px;
+  font-weight: 500;
+}
+.prodtxt{
+  /* margin-left: 180px; */
+  font-size: 18px;
+  font-weight: 400;
+}
+
+/* 항목 내용 */
+.cont-table {
+  width: 950px;
+  margin: 0 auto;
+  margin-top: 35px;
+  /* table-layout: fixed; */
+  border-collapse: collapse;
+}
+.cont-table thead tr th {
+  font-size:22px;
+  font-weight: 400;
+  /* background-color: #e7e7e7; */
+  color: #2f855a;
+  padding: 17px 0px;
+  /* text-align: center; */
+  border-bottom: 1px solid #dddddd;
+}
+.cont-table tr .check-icon > i {
+  color: #235850;
+  font-size: 18px;
+  padding-right: 50px;
+}
+.cont-table th:nth-child(1),
+.cont-table td:nth-child(1) {
+  width: 20px;
+}
+.cont-table td:nth-child(2) {
+  width: 750px;
+  text-align: left;
+}
+.cont-table td:nth-child(3) {
+  width: 750px;
+  text-align: left;
+}
+.cont-table tbody .table-row {
+  height: 20px;
+  transition: background-color 0.2s;
+  border-bottom: 1px solid #e5e5e597;
+}
+.cont-table tbody .table-row:hover {
+  background-color: #f8f9f9;
+}
+
+.cont-table tbody .table-row .cont1 {
+  font-size: 18px;
+  padding: 17px 0px;
+  box-sizing: border-box;
+  color: #1a1a1a;
+}
+.cont-table tbody .table-row .cont2 {
+  font-size: 18px;
+  padding: 17px 0px;
+  box-sizing: border-box;
+  color: #4b4b4b;
+}
+.cont-table tbody .table-row:last-child {
+  border-bottom: 1px solid #e5e5e5;
+}
+.firstInfo .info-wrap .etf-info .first-line .present-price,
+.firstInfo .info-wrap .etf-info .first-line .standard-price,
+.firstInfo .info-wrap .etf-info .second-line .profit-price,
+.firstInfo .info-wrap .etf-info .second-line .trade-quantity {
+  transition: 
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.firstInfo .info-wrap .etf-info .first-line .present-price:hover,
+.firstInfo .info-wrap .etf-info .first-line .standard-price:hover,
+.firstInfo .info-wrap .etf-info .second-line .profit-price:hover,
+.firstInfo .info-wrap .etf-info .second-line .trade-quantity:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+}
+
+/* 탭 수익률 */
+.tab-info .tab-panels #profit{
+  width: 850px;
+  margin: 0 auto;
+}
+.tab-info .tab-panels #profit .profit-chartbg{
+  margin-top: 50px;
+}
+.tab-info .tab-panels .profit-table table {
+  width: 800px;
+  margin-top: 70px;
+  text-align: center;
+  border-collapse: collapse;
+}
+
+.tab-info .tab-panels .profit-table thead th {
+  font-size: 18px;
+  font-weight: 500;
+  padding: 20px 0;
+  border-bottom: 1px solid #3e9975ab;
+  color: #676363;
+}
+
+.tab-info .tab-panels .profit-table tbody td {
+  font-size: 18px;
+  padding: 10px 0;
+  color: #676363;
+}
+
+.tab-info .tab-panels .profit-table .first-cell,
+.tab-info .tab-panels .profit-table .property-tit {
+  width: 150px;
+  text-align: left;
+  color: #676363;
+  font-weight: 500;
+  border-right: 1px solid #3e9975ab;
+  padding-left: 10px;
+}
+
+.tab-info .tab-panels .profit-table table caption {
+  caption-side: bottom;
+  text-align: left;
+  padding-top: 20px;
+}
+
+.tab-info .tab-panels .profit-table .caution {
+  /* width: 1300px; */
+  text-align: left;
+  color: #666;
+  font-size: 14px;
+  margin-top: 15px;
+  display: block;
+}
+
+
+
+/*구성정보 */
+#container {
+  width: 1200px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 28px 0px;
+  margin-top: 30px;
+}
+#container .setup-header {
+  width: 800px;
+  margin: 0 auto;
+  font-size: 30px;
+  font-weight: 500;
+  padding: 20px 0;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+#container .setup-header .cat-btn1 {
+  width: 170px;
+  height: 40px;
+  border: 1px solid #b5b2b2;
+  background-color: #f5f5f5;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s;
+  /* margin-top: 15px; */
+}
+#container .chart-container-custom {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  margin: 0px auto;
+}
+
+#container .chart-container-custom .chart-caption {
+  font-size: 28px;
+  font-weight: 700;
+  color: #235850;
+  white-space: nowrap;
+}
+#container .chart-caption2 {
+  width: 100%;
+  text-align: center;
+  font-size: 13px;
+  color: #666;
+  margin-top: 16px;
+}
+#container .chart-container-custom .chart-center-area {
+  width: 450px;
+  height: 450px;
+  margin: 0 auto;
+}
+#container .chart-container-custom .chart-right-list ul {
+  width: 300px;
+  margin: 0;
+}
+#container .chart-container-custom .chart-right-list ul>li{
+  display: flex;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+#container .chart-container-custom .chart-right-list h3{
+  font-size: 20px;
+  color: #2f855a;
+  padding-bottom: 20px;
+  box-sizing: border-box;
+  font-weight: 600;
+}
+#setup {
+  padding: 20px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 0.75fr;
+  gap: 16px;
+  align-items: center;
+}
+.chart-box {
+  height: 420px;
+}
+.name {
+  font-weight: 700;
+}
+
+.weight {
+  font-weight: 800;
+  color: #3c7a61;
+}
+@media (max-width: 900px) {
+  .grid {
+      grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,178 @@
+@charset "UTF-8";
+
+.searchsection{
+    padding-top: 100px;
+    box-sizing: border-box;
+    width: 1620px;
+    margin: 0 auto;
+    margin-bottom: 70px;
+}
+.searchsection .input {
+    border: 1px solid #e5e7eb;              /* 연한 그레이 */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.04); /* 아주 연한 그림자 */
+    transition: box-shadow 0.25s, border 0.25s;
+}
+.searchsection input:focus {
+    outline: none;
+}
+
+.searchsection button:focus {
+    outline: none;
+}
+
+.searchsection .searchbar{
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.searchsection .searchbar .searchTit{
+    font-size: 50px;
+    text-align: center;
+    font-weight: 600;
+    /* white-space: nowrap; */
+    padding: 100px 0;
+    box-sizing: border-box;
+    color: #1e1f7c;
+}
+.searchsection .searchbar>ul{
+    width: 100%; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+    border-radius: 10px;
+}
+.searchsection .searchbar .searchBg {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.searchsection .searchBox {
+    width: 100%;
+    max-width: 860px;
+    position: relative;
+}
+.searchsection .searchInputWrap{
+  height: 60px;
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  background: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+  position: relative;
+}
+.searchsection .searchBox .related-keywords {
+    position: absolute;
+    top: calc(60px + 8px);
+    left: 0;
+    width: 100%;
+    margin: 0;
+    z-index: 10;
+}
+.searchsection .searchBox > div {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+}
+
+/* 필터링 버튼 */
+.filter-search {
+    display: flex;
+    justify-content: center;
+    gap: 100px;
+}
+.filter-search .result .search-etf .prod-box{
+    width: 700px; height: 250px;
+    margin: 0 auto;
+    background-color: #7abbef18;
+    border-radius: 20px;
+    margin-top: 20px;
+    margin-bottom: 50px;
+    padding: 30px 50px;
+    box-sizing: border-box;
+    /* white-space: nowrap; */
+}
+.filter-search .result .search-etf .prod-box .prod-name{
+    /* width: 500px; */
+    padding: 10px 0px;
+    font-size: 26px;
+    font-weight: 500;
+}
+.filter-search .result .search-etf .prod-box .prod-info .profit{
+    display: flex;
+    /* justify-content: start; */
+    gap: 20px;
+    align-items: center;
+    /* padding: 15px 0px; */
+    box-sizing: border-box;
+    font-size: 14px;
+}
+.filter-search .result .search-etf .prod-box .prod-info .profit>li:first-child{
+    font-size: 18px;
+    font-weight: 500;
+}
+.filter-search .result .search-etf .prod-box .prod-info .profit .month{
+    font-size: 14px;
+    font-weight: 300;
+}
+.filter-search .result .search-etf .prod-box .prod-info .profit .percent{
+    font-size: 25px;
+    font-weight: 600;
+    color: #F04452;
+}
+.filter-search .result .search-etf .prod-box .prod-info .profit .minus-percent{
+    font-size: 25px;
+    font-weight: 600;
+    color: #4594DF;
+}
+.filter-search .result .search-etf .prod-box .quan-wrap{
+    margin-top: 15px;
+}
+.filter-search .result .search-etf .prod-box .quan-wrap .quantity .quant-tit{
+    font-size: 18px;
+    font-weight: 500;
+}
+.filter-search .result .search-etf .prod-box .quan-wrap .quantity .quant-quan{
+    font-size: 22px;
+    font-weight: 400;
+    padding-left: 30px;
+    box-sizing: border-box;
+}
+.filter-search .result .search-etf .prod-box .cat-btn{
+    display: flex;
+    /* align-items: center; */
+    gap: 10px;
+    white-space: nowrap;
+}
+.filter-search .result .search-etf .prod-box .more-btn{
+    margin-top: -30px;
+    margin-right: -5px;
+}
+.filter-search .result .search-etf .prod-box  .fa-regular{
+    color: #9ca3af;
+}
+.filter-search .result .search-etf .prod-box  .fa-regular,
+.filter-search .result .search-etf .prod-box  .fa-solid{
+    font-size: 18px;
+    transition: all 0.2s, color 0.2s;
+}
+.more-btn button{
+    font-weight: 300;
+    font-size: 16px;
+    letter-spacing: -1px;
+}
+.starreal-wrap{
+    position: relative;
+}
+.starreal-wrap i{
+    position: absolute;
+    left: 0px;
+    top: -8px;
+}
+.starreal-wrap .fa-regular{ opacity: 1; }
+.starreal-wrap .fa-solid{ opacity: 0; color: rgb(255, 209, 91); }
+
+
+.starreal-wrap.on .fa-solid { opacity: 1; }
+.starreal-wrap.on .fa-regular { opacity: 0; }

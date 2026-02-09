@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>뉴스 상세 - Verte</title>
+
+    <link rel="icon" th:href="@{/images/favi.png}">
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/news.css}">
+
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://kit.fontawesome.com/4aff7483c9.js" crossorigin="anonymous"></script>
+</head>
+<body>
+<div th:replace="~{fragments/header :: headerFragment}"></div>
+
+<section class="index">
+    <div role="tablist" class="tabs tabs-border justify-center w-full gap-8">
+        <a th:href="@{/event}" role="tab" class="tab mx-4 noticepage text-[15px]">이벤트</a>
+        <a th:href="@{/board}" role="tab" class="tab mx-4 freepage text-[15px]">자유게시판</a>
+        <a th:href="@{/notice}" role="tab" class="tab mx-4 newspage text-[15px] text-[#055C4D] font-bold border-b-2 border-[#055C4D]">ETF 뉴스</a>
+    </div>
+</section>
+
+<div class="news-container mt-[50px]">
+    <div class="max-w-[1200px] mx-auto bg-white p-10 rounded-2xl border border-gray-200 shadow-sm">
+
+        <div class="border-b border-gray-200 pb-6 mb-8">
+            <div class="flex justify-between items-start mb-4">
+                <span class="bg-[#055C4D15] text-[#055C4D] text-xs font-bold px-3 py-1 rounded-md">NEWS</span>
+
+                <a th:if="${notice.originalUrl != null}" th:href="${notice.originalUrl}" target="_blank"
+                   class="text-sm text-gray-500 hover:text-[#055C4D] flex items-center gap-1 transition">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i> 원문 보기
+                </a>
+            </div>
+
+            <h2 class="text-3xl font-bold text-gray-800 leading-tight mb-6" th:text="${notice.title}">뉴스 제목</h2>
+
+            <div class="flex items-center text-sm text-gray-500 gap-6">
+                    <span class="flex items-center gap-2">
+                        <i class="fa-regular fa-user"></i>
+                        <span th:text="${notice.user.username}">작성자</span>
+                    </span>
+                <span class="flex items-center gap-2">
+                        <i class="fa-regular fa-calendar"></i>
+                        <span th:text="${#temporals.format(notice.createdDate, 'yyyy.MM.dd HH:mm')}">2026.01.01</span>
+                    </span>
+                <span class="flex items-center gap-2">
+                        <i class="fa-regular fa-eye"></i>
+                        <span th:text="${notice.views}">0</span>
+                    </span>
+            </div>
+        </div>
+
+        <div class="news-body text-gray-700 leading-relaxed text-lg min-h-[300px]">
+            <div class="mb-10 text-center" th:if="${notice.thumbnailUrl != null and notice.thumbnailUrl != ''}">
+                <img th:src="${notice.thumbnailUrl}" alt="뉴스 이미지" class="max-w-full rounded-lg shadow-md mx-auto">
+            </div>
+
+            <p th:utext="${#strings.replace(notice.content, '
+', '<br>')}" class="whitespace-pre-line"></p>
+        </div>
+
+        <div class="border-t border-gray-200 pt-8 mt-10 flex justify-between items-center">
+            <a th:href="@{/notice}" class="px-6 py-3 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50 transition">
+                목록으로
+            </a>
+
+            <form th:if="${session.loginUser != null && session.loginUser.isAdmin()}"
+                  th:action="@{/notice/delete/{id}(id=${notice.id})}"
+                  method="post"
+                  onsubmit="return confirm('정말 삭제하시겠습니까?');">
+                <button type="submit" class="px-6 py-3 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition font-medium">
+                    <i class="fa-regular fa-trash-can mr-2"></i> 삭제하기
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer :: footerFragment}"></div>
+
+<script th:src="@{/js/common.js}"></script>
+</body>
+</html>

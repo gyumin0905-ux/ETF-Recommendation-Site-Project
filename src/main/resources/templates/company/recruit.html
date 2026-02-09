@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>채용 정보 - Verte ETF</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/company.css}">
+
+    <link rel="icon" th:href="@{/images/favi.png}">
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: headerFragment}"></div>
+
+<div class="hero-section bg-recruit">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <h2>함께 성장할 동료를 찾습니다</h2>
+        <h3>금융의 미래를 혁신하는 Verte ETF의 여정</h3>
+        <p>
+            우리는 최고의 데이터 기술과 금융 전문성으로<br>
+            새로운 투자 기준을 만들어가고 있습니다.<br>
+            당신의 열정과 능력을 마음껏 펼칠 수 있는 곳, Verte와 함께하세요.
+        </p>
+        <a href="#" class="btn-recruit">채용 공고 확인하기</a>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer :: footerFragment}"></div>
+
+<script th:src="@{/js/common.js}"></script>
+</body>
+</html>

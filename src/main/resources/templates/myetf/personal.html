@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MY ETF - 개인 맞춤형 추천</title>
+    <link rel="icon" th:href="@{/images/favi.png}">
+
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/portfolio.css}">
+
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: headerFragment}"></div>
+
+<div class="my-etfsection">
+    <section class="myetf">
+        <div class="left-nav">
+            <h2 class="section-title">MY ETF</h2>
+            <ul class="tab-menu" data-default-tab="content1">
+                <li class="tab-on" onclick="location.href='/myetf/personal'">개인 맞춤형 ETF 추천</li>
+                <li onclick="location.href='/myetf/portfolio'">포트폴리오 제안서</li>
+            </ul>
+        </div>
+
+        <div class="content-wrapper">
+            <div class="content1 current" style="display: block;">
+                <div class="textarea1">
+                    <h1><span th:text="${session.loginUser.username}" style="color:inherit;">AAA</span>님의 성향은 <span>위험중립형</span>입니다.</h1>
+                    <p>위험중립형 투자자는 투자에 따른 위험을 인지하고 이를 감수하며,
+                        예금·적금보다 높은 수익을 추구하는 유형입니다. <br>
+                        수익과 위험의 균형을 중시해 보통 수준의 위험 투자를 선호하며,
+                        안정형과 적극투자형 사이의 중간 성향을 보입니다.
+                    </p>
+                </div>
+                <div class="flex justify-center items-center gap-0.5 py-0.5">
+                    <button class="modibtn btn btn-xs btn-success
+                    !bg-[#055C4D] !text-white border-none shadow-none
+                    px-4 py-3 w-40 min-h-[56px] rounded-[13px]" onclick="alert('준비중입니다.');">
+                        테스트 하러가기
+                    </button>
+                </div>
+                <div class="slogan">
+                    <div class="leftquote"><img th:src="@{/images/“.png}" alt="따옴표"></div>
+                    <h3><span>위험중립형</span>인 <span th:text="${session.loginUser.username}">AAA</span>님을 위한 맞춤 ETF</h3>
+                    <div class="rightquote"><img th:src="@{/images/”.png}" alt="따옴표"></div>
+                </div>
+                <table class="etf-table">
+                    <thead>
+                    <tr>
+                        <th>종목명</th>
+                        <th>수익률</th>
+                        <th>현재가</th>
+                        <th>위험순위</th>
+                        <th>상장일</th>
+                        <th>운용사</th>
+                        <th>거래량</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr onclick="location.href='/search'">
+                        <td>KODEX 200</td>
+                        <td>14.69%</td>
+                        <td class="highprice">68,475<span>원</span></td>
+                        <td><span class="badge level-1">1등급(매우높음)</span></td>
+                        <td class="date">2020.05.13</td>
+                        <td>삼성자산운용</td>
+                        <td>8,820,293주</td>
+                    </tr>
+                    <tr onclick="location.href='/search'">
+                        <td>RISE 200선물레버리지</td>
+                        <td>30.43%</td>
+                        <td class="highprice">54,950<span>원</span></td>
+                        <td><span class="badge level-2">2등급(높음)</span></td>
+                        <td class="date">2002.10.14</td>
+                        <td>삼성자산운용</td>
+                        <td>9,725주</td>
+                    </tr>
+                    <tr onclick="location.href='/search'">
+                        <td>KODEX 일본부동산리츠(H)</td>
+                        <td>4.10%</td>
+                        <td class="lowprice">12,990<span>원</span></td>
+                        <td><span class="badge level-3">3등급(다소높은위험)</span></td>
+                        <td class="date">2016.09.12</td>
+                        <td>KB자산운용</td>
+                        <td>63,786주</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</div>
+
+<div th:replace="~{fragments/footer :: footerFragment}"></div>
+
+<script th:src="@{/js/common.js}"></script>
+<script th:src="@{/js/portfolio.js}"></script>
+</body>
+</html>

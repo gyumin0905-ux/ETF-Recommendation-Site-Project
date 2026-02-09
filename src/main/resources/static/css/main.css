@@ -1,0 +1,855 @@
+@charset "UTF-8";
+
+/* 리셋 CSS */
+*{margin: 0; padding: 0; box-sizing: border-box;}
+ul{list-style: none;}
+img{vertical-align: top; border: 0;}
+a{text-decoration: none; color: inherit;}
+
+body{
+    color: #1A1A1A;
+    font-family: "Noto Sans KR", sans-serif;
+}
+
+/* 헤더 */
+header{
+    width: 100%;
+    height: 100px;
+    background-color: white;
+    transition: height 0.3s ease;
+    position: absolute;
+    top:0;
+    left: 0;
+    z-index: 10;
+}
+
+header.active{
+    height: 320px;
+}
+
+header .header-wrap{
+    width: 1620px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+/* 헤더: 로고 */
+header .header-wrap .logo{
+    width: 80px;
+    height: 80px;
+    position: absolute;
+    top:50%;
+    left:0;
+    transform: translateY(-50%);
+}
+
+header .header-wrap .logo img{
+    width: 100%;
+    height: 100%;
+}
+
+/* 헤더: gnb */
+header .header-wrap .gnb{
+    display: flex;
+    justify-content: center;
+}
+
+header .header-wrap .gnb>li{
+    position: relative;
+}
+
+header .header-wrap .gnb>li>a{
+    display: block;
+    font-size: 18px;
+    text-align: center;
+    width: 120px;
+    height: 100px;
+    line-height: 100px;
+    border-bottom: 2px solid transparent;
+    font-weight: 500;
+    transition: all 0.3s;
+}
+
+header .header-wrap .gnb>li:hover>a{
+    color: #055C4D;
+    border-bottom: 2px solid #055C4D;
+}
+
+header .header-wrap .gnb>li>a.active{
+    width: 150px;
+}
+
+header .header-wrap .gnb>li .sub{
+    overflow: hidden;
+    height: 0;
+    transition: height 0.3s ease;
+    position: absolute;
+    top:100px;
+    left: 0;
+    color: #4b4b4b;
+}
+
+header .header-wrap .gnb>li>ul>li:nth-child(1)>a{
+    margin-top: 20px;
+}
+
+header .header-wrap .gnb>li>ul>li>a{
+    display: block;
+    text-align: center;
+    width: 140px;
+    height: 40px;
+    line-height: 40px;
+}
+
+header .header-wrap .gnb>li>ul>li>a:hover{
+    color: #055C4D;
+    font-weight: 500;
+    transition: all 0.5s;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+/* 헤더: 버튼 */
+header .header-btn{
+    position: absolute;
+    top:50%;
+    right: 0;
+    transform: translateY(-50%);
+}
+
+header .header-btn button{
+    border: none;
+    background-color: transparent;
+    padding: 10px 15px;
+    transition: all 0.3s;
+    font-size: 14px;
+    color: rgb(85, 85, 85);
+}
+
+header .header-btn button:hover{
+    background-color: #055C4D;
+    color: white;
+}
+
+
+
+/* 섹션1: 검색창 */
+#search{
+    margin-top: 100px;
+    background-color: #F6FCFB;
+    height: 500px;
+    position: relative;
+    overflow: hidden;
+    padding-top: 55px;
+}
+
+#search .transition-box{
+    position: relative;
+    z-index: 2;
+}
+
+#search .transition-box > * {
+    transform: translateY(-30px);
+    opacity: 0;
+    transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+#search.active .transition-box > * {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+#search .circle{
+    width: 600px;
+    height: 600px;
+    position: absolute;
+    top: -270px;
+    right: -100px;
+    background-color: #E5F9F6;
+    border-radius: 50%;
+    z-index: 1;
+}
+
+#search .transition-box h2{
+    font-weight: 400;
+    font-size: 48px;
+    text-align: center;
+    letter-spacing: -3px;
+    transition-delay: 0.3s;
+}
+
+#search .transition-box h2 span{
+    font-weight: 700;
+    color: #055C4D;
+    line-height: 170%;
+    letter-spacing: -2px;
+}
+
+#search .transition-box p{
+    font-size: 18px;
+    color: #666666;
+    text-align: center;
+    margin-top: 10px;
+    letter-spacing: -1px;
+    transition-delay: 0.6s;
+}
+
+#search .transition-box .search-wrap{
+    margin: 0 auto;
+    width: fit-content;
+    margin-top: 70px;
+    position: relative;
+    transition-delay: 0.9s;
+}
+
+#search .search-wrap .search-bar{
+    width: 730px;
+    height: 65px;
+    padding-left: 40px;
+    padding-top: 5px;
+    border-radius: 50px;
+    outline: none;
+    border: 2px solid #055C4D;
+    box-shadow: 2px 2px 3px #D9D9D9;
+    
+}
+
+#search .search-wrap .search-bar::placeholder{
+    font-size: 17px;
+    color: #666666;
+}
+
+#search .search-wrap .search-btn{
+    border: none;
+    background-color: #055C4D;
+    color: white;
+    width: 90px;
+    padding: 15px 0;
+    border-radius: 40px;
+    font-weight: 500;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+}
+
+#search .transition-box .word-list{
+    display: flex;
+    gap: 10px;
+    width: fit-content;
+    margin: 0 auto;
+    font-size: 14px;
+    margin-top: 15px;
+    transition-delay: 1.2s;
+}
+
+#search .word-list li{
+    color: #055C4D;
+}
+
+#search .word-list li:nth-of-type(1){
+    color: #666666;
+}
+
+
+
+/* 섹션2: 배너 */
+#banners .banner-list{
+    display: flex;
+    justify-content: center;
+}
+
+#banners .banner-list li a{
+    display: block;
+    width: 480px;
+    height: 310px;
+    border: 1px solid #F1F3F8;
+    padding: 30px;
+    overflow: hidden;
+}
+
+#banners .banner-list li a .text-top{
+    padding: 2px 15px;
+    border: 1px solid white;
+    border-radius: 30px;
+    background-color: #E5F9F6;
+    color: #055C4D;
+    width: fit-content;
+}
+
+#banners .banner-list li a h3{
+    font-size: 25px;
+    margin-top: 10px;
+    font-weight: 400;
+    letter-spacing: -1px;
+    line-height: 130%;
+    color: black;
+}
+
+#banners .banner-list li a .etf-name{
+    margin-top: 10px;
+    color: rgb(124, 124, 124);
+}
+
+#banners .banner-list li a .etf-ticker{
+    font-size: 14px;
+    
+}
+
+#banners .banner-list li a img{
+    width: 280px;
+    display: block;
+    margin-left: 180px;
+    margin-top: -120px;
+}
+
+#banners .banner-list li:nth-of-type(1) a img{
+    margin-top: -160px;
+}
+
+
+
+/* 섹션3: 이벤트 */
+#event{
+    margin-top: 150px;
+    padding: 70px 0;
+    background-color: #F6FCFB;
+}
+
+#event .event-list{
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+#event .event-list li a{
+    display: block;
+    width: 345px;
+}
+
+#event .event-list li a img{
+    border-radius: 30px;
+    width: 100%;
+}
+
+#event .event-list li a h3{
+    font-size: 20px;
+    font-weight: 400;
+    margin-top: 25px;
+    padding: 0 15px;
+    letter-spacing: -1px;
+    color: black;
+}
+
+#event .event-list li a p{
+    color:#666666;
+    font-size: 14px;
+    margin-top: 5px;
+    padding: 0 15px;
+}
+
+
+
+/* 섹션4: 추천 ETF */
+#recommend{
+    width: 1620px;
+    margin: 0 auto;
+    margin-top: 150px;
+    display: flex;
+    gap: 5%;
+}
+
+#recommend .left{
+    width: 25%;
+}
+
+#recommend .left h2{
+    font-size: 50px;
+    font-weight: 500;
+    letter-spacing: -1px;
+    line-height: 120%;
+}
+
+#recommend .left p{
+    font-size: 20px;
+    color: #666666;
+    margin-top: 20px;
+}
+
+#recommend .left .tab-btn{
+    margin-top: 100px;
+}
+
+#recommend .left .tab-btn li{
+    font-size: 24px;
+    margin-bottom: 30px;
+    cursor: pointer;
+    padding: 10px 0 10px 60px;
+    background-repeat: no-repeat;
+    background-position: 20px 55%;
+    border-radius: 15px;
+}
+
+#recommend .left .tab-btn li.active{
+    background-color: #00A4B7;
+    color: white;
+}
+
+#recommend .left .tab-btn li.active:hover{
+    background-color: #00A4B7;
+    cursor: default;
+}
+
+#recommend .left .tab-btn li:nth-of-type(1){background-image: url(../images/recommend-btn-icon1.png);}
+#recommend .left .tab-btn li:nth-of-type(2){background-image: url(../images/recommend-btn-icon2.png);}
+#recommend .left .tab-btn li:nth-of-type(3){background-image: url(../images/recommend-btn-icon3.png);}
+#recommend .left .tab-btn li:nth-of-type(4){background-image: url(../images/recommend-btn-icon4.png);}
+
+#recommend .left .tab-btn li:hover{
+    background-color: #F5F6F8;
+}
+
+#recommend .right{
+    width: 70%;
+}
+
+#recommend .right .etf-list{
+    display: none;
+    gap: 20px;
+    flex-wrap: wrap;
+    row-gap: 30px; /* ⭐ 추가 */
+    justify-content: flex-start;
+}
+
+#recommend .right .etf-list.active{
+    display: flex;
+}
+
+#recommend .right .etf-list li{
+    width: 30%;
+    min-height: 390px;
+    border: 1px solid #D9D9D9;
+    border-radius: 40px;
+    padding: 30px;
+    position: relative;
+}
+
+#recommend .right .etf-list li:hover{
+    border: 1px solid #aaaaaa;
+}
+
+#recommend .right .etf-list li .rank-num{
+    font-size: 20px;
+    font-weight: 500;
+}
+
+#recommend .right .etf-list li .bookmark{
+    width: 25px;
+    position: absolute;
+    top: 30px;
+    right: 30px;
+}
+
+#recommend .right .etf-list li .etf-icon{
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+}
+
+#recommend .right .etf-list li .etf-icon .icon-imgs{
+    width: 48px;
+    height: 48px;
+    background-color: #82E8E8;
+    position: relative;
+    border-radius: 50%;
+}
+
+#recommend .right .etf-list li .etf-icon .icon-imgs .icon-big{
+    width: 100%;
+}
+
+#recommend .right .etf-list li .etf-icon .icon-imgs .icon-small{
+    position: absolute;
+    width: 20px;
+    right: -12px;
+    bottom: 0;
+}
+
+#recommend .right .etf-list li .bubble{
+    display: inline-block;
+    background-color: #E94BA7;
+    color: white;
+    font-size: 14px;
+    padding: 7px 8px;
+    margin-left: 15px;
+    border-radius: 10px;
+    position: relative;
+    letter-spacing: -1px;
+    font-weight: 500;
+}
+
+#recommend .right .etf-list li .bubble::before{
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: -10px;
+    transform: translateY(-50%);
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent #E94BA7 transparent transparent;
+}
+
+#recommend .right .etf-list li .etf-name{
+    font-size: 22px;
+    font-weight: 500;
+    margin-top: 10px;
+
+    /* ⭐ 말줄임 처리 */
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+#recommend .right .etf-list li .etf-ticker{
+    margin-top: 5px;
+}
+
+#recommend .right .etf-list li .etf-info{
+    color: #666666;
+    margin-top: 5px;
+    font-size: 12px;
+}
+
+#recommend .right .etf-list li .etf-return-sub{
+    text-align: right;
+    color: #666666;
+    font-size: 12px;
+    margin-top: 20px;
+}
+
+#recommend .right .etf-list li .etf-return{
+    position: absolute;
+    bottom: 70px;          /* 기준일 위 */
+    right: 30px;
+
+    font-size: 36px;
+    font-weight: 500;      /* ❌ bold → ✔ 500 */
+    line-height: 1;
+}
+/* 색상 html 인라인 스타일로 지정했음 */
+/* 상승할 경우 레드 컬러: #F04452 */
+/* 하락할 경우 블루 컬러: #4594DF */
+
+#recommend .right .etf-list li .etf-price{
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+#recommend .right .etf-list li .etf-date{
+    position: absolute;
+    bottom: 30px;
+    left: 30px;
+    right: 30px;
+
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: #666;
+}
+
+/* 섹션5: 뉴스 */
+#news {
+    margin-top: 150px;
+    padding: 100px 0;
+    background: #F6FCFB;
+}
+
+.news-swiper {
+    position: relative;
+    width: 1280px;
+    margin: 30px auto 0;
+}
+
+.news-swiper .swiper-slide {
+    width: auto;          /* ⭐ 핵심 */
+    flex-shrink: 0;       /* ⭐ 핵심 */
+}
+
+.news-card {
+    display: block;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    height: 380px;
+    transition: transform 0.3s;
+}
+
+.news-card:hover {
+    transform: translateY(-5px);
+}
+
+.news-card .img-wrap {
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+}
+
+.news-card .img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.news-card .text-wrap {
+    padding: 20px 16px;
+}
+
+.news-card .category {
+    font-size: 12px;
+    font-weight: 600;
+    color: #055C4D;
+}
+
+.news-card h3 {
+    font-size: 18px;
+    font-weight: 400;
+    margin-top: 8px;
+    line-height: 1.4;
+}
+
+.news-card p {
+    font-size: 14px;
+    color: #777;
+    margin-top: 8px;
+    line-height: 1.5;
+
+    /* 두 줄 말줄임 */
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+/* ===== Swiper 네비게이션 ===== */
+.news-swiper {
+    position: relative;
+}
+
+/* 버튼 공통 */
+.news-swiper .swiper-button-prev,
+.news-swiper .swiper-button-next {
+    width: 50px;
+    height: 50px;
+    top: 160px;
+    z-index: 20;
+}
+
+/* Swiper 기본 화살표 제거 */
+.news-swiper .swiper-button-prev::after,
+.news-swiper .swiper-button-next::after {
+    display: none;
+}
+
+/* 이미지 */
+.news-swiper .swiper-button-prev img,
+.news-swiper .swiper-button-next img {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* 위치 + 회전 */
+.news-swiper .swiper-button-prev {
+    left: -80px;
+    transform: rotate(90deg);
+}
+
+.news-swiper .swiper-button-next {
+    right: -80px;
+    transform: rotate(270deg);
+}
+
+/* ===== ETF 뉴스 타이틀 ===== */
+#news .title-line {
+    width: 1620px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding-bottom: 30px;
+    border-bottom: 2px solid #eeeeee;
+}
+
+#news .title-line h2 {
+    font-size: 50px;
+    font-weight: 500;
+}
+
+#news .title-line .more-btn {
+    font-size: 18px;
+    color: #333;
+}
+
+/* 섹션6: ETF 투자 정보 */
+#info{
+    margin-top: 150px;
+    margin-bottom: 100px;
+}
+
+#info .info-top{
+    width: 1620px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+#info .info-top h2{
+    font-size: 50px;
+    font-weight: 500;
+}
+
+#info .info-top p{
+    font-size: 20px;
+    color: #666666;
+}
+
+#info .info-bot{
+    width: 1450px;
+    margin: 0 auto;
+}
+
+#info .info-bot .info-list{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6%;
+    margin-top: 50px;
+}
+
+#info .info-bot .info-list li{
+    width: 47%;
+    padding: 20px 0;
+}
+
+#info .info-bot .info-list li:nth-of-type(1),
+#info .info-bot .info-list li:nth-of-type(2){
+    border-bottom: 1px solid #eeeeee;
+}
+
+#info .info-bot .info-list li a{
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+#info .info-bot .info-list li:hover a .left .flip{
+    transform: rotateY(180deg);
+    background-color: #055C4D;
+}
+
+#info .info-bot .info-list li a .left .flip{
+    background-color: #f1f1f1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    transition: all 0.5s;
+}
+
+#info .info-bot .info-list li a .left .flip img{
+    width: 50%;
+    filter: grayscale(0.4);
+}
+
+#info .info-bot .info-list li:hover a .left .flip img{
+    filter: grayscale(0);
+}
+
+#info .info-bot .info-list li a .right{
+    letter-spacing: -1px;
+}
+
+#info .info-bot .info-list li a .right h4{
+    font-size: 30px;
+    font-weight: 500;
+}
+
+#info .info-bot .info-list li a .right p{
+    font-size: 20px;
+    color: #666666;
+    margin-top: 5px;
+}
+
+
+
+/* 푸터 */
+footer{
+    background-color: #055C4D;
+    color: white;
+    padding: 50px 0;
+}
+
+footer .footer-wrap{
+    width: 1460px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* 푸터:좌측 */
+footer .footer-wrap .footer-left .logo img{
+    width: 80%;
+}
+
+/* 푸터: 우측 */
+footer .footer-wrap .footer-right .footer-menu{
+    width: 600px;
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 14px;
+    margin-top: 15px;
+}
+
+footer .footer-wrap .footer-right .footer-menu li{
+    padding: 0px 20px;
+    margin-bottom: 5px;
+}
+
+footer .footer-wrap .footer-right .footer-menu li:nth-child(2){
+    border-left: 1px solid white;
+    border-right: 1px solid white;
+}
+
+footer .footer-wrap .footer-right .footer-menu li:nth-child(3),
+footer .footer-wrap .footer-right .footer-menu li:nth-child(5),
+footer .footer-wrap .footer-right .footer-menu li:nth-child(7){
+    padding-right: 0px;
+}
+
+footer .footer-wrap .footer-right .footer-menu li:nth-child(4){
+    border-right: 1px solid white;
+}
+
+footer .footer-wrap .footer-right .footer-menu li:nth-child(6){
+    border-right: 1px solid white;
+}
+
+footer .footer-wrap .footer-right .footer-menu li:nth-child(6),
+footer .footer-wrap .footer-right .footer-menu li:nth-child(7){
+    margin-top: 20px;
+}
+
+footer .footer-wrap .footer-right .copyright{
+    padding-left: 20px;
+    opacity: 0.5;
+    margin-top: 10px;
+    font-weight: 300;
+    font-size: 12px;
+}
+
+

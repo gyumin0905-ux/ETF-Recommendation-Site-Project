@@ -1,0 +1,224 @@
+.bg-layer {
+    color: #fff;
+    background: transparent;
+    text-align: center;
+    padding: 80px 20px;
+    position: relative;
+}
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+    .fortune-box {
+    background: linear-gradient(to left, #23234b, #2e2d5a, #0c0644); 
+    width: 1200px;
+    height: 100%;
+    padding: 60px 50px;
+    border-radius: 24px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+    margin-bottom: 70px;
+    animation: fadeIn 0.6s ease-out;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border: 1px solid rgba(255,255,255,0.5);
+}
+
+    h1 {
+    margin: 0 0 30px 0;
+    font-size: 1.9rem;
+    font-weight: 500;
+    color: #a88ef0;
+}
+
+.glass {
+    width: 185px;
+    height: 185px;
+    border-radius: 50%;
+    margin: 0 auto 50px;
+    position: relative;
+    animation: float 3s ease-in-out infinite;
+    overflow: hidden;
+    background: radial-gradient(
+        circle,
+        rgba(40,49,90,0.45) 0%,
+        rgba(40,49,90,0.25) 35%,
+        rgba(40,49,90,0.12) 60%,
+        rgba(40,49,90,0.05) 75%,
+        transparent 100%
+    );
+}
+.glass::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 1px solid rgba(168,142,240,0.45);
+    opacity: 0;
+    transform: scale(0.8);
+}
+.glass:hover::before {
+    animation: ripple 1.2s ease-out;
+}
+@keyframes ripple {
+    0% {
+        opacity: 0.45;
+        transform: scale(0.85);
+    }
+    70% {
+        opacity: 0.2;
+    }
+    100% {
+        opacity: 0;
+        transform: scale(1.35);
+    }
+}
+
+.glass::after {
+    content: "";
+    position: absolute;
+    inset: 10px;
+    border-radius: 50%;
+    background: radial-gradient(
+        circle,
+        rgba(255,255,255,0.25) 0%,
+        transparent 70%
+    );
+    pointer-events: none;
+}
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-18px); }
+}
+.glass img{
+    width: 200px;
+    height: 200px;
+    position: absolute;
+    top: -4%;
+    left: -4%;
+}
+    .fortune-text {
+    padding: 30px 35px;
+    border-radius: 16px;
+    font-size: 17px;
+    line-height: 1.8;
+    color: #414141;
+    font-weight: 200;
+    box-shadow: 0 5px 20px rgba(255, 255, 255, 0.336);
+    background-color: #ffffffc9;
+    position: relative;
+}
+.fortune-text::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 16px;
+    z-index: -1;
+}
+.keyword-badge {
+    display: inline-block;
+    margin-top: 25px;
+    font-size: 0.9rem;
+    color: #9b8cf2;
+    background: transparent;
+    font-weight: 400;
+}
+    .etf-section {
+    background: linear-gradient(to right, #23234b, #2e2d5a, #0c0644); 
+    width: 100%;
+    padding: 60px 50px;
+    border-radius: 24px;
+    text-align: left;
+    animation: fadeUp 0.8s ease both;
+}
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.section-title {
+    color: #5fbfb0;
+    margin-bottom: 25px;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+    .etf-card {
+    background: white;
+    color: #1a1a1a;
+    padding: 22px 24px;
+    border-radius: 14px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-decoration: none;
+    transition: all 0.25s ease;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+    position: relative;
+    overflow: hidden;
+}
+.etf-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        120deg,
+        transparent 30%,
+        rgba(255,255,255,0.6),
+        transparent 70%
+    );
+    transform: translateX(-100%);
+}
+
+.etf-card:hover::before {
+    transform: translateX(100%);
+    transition: transform 0.8s ease;
+}
+.etf-info h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 500;
+}
+.etf-info p {
+    margin-top: 6px;
+    font-size: 0.85rem;
+    color: #777;
+}
+.arrow {
+    color: #bbb;
+    font-size: 1.2rem;
+}
+.footer-links {
+    margin-top: 60px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+.footer-links a {
+    padding: 12px 26px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    text-decoration: none;
+    cursor: pointer;
+}
+.footer-links .retry,
+.footer-links .home {
+    border: 1px solid #d6c8ff;
+    color: #9b8cf2;
+}
+.footer-links .retry:hover,
+.footer-links .home:hover{
+    background: #b8a9f6;
+    color: white;
+}
+
+
+        /* 애니메이션 */
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes twinkle { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }

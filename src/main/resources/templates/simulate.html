@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>투자 시뮬레이터</title>
+    <link rel="icon" th:href="@{/images/favi.png}">
+
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/simulation.css}">
+
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+
+<body>
+
+<div th:replace="~{fragments/header :: headerFragment}"></div>
+
+<div style="position: relative; z-index: 1;">
+
+    <div class="section1">
+        <div class="inner">
+            <div class="title-area">
+                <h1>ETF 투자 시뮬레이션</h1>
+                <p class="sub">실제 투자 전, ETF 운용을 미리 경험해보세요</p>
+            </div>
+
+            <div class="product-area">
+                <div class="product-badge">
+                    <span class="label">상품명</span>
+                    <strong class="name" th:text="${etf.name}">ETF 이름</strong>
+                </div>
+                <p class="desc">
+                    기간·금액을 입력하면 아래에서 결과 요약과 차트를 확인할 수 있어요.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="section2">
+        <div class="inner">
+            <div class="panel">
+
+                <div class="panel-head">
+                    <h2>투자설정</h2>
+                    <p>월 투자금액과 기간을 입력하고 시뮬레이션을 실행하세요.</p>
+                </div>
+
+                <form id="simForm" class="form-grid">
+                    <input type="hidden" id="isin" th:value="${etf.isinCd}">
+
+                    <div class="inputWrap">
+                        <div class="field">
+                            <p class="atit">월 투자금액</p>
+                            <div class="input-wrap">
+                                <input type="number" id="monthlyAmount" value="500000">
+                                <span class="unit">원</span>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <p class="atit">시작월</p>
+                            <input type="text" id="startYm" value="202410">
+                        </div>
+
+                        <div class="field">
+                            <p class="atit">종료월</p>
+                            <input type="text" id="endYm" value="202601">
+                        </div>
+                    </div>
+
+                    <div class="actions">
+                        <button type="submit" class="btn-primary">
+                            시뮬레이션 시작하기
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="section3 is-hidden" id="resultSection">
+        <div class="inner">
+
+            <div class="result-head">
+                <div class="left">
+                    <h2>시뮬레이션 결과</h2>
+                </div>
+
+                <button type="button"
+                        class="btn-outline"
+                        onclick="openModal()">
+                    📘 투자 결과 상세 해설
+                </button>
+            </div>
+
+            <div class="summary-strip">
+                <div class="summary-item">
+                    <span class="k">총 투자금</span>
+                    <strong class="v" id="totalInvested">-</strong>
+                </div>
+                <div class="summary-item">
+                    <span class="k">최종 평가금액</span>
+                    <strong class="v" id="finalValue">-</strong>
+                </div>
+                <div class="summary-item">
+                    <span class="k">수익률</span>
+                    <strong class="v" id="roi">-</strong>
+                </div>
+            </div>
+
+            <div class="chart-panel">
+                <canvas id="resultChart" height="120"></canvas>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<div class="sim-modal-bg" id="modalBg" style="z-index: 9999;">
+    <div class="sim-modal">
+        <h3>📘 투자 결과 상세 해설</h3>
+
+        <pre id="modalSummary"
+             style="white-space: pre-line; font-size:14px; line-height:1.6;">
+        </pre>
+
+        <button class="close-btn" onclick="closeModal()">닫기</button>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer :: footerFragment}"></div>
+
+<script th:src="@{/js/common.js}"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+
+        let chart;
+
+        const resultSection = document.getElementById("resultSection");
+        const modalBg = document.getElementById("modalBg");
+        const modalSummary = document.getElementById("modalSummary");
+
+        /* ===== 모달 ===== */
+        window.openModal = () => {
+            modalBg.style.display = "block";
+        };
+
+        window.closeModal = () => {
+            modalBg.style.display = "none";
+        };
+
+        modalBg.addEventListener("click", (e) => {
+            if (e.target === modalBg) closeModal();
+        });
+
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape") closeModal();
+        });
+
+        /* ===== 시뮬레이션 실행 ===== */
+        document.getElementById("simForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const isin = document.getElementById("isin").value;
+            const monthlyAmount = document.getElementById("monthlyAmount").value;
+            const startYm = document.getElementById("startYm").value;
+            const endYm = document.getElementById("endYm").value;
+
+            const params = new URLSearchParams({ monthlyAmount, startYm, endYm });
+
+            const res = await fetch(`/simulate/${isin}/run`, {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: params
+            });
+
+            if (!res.ok) {
+                alert("시뮬레이션 요청 실패");
+                return;
+            }
+
+            const result = await res.json();
+
+            document.getElementById("totalInvested").innerText =
+                Number(result.totalInvested).toLocaleString() + "원";
+
+            document.getElementById("finalValue").innerText =
+                Number(result.finalValue).toLocaleString() + "원";
+
+            document.getElementById("roi").innerText =
+                (result.roi * 100).toFixed(2) + "%";
+
+            // ✅ 요약은 모달에만
+            modalSummary.innerText = result.summary || "";
+
+            const labels = result.series.map(p => p.month);
+            const values = result.series.map(p => p.value);
+
+            if (chart) chart.destroy();
+
+            chart = new Chart(
+                document.getElementById("resultChart"),
+                {
+                    type: "line",
+                    data: {
+                        labels,
+                        datasets: [{
+                            label: "누적 평가금액",
+                            data: values,
+                            borderWidth: 2,
+                            tension: 0.3,
+                            borderColor: '#055C4D',
+                            backgroundColor: '#055C4D20'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: { position: 'top' }
+                        }
+                    }
+                }
+            );
+
+            resultSection.classList.remove("is-hidden");
+            resultSection.scrollIntoView({ behavior: "smooth" });
+        });
+
+    });
+</script>
+
+</body>
+</html>

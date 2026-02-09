@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이벤트 - Verte ETF</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5/themes.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/event.css}">
+    <link rel="icon" th:href="@{/images/favi.png}">
+
+    <script th:src="@{/js/common.js}" defer></script>
+    <script th:src="@{/js/event.js}" defer></script>
+</head>
+<body>
+<header th:replace="~{fragments/header :: header}"></header>
+
+<main style="padding-top: 150px;">
+    <section id="event">
+        <h2 class="m-tit">이벤트</h2>
+        <div class="event-wrap">
+            <ul class="event-menu">
+                <li class="active">
+                    <span>전체</span>
+                    <span th:text="${totalCount}">0</span>
+                </li>
+                <li>
+                    <span>진행중</span>
+                    <span th:text="${ingCount}">0</span>
+                </li>
+                <li>
+                    <span>종료</span>
+                    <span th:text="${endCount}">0</span>
+                </li>
+            </ul>
+
+            <ul class="event-list">
+                <li th:each="event : ${events}" class="active"
+                    th:classappend="${event.status == 'ING' || event.status == 'SCHEDULED'} ? 'list-ing' : 'list-end'">
+
+                    <a th:href="@{/event/detail/{id}(id=${event.id})}">
+                        <div class="img-box">
+                            <img th:src="@{/images/} + ${event.thumbnailUrl}" th:alt="${event.title}">
+
+                            <div th:if="${event.status == 'ING'}" class="state-ing">진행중</div>
+                            <div th:if="${event.status == 'ENDED'}" class="state-end">종료</div>
+                            <div th:if="${event.status == 'SCHEDULED'}" class="state-ing" style="background-color: #999;">예정</div>
+                        </div>
+                        <div class="list-bot">
+                            <h3 th:text="${event.title}">이벤트 제목</h3>
+                            <p th:text="'이벤트기간 | ' + ${event.startDate} + ' ~ ' + ${event.endDate}">기간</p>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </section>
+</main>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+</body>
+</html>

@@ -1,0 +1,69 @@
+@charset "UTF-8";
+
+/* 에러 페이지 전용 컨테이너 */
+.error-wrap {
+    width: 100%;
+    height: calc(100vh - 450px); /* 헤더, 푸터 높이 고려해서 중앙 정렬 */
+    min-height: 600px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #F6FCFB; /* 이벤트 페이지 배경색이랑 통일 */
+    text-align: center;
+}
+
+/* 에러 코드 (404, 500 등) */
+.error-code {
+    font-size: 150px;
+    font-weight: 700;
+    color: #055C4D; /* 메인 포인트 컬러 */
+    line-height: 1;
+    margin-bottom: 20px;
+    text-shadow: 5px 5px 0px rgba(5, 92, 77, 0.1);
+    animation: floatError 3s ease-in-out infinite;
+}
+
+/* 에러 메시지 제목 */
+.error-title {
+    font-size: 32px;
+    font-weight: 500;
+    color: #1A1A1A;
+    margin-bottom: 15px;
+}
+
+/* 에러 상세 설명 */
+.error-desc {
+    font-size: 18px;
+    color: #919191;
+    margin-bottom: 50px;
+    line-height: 1.6;
+}
+
+/* 홈으로 가기 버튼 (fortune.css 스타일 + 메인 컬러 적용) */
+.error-home-btn {
+    display: inline-block;
+    padding: 15px 40px;
+    background-color: white;
+    border: 2px solid #055C4D;
+    color: #055C4D;
+    font-size: 18px;
+    font-weight: 500;
+    border-radius: 50px;
+    transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    cursor: pointer;
+}
+
+.error-home-btn:hover {
+    background-color: #055C4D;
+    color: white;
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(5, 92, 77, 0.2);
+}
+
+/* 둥둥 떠다니는 애니메이션 */
+@keyframes floatError {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+    100% { transform: translateY(0); }
+}

@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>회원가입 - Verte ETF</title>
+    <link rel="icon" th:href="@{/images/favi.png}" />
+
+    <link rel="stylesheet" th:href="@{/css/reset.css}" />
+    <link rel="stylesheet" th:href="@{/css/common.css}" />
+    <link rel="stylesheet" th:href="@{/css/join.css}" />
+
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: headerFragment}"></div>
+
+<div style="position: relative; z-index: 1;">
+    <section>
+        <div class="join-container">
+            <h2>회원가입</h2>
+            <p class="sub-text">Verte에 회원가입후 다양한 서비스를 경험해보세요.</p>
+
+            <div class="join-box">
+                <form id="signupForm" th:action="@{/signup}" method="post">
+
+                    <div th:if="${signupError}" class="text-red-500 font-bold text-center mb-4">
+                        🚨 <span th:text="${signupError}">에러 메시지</span>
+                    </div>
+
+                    <h3>가입 정보 입력</h3>
+
+                    <div class="form-row">
+                        <div class="input-wrap">
+                            <p class="label">아이디</p>
+                            <input type="text" name="username" placeholder="아이디입력 6-12자이내" required>
+                        </div>
+                        <button type="button" class="btn btn-sm btn-dup min-w-[120px] h-[45px]">중복확인</button>
+                    </div>
+
+                    <div class="input-wrap">
+                        <p class="label">비밀번호</p>
+                        <input type="password" name="password" id="password"
+                               placeholder="비밀번호는 영문 / 대소문자 / 특수문자 포함 9-20자 이내 입력" required>
+                    </div>
+
+                    <div class="input-wrap">
+                        <p class="label">비밀번호 확인</p>
+                        <input type="password" id="passwordConfirm" placeholder="비밀번호를 한번 더 입력 해주세요" required>
+                    </div>
+
+                    <div class="email-wrap">
+                        <p class="label">이메일</p>
+                        <div class="email-row">
+                            <input type="text" class="email-id" placeholder="이메일 주소 입력">
+                            <span>@</span>
+                            <input type="text" class="email-domain-input" placeholder="직접입력">
+                            <select class="email-domain-select">
+                                <option value="" selected disabled hidden>선택</option>
+                                <option value="direct">직접입력</option>
+                                <option value="naver.com">naver.com</option>
+                                <option value="gmail.com">gmail.com</option>
+                                <option value="daum.net">daum.net</option>
+                            </select>
+                        </div>
+                        <input type="hidden" name="email" id="realEmail">
+                    </div>
+
+                    <div class="input-wrap">
+                        <p class="label">휴대전화</p>
+                        <input type="text" name="phone" placeholder="휴대폰 번호를 '-'없이 입력해주세요">
+                    </div>
+
+                    <div class="agreeWrap">
+                        <p class="agree-txt">이용약관 및 개인정보 수집 관련 동의, 개인정보 제3자 제공동의</p>
+                        <div class="agree-box">
+                            <div class="agree-item agree-all">
+                                <div>
+                                    <input type="checkbox" id="agreeAll">
+                                    <span>　전체 약관에 동의합니다.</span>
+                                </div>
+                            </div>
+                            <div class="agree-divider"></div>
+                            <div class="agree-item">
+                                <div>
+                                    <input type="checkbox" class="agree-check" data-required="true">
+                                    <span>　[필수] 이용약관</span>
+                                </div>
+                                <a href="#" class="see">보기</a>
+                            </div>
+                            <div class="agree-item">
+                                <div>
+                                    <input type="checkbox" class="agree-check" data-required="true">
+                                    <span>　[필수] 개인정보 수집 및 이용 동의서</span>
+                                </div>
+                                <a href="#" class="see">보기</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="btnWrap">
+                        <a th:href="@{/login}" class="btn btn-outline flex-1 h-[50px] rounded-[10px] bg-white border-1 border-[#055C4D69] !text-[#055C4D] hover:bg-[#055C4D] hover:!text-[#fff] flex items-center justify-center">
+                            이전
+                        </a>
+                        <button type="button" id="btnSignup" class="btn btn-outline flex-1 h-[50px] rounded-[10px] bg-white border-1 border-[#055C4D69] !text-[#055C4D] hover:bg-[#055C4D] hover:!text-[#fff]">
+                            회원가입
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>
+
+<div th:replace="~{fragments/footer :: footerFragment}"></div>
+
+<script th:src="@{/js/common.js}"></script>
+<script th:src="@{/js/join.js}"></script>
+</body>
+</html>

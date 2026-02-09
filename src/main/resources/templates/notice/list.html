@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ETF 뉴스 - Verte</title>
+
+    <link rel="icon" th:href="@{/images/favi.png}">
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/news.css}">
+
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://kit.fontawesome.com/4aff7483c9.js" crossorigin="anonymous"></script>
+</head>
+<body>
+<div th:replace="~{fragments/header :: headerFragment}"></div>
+
+<section class="index">
+    <div role="tablist" class="tabs tabs-border justify-center w-full gap-8">
+        <a th:href="@{/event}" role="tab" class="tab mx-4 noticepage text-[15px]">이벤트</a>
+        <a th:href="@{/board}" role="tab" class="tab mx-4 freepage text-[15px]">자유게시판</a>
+        <a th:href="@{/notice}" role="tab" class="tab mx-4 newspage text-[15px] text-[#055C4D] font-bold border-b-2 border-[#055C4D]">ETF 뉴스</a>
+    </div>
+</section>
+
+<div class="news-container">
+    <div class="search-area">
+        <h2>ETF 뉴스</h2>
+        <form action="/notice" method="get" class="searchbg">
+            <input type="text" name="keyword" class="search" placeholder="궁금한 내용을 검색해 보세요" th:value="${keyword}">
+            <button type="submit" class="search-btn">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+        </form>
+    </div>
+
+    <div class="news-grid" th:if="${!notices.isEmpty()}">
+        <a th:each="notice : ${notices}" th:href="@{/notice/{id}(id=${notice.id})}" class="news-card">
+            <div class="news-thumb-box">
+                <img th:if="${notice.thumbnailUrl != null and notice.thumbnailUrl != ''}"
+                     th:src="${notice.thumbnailUrl}" alt="뉴스 썸네일" class="news-thumb">
+                <img th:unless="${notice.thumbnailUrl != null and notice.thumbnailUrl != ''}"
+                     th:src="@{/images/logo-header.png}" alt="기본 썸네일" class="news-thumb default-img">
+            </div>
+            <div class="news-content">
+                <div class="news-badge">NEWS</div>
+                <h3 class="news-title" th:text="${notice.title}">뉴스 제목</h3>
+                <p class="news-summary" th:text="${#strings.abbreviate(notice.content.replaceAll('<[^>]*>', ''), 80)}">
+                    뉴스 내용 요약
+                </p>
+                <div class="news-meta">
+                    <span th:text="${#temporals.format(notice.createdDate, 'yyyy.MM.dd')}">2026.01.01</span>
+                    <span class="views"><i class="fa-regular fa-eye"></i> <span th:text="${notice.views}">0</span></span>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <div class="no-data" th:if="${notices.isEmpty()}">
+        <div class="empty-box">
+            <i class="fa-solid fa-newspaper text-4xl text-gray-300 mb-4"></i>
+            <p>등록된 뉴스가 없습니다.</p>
+        </div>
+    </div>
+
+    <div class="admin-btn-area" th:if="${session.loginUser != null && session.loginUser.isAdmin()}">
+        <a th:href="@{/notice/write}" class="write-btn">뉴스 등록 (관리자)</a>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer :: footerFragment}"></div>
+
+<script th:src="@{/js/common.js}"></script>
+</body>
+</html>

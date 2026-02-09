@@ -1,0 +1,145 @@
+@charset "UTF-8";
+
+/* ==========================================================================
+   [Full Screen Hero Design] - 각 페이지별 배경 이미지 적용
+   ========================================================================== */
+
+/* 1. 전체 배경 영역 (히어로 섹션 공통) */
+.hero-section {
+    width: 100%;
+    height: 85vh; /* 화면 높이의 85%를 차지 */
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-top: 50px; /* 헤더 높이만큼 띄움 */
+    overflow: hidden;
+
+    /* 배경 공통 설정 */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed; /* 패럴랙스 효과 */
+}
+
+/* 🔥 페이지별 배경 이미지 설정 (PNG 파일) */
+.bg-intro { background-image: url('/images/intro_bg.png'); }
+.bg-management { background-image: url('/images/management_bg.png'); }
+/* 채용 정보 배경 */
+.bg-recruit { background-image: url('/images/recruit_bg.png'); }
+
+
+/* 2. 어두운 오버레이 필터 */
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(5, 92, 77, 0.9) 90%);
+    z-index: 1;
+}
+
+/* 3. 텍스트 컨텐츠 박스 */
+.hero-content {
+    position: relative;
+    z-index: 2;
+    color: #ffffff;
+    max-width: 1200px;
+    padding: 0 40px;
+}
+
+/* 메인 타이틀 */
+.hero-content h2 {
+    font-size: 64px;
+    font-weight: 800;
+    margin-bottom: 20px;
+    letter-spacing: -2px;
+    text-shadow: 0 4px 15px rgba(0,0,0,0.4);
+
+    animation: slideUp 1s ease-out forwards;
+    opacity: 0;
+    transform: translateY(50px);
+}
+
+/* 서브 타이틀 */
+.hero-content h3 {
+    font-size: 32px;
+    font-weight: 500;
+    color: #E2F1EE;
+    margin-bottom: 50px;
+    letter-spacing: -0.5px;
+
+    animation: slideUp 1s ease-out 0.3s forwards;
+    opacity: 0;
+    transform: translateY(50px);
+}
+
+/* 본문 텍스트 */
+.hero-content p {
+    font-size: 20px;
+    line-height: 2;
+    font-weight: 300;
+    color: #f0f0f0;
+    word-break: keep-all;
+
+    animation: slideUp 1s ease-out 0.6s forwards;
+    opacity: 0;
+    transform: translateY(50px);
+}
+
+/* 장식용 라인 */
+.hero-content::after {
+    content: '';
+    display: block;
+    width: 2px;
+    height: 60px;
+    background-color: #FFD700;
+    margin: 60px auto 0;
+
+    animation: fadeIn 1s ease-out 1s forwards;
+    opacity: 0;
+}
+
+/* 채용 버튼 스타일 */
+.btn-recruit {
+    display: inline-block;
+    margin-top: 50px;
+    padding: 18px 60px;
+    background: #FFD700;
+    color: #055C4D;
+    font-size: 20px;
+    font-weight: 700;
+    border-radius: 50px;
+    text-decoration: none;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+
+    animation: slideUp 1s ease-out 0.8s forwards;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 0.3s ease;
+}
+
+.btn-recruit:hover {
+    background: #fff;
+    color: #055C4D;
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+}
+
+@keyframes slideUp {
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+    to { opacity: 1; }
+}
+
+@media (max-width: 768px) {
+    .hero-section { height: 70vh; }
+    .hero-content h2 { font-size: 40px; }
+    .hero-content h3 { font-size: 22px; }
+    .hero-content p { font-size: 16px; line-height: 1.6; }
+    .btn-recruit { padding: 15px 40px; font-size: 18px; }
+}

@@ -1,0 +1,207 @@
+@charset "UTF-8";
+
+/* 리셋 CSS */
+*{margin: 0; padding: 0; box-sizing: border-box;}
+ul{list-style: none;}
+img{vertical-align: top; border: 0;}
+a{text-decoration: none; color: inherit;}
+
+body{
+    color: #1A1A1A;
+    font-family: "Noto Sans KR", sans-serif;
+}
+
+/* 헤더 */
+header{
+    width: 100%;
+    height: 100px;
+    background-color: white;
+    transition: height 0.3s ease;
+    position: absolute;
+    top:0;
+    left: 0;
+    z-index: 9999; /* ★수정: 숫자를 높여서 무조건 맨 위에 뜨게 함 */
+}
+
+header.active{
+    height: 320px;
+    /* 메뉴 내려올 때 그림자 효과 추가 (선택) */
+    box-shadow: 0 5px 10px rgba(0,0,0,0.05);
+}
+
+header .header-wrap{
+    width: 1620px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 10000;
+}
+
+/* 헤더: 로고 */
+header .header-wrap .logo{
+    width: 80px;
+    height: 80px;
+    position: absolute;
+    top:50%;
+    left:0;
+    transform: translateY(-50%);
+}
+
+header .header-wrap .logo img{
+    width: 100%;
+    height: 100%;
+}
+
+/* 헤더: gnb */
+header .header-wrap .gnb{
+    display: flex;
+    justify-content: center;
+}
+
+header .header-wrap .gnb>li{
+    position: relative;
+}
+
+header .header-wrap .gnb>li>a{
+    display: block;
+    font-size: 18px;
+    text-align: center;
+    width: 120px;
+    height: 100px;
+    line-height: 100px;
+    border-bottom: 2px solid transparent;
+    font-weight: 500;
+    transition: all 0.3s;
+}
+
+header .header-wrap .gnb>li:hover>a{
+    color: #055C4D;
+    border-bottom: 2px solid #055C4D;
+}
+
+header .header-wrap .gnb>li>a.active{
+    width: 150px;
+}
+
+/* ★수정: 서브메뉴 스타일 보완 */
+header .header-wrap .gnb>li .sub{
+    overflow: hidden;
+    height: 0;
+    transition: height 0.3s ease;
+    position: absolute;
+    top:100px;
+    left: 0;
+    width: 100%; /* 너비 확보 */
+    color: #4b4b4b;
+    background-color: white; /* ★수정: 배경색 추가 (투명하면 안보임) */
+    z-index: 10001; /* ★수정: 헤더보다 더 위에 */
+}
+
+header .header-wrap .gnb>li>ul>li:nth-child(1)>a{
+    margin-top: 20px;
+}
+
+header .header-wrap .gnb>li>ul>li>a{
+    display: block;
+    text-align: center;
+    width: 140px; /* 기존 120px과 맞추는게 좋으나 일단 유지 */
+    height: 40px;
+    line-height: 40px;
+    margin: 0 auto; /* 중앙 정렬 */
+}
+
+header .header-wrap .gnb>li>ul>li>a:hover{
+    color: #055C4D;
+    font-weight: 500;
+    transition: all 0.5s;
+    /* text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1); */
+}
+
+/* 헤더: 버튼 */
+header .header-btn{
+    position: absolute;
+    top:50%;
+    right: 0;
+    transform: translateY(-50%);
+}
+
+header .header-btn button{
+    border: none;
+    background-color: transparent;
+    padding: 10px 15px;
+    transition: all 0.3s;
+    font-size: 14px;
+    color: rgb(85, 85, 85);
+}
+
+header .header-btn button:hover{
+    background-color: #055C4D;
+    color: white;
+}
+
+/* 푸터 */
+footer{
+    background-color: #055C4D;
+    color: white;
+    padding: 50px 0;
+}
+
+footer .footer-wrap{
+    width: 1460px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* 푸터:좌측 */
+footer .footer-wrap .footer-left .logo img{
+    width: 80%;
+}
+
+/* 푸터: 우측 */
+footer .footer-wrap .footer-right .footer-menu{
+    width: 600px;
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 14px;
+    margin-top: 15px;
+}
+
+footer .footer-wrap .footer-right .footer-menu li{
+    padding: 0px 20px;
+    margin-bottom: 5px;
+}
+
+footer .footer-wrap .footer-right .footer-menu li:nth-child(2){
+    border-left: 1px solid white;
+    border-right: 1px solid white;
+}
+
+footer .footer-wrap .footer-right .footer-menu li:nth-child(3),
+footer .footer-wrap .footer-right .footer-menu li:nth-child(5),
+footer .footer-wrap .footer-right .footer-menu li:nth-child(7){
+    padding-right: 0px;
+}
+
+footer .footer-wrap .footer-right .footer-menu li:nth-child(4){
+    border-right: 1px solid white;
+}
+
+footer .footer-wrap .footer-right .footer-menu li:nth-child(6){
+    border-right: 1px solid white;
+}
+
+footer .footer-wrap .footer-right .footer-menu li:nth-child(6),
+footer .footer-wrap .footer-right .footer-menu li:nth-child(7){
+    margin-top: 20px;
+}
+
+footer .footer-wrap .footer-right .copyright{
+    padding-left: 20px;
+    opacity: 0.5;
+    margin-top: 10px;
+    font-weight: 300;
+    font-size: 12px;
+}
