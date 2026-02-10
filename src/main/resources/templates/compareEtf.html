@@ -2,78 +2,130 @@
 <div class="compare-result-wrap">
 
     <style>
-        /* ❗ body / html 사용 금지 (모달용) */
-
         .compare-result-wrap {
             max-width: 1200px;
             margin: 0 auto;
-            background: white;
-            border-radius: 12px;
-            padding: 30px 40px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            font-family: Arial, sans-serif;
+            background: #fff;
+            border-radius: 20px;
+            padding: 40px 50px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            font-family: "Noto Sans KR", Arial, sans-serif;
         }
 
+        /* ===== 제목 ===== */
         .compare-result-wrap h2 {
-            margin-bottom: 20px;
-            font-size: 24px;
+            margin-bottom: 28px;
+            font-size: 26px;
             font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .compare-header {
-            display: grid;
-            grid-template-columns: 1fr 150px 1fr;
-            text-align: center;
-            margin-bottom: 30px;
-            font-weight: bold;
-            font-size: 18px;
-        }
-
-        .compare-result-wrap table {
+        /* ===== 헤더 테이블 ===== */
+        .compare-header-table {
             width: 100%;
-            border-collapse: collapse;
+            border-collapse: separate;
+            border-spacing: 0 12px;
+            margin-bottom: 12px;
         }
 
-        .compare-result-wrap td {
-            border-bottom: 1px solid #e5e7eb;
-            padding: 12px;
+        .compare-header-table th {
+            padding: 14px 16px;
+            font-size: 16px;
+            font-weight: 700;
+            text-align: center;
+            color: #374151;
+        }
+
+        .compare-header-table .th-label {
+            text-align: left;
+            padding-left: 16px;
+            color: #6b7280;
+        }
+
+        .compare-header-table .th-left {
+            color: #2563eb;
+        }
+
+        .compare-header-table .th-right {
+            color: #e11d48;
+        }
+
+        /* ===== 비교 테이블 ===== */
+        .compare-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 10px;
+        }
+
+        .compare-table tr {
+            background: #f9fafb;
+        }
+
+        .compare-table td {
+            padding: 14px 16px;
             font-size: 15px;
         }
 
-        .compare-result-wrap td.label {
-            width: 220px;
+        .compare-table td.label {
             background: #f1f5f9;
             font-weight: 600;
+            color: #374151;
+            border-radius: 10px 0 0 10px;
         }
 
-        .compare-result-wrap td.value {
-            text-align: right;
+        .compare-table td.value {
+            text-align: center;
             font-variant-numeric: tabular-nums;
+            font-weight: 500;
         }
 
-        .compare-close-btn {
-            margin-top: 24px;
-            display: inline-block;
-            padding: 10px 18px;
-            background: #055C4D;
-            color: #fff;
-            border-radius: 6px;
-            font-weight: 600;
-            cursor: pointer;
+        .compare-table tr td:last-child {
+            border-radius: 0 10px 10px 0;
+        }
+
+        /* 강조 규칙 */
+        .compare-table td.value.positive {
+            color: #16a34a;
+            font-weight: 700;
+        }
+
+        .compare-table td.value.negative {
+            color: #2563eb;
+        }
+
+        .compare-table tr.volume td.value {
+            font-weight: 700;
         }
     </style>
 
     <h2>📊 ETF 1:1 비교 결과</h2>
 
-    <!-- ETF 헤더 -->
-    <div class="compare-header">
-        <span th:text="${data.left.name}">LEFT</span>
-        <span>VS</span>
-        <span th:text="${data.right.name}">RIGHT</span>
-    </div>
+    <!-- ===== 헤더 (본문과 동일 colgroup 사용) ===== -->
+    <table class="compare-header-table">
+        <colgroup>
+            <col style="width:240px">
+            <col>
+            <col>
+        </colgroup>
+        <thead>
+        <tr>
+            <th class="th-label">구분</th>
+            <th class="th-left" th:text="${data.left.name}">LEFT ETF</th>
+            <th class="th-right" th:text="${data.right.name}">RIGHT ETF</th>
+        </tr>
+        </thead>
+    </table>
 
-    <!-- 비교 테이블 (❗ 기존 구조 그대로 유지) -->
-    <table>
+    <!-- ===== 비교 본문 테이블 ===== -->
+    <table class="compare-table">
+        <colgroup>
+            <col style="width:240px">
+            <col>
+            <col>
+        </colgroup>
+
         <tr>
             <td class="label">1M 수익률</td>
             <td class="value"
@@ -81,6 +133,7 @@
             <td class="value"
                 th:text="${#numbers.formatDecimal(data.right.return1m,1,1) + '%'}"></td>
         </tr>
+
         <tr>
             <td class="label">3M 수익률</td>
             <td class="value"
@@ -88,6 +141,7 @@
             <td class="value"
                 th:text="${#numbers.formatDecimal(data.right.return3m,1,1) + '%'}"></td>
         </tr>
+
         <tr>
             <td class="label">1Y 수익률</td>
             <td class="value"
@@ -95,6 +149,7 @@
             <td class="value"
                 th:text="${#numbers.formatDecimal(data.right.return1y,1,1) + '%'}"></td>
         </tr>
+
         <tr>
             <td class="label">변동성 (연환산)</td>
             <td class="value"
@@ -102,6 +157,7 @@
             <td class="value"
                 th:text="${#numbers.formatDecimal(data.right.volatility,1,1) + '%'}"></td>
         </tr>
+
         <tr>
             <td class="label">MDD</td>
             <td class="value"
@@ -109,19 +165,20 @@
             <td class="value"
                 th:text="${#numbers.formatDecimal(data.right.mdd,1,1) + '%'}"></td>
         </tr>
-        <tr>
+
+        <tr class="volume">
             <td class="label">최근 30일 거래대금 평균</td>
-            <td class="value"
+            <td class="value positive"
                 th:text="${#numbers.formatDecimal(data.left.volumeAvg,1,1) + '억'}"></td>
-            <td class="value"
+            <td class="value positive"
                 th:text="${#numbers.formatDecimal(data.right.volumeAvg,1,1) + '억'}"></td>
         </tr>
+
         <tr>
             <td class="label">Risk Score</td>
             <td class="value" th:text="${data.left.riskScore}"></td>
             <td class="value" th:text="${data.right.riskScore}"></td>
         </tr>
     </table>
-
 
 </div>

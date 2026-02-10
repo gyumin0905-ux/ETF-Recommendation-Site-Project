@@ -4,23 +4,25 @@
     <meta charset="UTF-8">
     <title>마이페이지</title>
     <link rel="icon" href="/images/favi.png">
+
+    <!-- UI -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
 
     <style>
-        body{margin:0;font-family:'Noto Sans KR',sans-serif;background:#f5f5f5}
+        body{
+            margin:0;
+            font-family:'Noto Sans KR',sans-serif;
+            background:#f5f5f5;
+        }
         .mypage-wrap{display:flex;min-height:100vh}
 
+        /* ===== 사이드바 ===== */
         .logo {
             display: block;
             cursor: pointer;
         }
 
-        .logo img {
-            display: block;
-            height: 80px;   /* 기존 로고 크기에 맞게 */
-        }
-
-        /* 사이드바 */
         .side-menu{
             width:260px;
             background:#4f7766;
@@ -33,30 +35,42 @@
             margin-bottom:40px;
         }
         .menu-list li{margin-bottom:24px}
-        .menu-list a{color:#fff;opacity:.6;font-size:18px}
+        .menu-list a{color:#fff;opacity:.7;font-size:18px}
         .menu-list a:hover{opacity:1;font-weight:600}
 
-        /* 컨텐츠 */
+        /* ===== 컨텐츠 ===== */
         .content-wrap{flex:1;padding:40px}
 
         /* ===== 프로필 ===== */
         .profile-area{
             background:#fff;
-            padding:40px;
             border-radius:20px;
-            box-shadow:0 2px 10px rgba(0,0,0,.08);
+            padding:40px;
             display:flex;
-            align-items:center;
-            gap:50px;
+            gap:40px;
+            box-shadow:0 2px 10px rgba(0,0,0,.08);
         }
+
+        .profile-left{
+            display:flex;
+            gap:24px;
+            align-items:center;
+            flex:1;
+        }
+
         .profile-img{
             width:90px;height:90px;
             background:#ddd;
             border-radius:16px;
         }
+
+        .id-line{
+            display:flex;
+            align-items:center;
+            gap:10px;
+        }
         .id{font-size:20px;font-weight:700}
         .level{
-            margin-left:10px;
             font-size:12px;
             padding:4px 10px;
             background:#e6f3ea;
@@ -65,13 +79,53 @@
         }
         .type{color:#777;margin-top:6px}
 
-        /* 북마크 */
-        .favorite-area{margin-top:50px}
-        .favorite-title{
+        .profile-line{
+            width:1px;
+            background:#eee;
+        }
+
+        .profile-right{
+            flex:1;
+            display:flex;
+            flex-direction:column;
+            justify-content:space-between;
+        }
+
+        .quick-menu{
+            display:flex;
+            gap:16px;
+            justify-content:flex-end;
+        }
+        .quick-item{
+            font-size:13px;
+            color:#777;
+            padding:6px 12px;
+            border:1px solid #ddd;
+            border-radius:20px;
+        }
+
+        /* ===== 공통 섹션 ===== */
+        .section-box{
+            margin-top:50px;
+            background:#fff;
+            padding:30px;
+            border-radius:16px;
+            box-shadow:0 2px 6px rgba(0,0,0,.05);
+        }
+
+        .section-title{
             font-size:22px;
             font-weight:700;
             margin-bottom:20px;
         }
+
+        .empty{
+            color:#888;
+            text-align:center;
+            padding:30px 0;
+        }
+
+        /* ===== 북마크 ETF ===== */
         .favorite-list{
             display:flex;
             gap:20px;
@@ -89,89 +143,159 @@
             border-color:#2f6b4f;
             box-shadow:0 6px 18px rgba(0,0,0,.08);
         }
-
-        /* ===============================
-           섹션 스타일 (북마크 & 내가 쓴 글)
-           =============================== */
-        .section-box {
-            margin-top: 50px;
-            padding-top: 30px;
-            border-top: 1px solid #ddd;
-        }
-
-        .empty {
-            color: #888;
-            font-size: 14px;
-            margin-top: 10px;
-            padding: 20px;
-            background: #fff;
-            border-radius: 8px;
-            text-align: center;
-        }
-
-        /* ETF 카드 */
-        .etf-card {
-            background: white;
-            padding: 16px;
-            margin-bottom: 12px;
-            border-radius: 8px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-        }
-
-        .etf-name {
-            font-size: 18px;
-            font-weight: bold;
-        }
-
-        .etf-meta {
-            color: #555;
-            font-size: 14px;
-            margin-top: 4px;
-        }
-
-        .theme {
-            display: inline-block;
-            margin-top: 6px;
-            padding: 4px 8px;
-            background: #e8f0fe;
-            border-radius: 4px;
-            font-size: 12px;
-            color: #1a73e8;
-        }
-
-        /* [규민] 게시글 리스트 스타일 */
-        .board-list {
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-        }
-
-        .board-item {
-            padding: 15px;
-            border-bottom: 1px solid #eee;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .board-item:last-child { border-bottom: none; }
-
-        .board-title {
-            text-decoration: none;
-            color: #333;
-            font-weight: bold;
-            font-size: 16px;
-        }
-
-        .board-meta {
-            font-size: 13px;
-            color: #888;
-        }
         .brand{font-size:13px;font-weight:700;color:#2f6b4f}
         .name{font-size:15px;font-weight:600;margin-top:10px}
         .code{font-size:13px;color:#888;margin-top:4px}
-        .empty{color:#888;font-size:14px;margin-top:10px}
+
+        /* ===== 게시글 ===== */
+        .board-list{border-top:1px solid #eee}
+        .board-item{
+            padding:15px 0;
+            display:flex;
+            justify-content:space-between;
+            border-bottom:1px solid #eee;
+        }
+        .board-title{
+            font-weight:600;
+            color:#333;
+            text-decoration:none;
+        }
+        .board-meta{
+            font-size:13px;
+            color:#888;
+        }
+
+        /* ===== 투자 성향 / 투자 목표 영역 ===== */
+        .info-area{
+            width: 100%;
+            display: flex;
+            gap: 40px;
+            margin-top: 50px;
+        }
+
+        /* 공통 박스 */
+        .info-box{
+            position: relative;
+            flex: 1;
+            background-color: #ffffff;
+            border-radius: 16px;
+            padding: 30px 35px 35px 35px;
+            box-shadow: 2px 2px 15px rgba(0,0,0,0.08);
+        }
+
+        /* 제목 */
+        .info-title{
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        /* 상단 이동 버튼 */
+        .movebtn{
+            font-size: 13px;
+            color: #777;
+        }
+        .movebtn a:hover{
+            color: #2f6b4f;
+        }
+
+        /* ===== 투자 목표 ===== */
+        .goal-content{
+            display: flex;
+            align-items: center;
+            gap: 60px;
+            margin-top: 30px;
+        }
+
+        /* 비율 리스트 */
+        .goal-ratio{
+            width: 230px;
+            background-color: #f1f3f5;
+            border-radius: 12px;
+            padding: 10px 18px 18px;
+        }
+
+        .goal-ratio p{
+            width: 70px;
+            margin: 0 auto 16px;
+            text-align: center;
+            background-color: #4f7766;
+            color: #fff;
+            border-radius: 6px;
+            font-size: 13px;
+            line-height: 26px;
+        }
+
+        .goal-ratio li{
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .goal-ratio .value{
+            font-weight: 700;
+            color: #2f6b4f;
+        }
+
+        /* ===== 사이드바 ===== */
+        .side-menu{
+            width:260px;
+            background:#4f7766;
+            padding:40px 28px;
+            box-sizing:border-box;
+            display:flex;
+            flex-direction:column;
+        }
+
+        /* 로고 */
+        .side-logo{
+            margin-bottom:50px;
+        }
+        .side-logo img{
+            width:180px;
+            display:block;
+        }
+
+        /* 네비게이션 */
+        .side-nav{
+            display:flex;
+            flex-direction:column;
+            gap:26px;
+        }
+
+        .nav-item{
+            color:#ffffff;
+            opacity:0.65;
+            font-size:17px;
+            text-decoration:none;
+            transition:all 0.2s ease;
+            position:relative;
+        }
+
+        /* hover */
+        .nav-item:hover{
+            opacity:1;
+            font-weight:600;
+        }
+
+        /* 활성 메뉴 */
+        .nav-item.active{
+            opacity:1;
+            font-weight:700;
+        }
+
+        /* 활성 메뉴 왼쪽 포인트 (선택, 이미지랑 잘 어울림) */
+        .nav-item.active::before{
+            content:"";
+            position:absolute;
+            left:-28px;
+            top:50%;
+            transform:translateY(-50%);
+            width:4px;
+            height:20px;
+            background:#ffffff;
+            border-radius:2px;
+        }
     </style>
 </head>
 
@@ -181,88 +305,166 @@
 
         <!-- 사이드바 -->
         <aside class="side-menu">
-            <a href="/" class="logo"></a>
-            <ul class="menu-list">
-                <li><a href="/mypage">MY Page</a></li>
-                <li><a href="/mypage/edit">개인정보 관리</a></li>
-            </ul>
+            <!-- 로고 -->
+            <div class="side-logo">
+                <a href="/">
+                    <img src="/images/logo-footer.png" alt="Verte ETF 로고">
+                </a>
+            </div>
+
+            <!-- 메뉴 -->
+            <nav class="side-nav">
+                <a href="/" class="nav-item">HOME</a>
+                <a href="/mypage" class="nav-item active">MY Page</a>
+                <a href="/mypage/edit" class="nav-item">개인정보 관리</a>
+                <a href="#" class="nav-item">MY Menu</a>
+            </nav>
         </aside>
 
         <!-- 컨텐츠 -->
         <main class="content-wrap">
 
-            <!-- ===== 프로필 (재구성됨) ===== -->
+            <!-- 프로필 -->
             <div class="profile-area">
-
-                <!-- 왼쪽 : 이미지 + 기본 정보 -->
-                <div style="display:flex;gap:24px;align-items:center;">
+                <div class="profile-left">
                     <div class="profile-img"></div>
-
                     <div>
-                        <div class="id">
-                            <span th:text="${user.username}"></span>
+                        <div class="id-line">
+                            <span class="id" th:text="${user.username}"></span>
                             <span class="level" th:text="${user.experience}"></span>
                         </div>
                         <div class="type">
                             <span th:text="${user.risk}"></span> 투자 성향
                         </div>
-                        <div style="margin-top:8px;font-size:14px;color:#555">
-                            <span th:text="${user.email}"></span>
-                        </div>
+                        <div style="font-size:14px;color:#555;margin-top:6px"
+                             th:text="${user.email}"></div>
                     </div>
                 </div>
 
-                <!-- 가운데 라인 -->
-                <div style="width:1px;height:90px;background:#eee;"></div>
+                <div class="profile-line"></div>
 
-                <!-- 오른쪽 : 액션 / 확장 영역 -->
-                <div style="flex:1;">
-                    <div style="text-align:right;">
-                        <a href="/mypage/edit"
-                           class="inline-block text-sm text-blue-600 font-medium">
+                <div class="profile-right">
+                    <div style="text-align:right">
+                        <a href="/mypage/edit" class="text-sm text-blue-600 font-medium">
                             내 정보 수정 →
                         </a>
                     </div>
+                </div>
+            </div>
 
-                    <!-- 2번 HTML 감성의 퀵 메뉴 구조 -->
-                    <div style="margin-top:18px;display:flex;justify-content:flex-end;gap:16px;">
-                        <span style="font-size:13px;color:#777;">MY Menu</span>
-                        <span style="font-size:13px;color:#777;">내 관심 종목</span>
-                        <span style="font-size:13px;color:#777;">내가 쓴 글(자유게시판)</span>
+            <!-- ===== 투자 성향 / 투자 목표 ===== -->
+            <div class="info-area">
+
+                <!-- 투자성향분석 -->
+                <div class="info-box type-box">
+                    <div class="flex items-start justify-between">
+                        <h3 class="info-title">투자성향분석</h3>
+                        <div class="movebtn test">
+                            <a href="/settings/investment">테스트 다시하기 &gt;</a>
+                        </div>
+                    </div>
+
+                    <div class="mt-12 flex flex-col gap-10">
+
+                        <div class="grid grid-cols-[120px_1fr_120px] items-center gap-8">
+                            <div class="text-l font-bold text-gray-700">소량투자</div>
+                            <div class="h-[30px] rounded-full border-[3px] border-[#3f6f60] overflow-hidden">
+                                <div class="h-full bg-[#3f6f60] rounded-full" style="width:55%"></div>
+                            </div>
+                            <div class="text-l font-bold text-gray-700">대량투자</div>
+                        </div>
+
+                        <div class="grid grid-cols-[120px_1fr_120px] items-center gap-8">
+                            <div class="text-l font-bold text-gray-700">안전</div>
+                            <div class="h-[30px] rounded-full border-[3px] border-[#3f6f60] overflow-hidden">
+                                <div class="h-full bg-[#3f6f60] rounded-full" style="width:78%"></div>
+                            </div>
+                            <div class="text-l font-bold text-gray-700">공격</div>
+                        </div>
+
+                        <div class="grid grid-cols-[120px_1fr_120px] items-center gap-8">
+                            <div class="text-l font-bold text-gray-700">해외상품</div>
+                            <div class="h-[30px] rounded-full border-[3px] border-[#3f6f60] overflow-hidden">
+                                <div class="h-full bg-[#3f6f60] rounded-full" style="width:35%"></div>
+                            </div>
+                            <div class="text-l font-bold text-gray-700">국내상품</div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- 투자 목표 -->
+                <div class="info-box goal-box">
+                    <div class="movebtn goal">
+                        <a href="/settings/investment">목표 다시 설정 &gt;</a>
+                    </div>
+
+                    <h3 class="info-title">나의 투자 목표</h3>
+
+                    <div class="goal-content">
+
+                        <!-- 🔵 Chart.js 도넛 -->
+                        <canvas id="donut-chart" width="200" height="200"></canvas>
+
+                        <!-- 비율 리스트 -->
+                        <ul class="goal-ratio">
+                            <p>- 비율 -</p>
+                            <li><span class="label">국내 ETF</span><span class="value">25%</span></li>
+                            <li><span class="label">해외 ETF</span><span class="value">30%</span></li>
+                            <li><span class="label">테마 ETF</span><span class="value">15%</span></li>
+                            <li><span class="label">채권 / 안정자산</span><span class="value">20%</span></li>
+                            <li><span class="label">현금</span><span class="value">10%</span></li>
+                        </ul>
+
                     </div>
                 </div>
 
             </div>
 
-            <!-- ⭐ 북마크 ETF -->
-            <div class="favorite-area">
-                <h3 class="favorite-title">내 관심 종목</h3>
+            <!-- 관심 종목 -->
+            <div class="section-box">
+                <h3 class="section-title">⭐ 내 관심 종목</h3>
 
-                <!-- 없을 때 -->
                 <div th:if="${#lists.isEmpty(bookmarkedEtfs)}" class="empty">
                     아직 북마크한 ETF가 없습니다.
                 </div>
 
-                <!-- 있을 때 -->
                 <ul class="favorite-list">
-                    <li th:each="etf : ${bookmarkedEtfs}" class="favorite-item">
+
+                    <!-- 1️⃣ 실제 북마크 ETF (최대 6개까지만 출력) -->
+                    <li th:each="etf, stat : ${bookmarkedEtfs}"
+                        th:if="${stat.index < 6}"
+                        class="favorite-item">
+
                         <a th:href="@{/etf/{isin}(isin=${etf.isinCd})}"
-                           style="color:inherit;text-decoration:none">
+                           style="text-decoration:none;color:inherit">
                             <div class="brand" th:text="${etf.assetType}"></div>
                             <div class="name" th:text="${etf.name}"></div>
                             <div class="code" th:text="${etf.isinCd}"></div>
                         </a>
                     </li>
+
+                    <!-- 2️⃣ 관심 종목 추가 박스 (6개 미만일 때만, 남는 칸만큼 출력) -->
+                    <li th:each="i : ${#numbers.sequence(1, 6 - #lists.size(bookmarkedEtfs))}"
+                        th:if="${#lists.size(bookmarkedEtfs) < 6}"
+                        class="favorite-item add">
+
+                        <a href="/etf/list"
+                           style="display:flex;flex-direction:column;
+                  justify-content:center;align-items:center;
+                  height:100%;text-decoration:none;color:#999">
+
+                            <span style="font-size:32px;font-weight:600">+</span>
+                            <p style="margin-top:10px;font-size:14px">관심 종목 추가</p>
+                        </a>
+                    </li>
+
                 </ul>
             </div>
 
+            <!-- 내가 쓴 글 -->
             <div class="section-box">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                    <h3 style="margin: 0;">📝 내가 쓴 글 (자유게시판)</h3>
-                    <a href="/board" style="font-size: 14px; color: #4263eb; text-decoration: none; font-weight: bold;">
-                        자유게시판 바로가기 ➜
-                    </a>
-                </div>
+                <h3 class="section-title">📝 내가 쓴 글</h3>
 
                 <div th:if="${#lists.isEmpty(myBoards)}" class="empty">
                     작성한 게시글이 없습니다.
@@ -270,18 +472,86 @@
 
                 <div th:unless="${#lists.isEmpty(myBoards)}" class="board-list">
                     <div th:each="board : ${myBoards}" class="board-item">
-                        <a th:href="@{/board/{id}(id=${board.id})}" class="board-title" th:text="${board.title}">
-                            게시글 제목
-                        </a>
+                        <a th:href="@{/board/{id}(id=${board.id})}"
+                           class="board-title"
+                           th:text="${board.title}"></a>
                         <div class="board-meta">
-                            조회수 <span th:text="${board.views}">0</span> |
-                            <span th:text="${#temporals.format(board.createdDate, 'yyyy-MM-dd')}">2026-01-01</span>
+                            조회수 <span th:text="${board.views}"></span> |
+                            <span th:text="${#temporals.format(board.createdDate,'yyyy-MM-dd')}"></span>
                         </div>
                     </div>
                 </div>
             </div>
+
         </main>
     </div>
 </section>
 </body>
 </html>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+
+<script>
+    Chart.register(ChartDataLabels);
+
+    /* 기본 데이터 (백엔드 아직 없어도 안 깨짐) */
+    const DEFAULT_DONUT_DATA = {
+        items: [
+            { label: "국내 ETF", value: 25, color: "#2f6b4f" },
+            { label: "해외 ETF", value: 30, color: "#8DBB4C" },
+            { label: "테마 ETF", value: 15, color: "#527a52" },
+            { label: "채권 / 안정자산", value: 20, color: "#163b16" },
+            { label: "현금", value: 10, color: "#cfd8cf" }
+        ]
+    };
+
+    let donutChart = null;
+
+    function renderDonutChart(rawData = DEFAULT_DONUT_DATA){
+        const items = rawData.items;
+
+        const ctx = document.getElementById("donut-chart");
+        if (!ctx) return;
+
+        if (donutChart) donutChart.destroy();
+
+        donutChart = new Chart(ctx, {
+            type: "doughnut",
+            data: {
+                labels: items.map(i => i.label),
+                datasets: [{
+                    data: items.map(i => i.value),
+                    backgroundColor: items.map(i => i.color),
+                    borderWidth: 2,
+                    borderColor: "#f5f5f5",
+                    hoverOffset: 6
+                }]
+            },
+            options: {
+                responsive: false,
+                cutout: "55%",
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { enabled: false },
+                    datalabels: {
+                        formatter: (value, ctx) => {
+                            const label = ctx.chart.data.labels[ctx.dataIndex];
+                            return `${label}\n${value}%`;
+                        },
+                        color: "#111",
+                        font: { size: 12, weight: "600" },
+                        anchor: "center",
+                        align: "center"
+                    }
+                }
+            }
+        });
+    }
+
+    /* 실행 */
+    document.addEventListener("DOMContentLoaded", () => {
+        renderDonutChart();
+    });
+</script>

@@ -1,93 +1,310 @@
-.bg-layer{ 
+@charset "UTF-8";
+
+/* fortune.css */
+
+/* 1. 기본 배경 (흰색) */
+body {
+    background-color: #f7f7f7;
+    color: #333;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+/* 2. 상단 여백 (헤더 공간) */
+.bg-layer {
     width: 100%;
-    min-height: 100vh;
-    background: #11063f; 
-    background: linear-gradient(to right, #121216, #2e2d5a, #0c0644); 
-    color: white; 
-    text-align: center; 
-    padding: 50px 20px; 
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 150px 20px 100px;
+    text-align: center;
+    min-height: calc(100vh - 200px);
+}
+
+/* 3. 메인 타이틀 */
+.bg-layer h1 {
+    font-size: 48px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 15px;
+    letter-spacing: -1px;
+}
+
+.bg-layer h2 {
+    font-size: 48px;
+    font-weight: 700;
+    color: #055C4D;
+    margin-bottom: 15px;
+    letter-spacing: -1px;
+}
+
+.subtitle {
+    color: #666;
+    font-size: 18px;
+    margin-bottom: 60px;
+    font-weight: 400;
+}
+
+/* 4. 별자리 그리드 */
+.zodiac-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 25px;
+    margin-bottom: 60px;
+}
+
+/* ★★★ [수정] 별자리 카드 (찐 우주 테마) ★★★ */
+.zodiac-card {
+    /* 요청하신 오리지널 우주 색감 */
+    background: linear-gradient(135deg, #121216, #2e2d5a, #0c0644);
+    border-radius: 20px;
+    padding: 30px 20px;
+    cursor: pointer;
+    text-decoration: none;
+
+    /* 텍스트: 완전 흰색 */
+    color: #ffffff;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    /* 테두리와 그림자 */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 10px 25px rgba(12, 6, 68, 0.3);
+
+    transition: all 0.3s ease;
+}
+
+/* 아이콘 */
+.zodiac-card .icon {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* 아이콘 뒤에 빛나는 효과 */
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.4));
+}
+
+.zodiac-card img {
+    max-width: 100%;
+    max-height: 100%;
+    transition: transform 0.3s ease;
+}
+
+.zodiac-card .name {
+    font-size: 18px;
+    font-weight: 700; /* 굵게 */
+    color: #fff;      /* 완전 흰색 */
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5); /* 그림자로 가독성 확보 */
+}
+
+/* 호버 효과 */
+.zodiac-card:hover {
+    transform: translateY(-10px) scale(1.03);
+    border-color: #fff;
+    box-shadow: 0 15px 40px rgba(12, 6, 68, 0.5);
+}
+
+.zodiac-card:hover img {
+    transform: scale(1.15);
+}
+
+/* =========================================
+   [결과 페이지 스타일]
+   ========================================= */
+.result-container {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+/* ★★★ [수정] 결과 박스 (찐 우주 테마) ★★★ */
+.fortune-box {
+    /* 오리지널 우주 그라디언트 */
+    background: linear-gradient(135deg, #121216, #2e2d5a, #0c0644);
+
+    border-radius: 20px;
+    padding: 60px 40px;
+    margin-bottom: 50px;
+
+    /* 그림자 & 테두리 */
+    box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+    border: 2px solid rgba(255, 255, 255, 0.15);
+
+    color: #fff;
+    position: relative;
     overflow: hidden;
 }
 
-    h1 {
-    margin-bottom: 10px;
-    text-shadow: 0 0 20px #a29bfe;
-    font-size: 2.5rem;
-    animation: floatTitle 4s ease-in-out infinite;
+/* 배경 별빛 효과 (가상요소) */
+.fortune-box::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    pointer-events: none;
 }
-@keyframes floatTitle {
-    0% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-12px);
-    }
-    100% {
-        transform: translateY(0);
-    }
+
+/* 상단 별자리 이미지 */
+.fortune-zodiac-img {
+    width: 130px;
+    margin: 0 auto 30px;
+    display: block;
+    filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.5)); /* 밝게 빛남 */
+    animation: floatImg 3s ease-in-out infinite;
 }
-        .subtitle { color: #b2bec3; margin-bottom: 50px; font-weight: 300; }
 
-        .zodiac-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 10px;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .zodiac-card {
-            border-radius: 15px;
-            padding: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            color: white;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            backdrop-filter: blur(5px);
-        }
-
-        .zodiac-card img{
-            max-width: 100%;
-            width: 200px;
-            filter: drop-shadow(0 6px 12px rgba(0,0,0,0.2));
-            transition:
-                transform 0.8s cubic-bezier(0.22, 1, 0.36, 1),
-                filter 0.6s ease;
-
-        }
-        .zodiac-card:hover img {
-    transform: translateY(-15px) ;
-    filter: drop-shadow(0 12px 30px rgba(116, 185, 255, 0.75));
+@keyframes floatImg {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
 }
-        .icon { font-size: 40px; margin-bottom: 10px; }
-        .name { font-weight: 500; font-size: 16px; }
 
-        
-        .home-btn {
-    margin-top: 50px;
+/* 결과 타이틀 (밝은 노랑/금색으로 강조) */
+.fortune-title {
+    font-size: 34px;
+    font-weight: 800;
+    color: #FFD700; /* 금색 */
+    text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+    margin-bottom: 30px;
+    position: relative;
+    z-index: 1;
+}
+
+/* 운세 본문 (완전 흰색 + 굵기 조정) */
+.fortune-content {
+    font-size: 20px;
+    line-height: 1.8;
+    color: #ffffff;
+    font-weight: 500;
+    margin-bottom: 40px;
+    white-space: pre-wrap;
+    word-break: keep-all;
+    position: relative;
+    z-index: 1;
+}
+
+/* 키워드 박스 (반투명 화이트) */
+.keyword-box {
     display: inline-block;
-    padding: 10px 22px;
-    border: 1px solid #6eb8ae;
-    color: #6eb8ae;
-    text-decoration: none;
-    border-radius: 30px;
-
-    animation: floatBtn 5s ease-in-out infinite;
-    transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(5px);
+    padding: 15px 35px;
+    border-radius: 50px;
+    color: #fff;
+    font-weight: 700;
+    font-size: 18px;
+    position: relative;
+    z-index: 1;
 }
 
-@keyframes floatBtn {
-    0%   { transform: translateY(0); }
-    50%  { transform: translateY(-6px); }
-    100% { transform: translateY(0); }
+.keyword-box span {
+    color: #74b9ff; /* 밝은 하늘색 강조 */
+    text-shadow: 0 0 5px rgba(116, 185, 255, 0.5);
+}
+
+/* =========================================
+   [추천 ETF 리스트] - 여기는 깔끔한 화이트 유지
+   ========================================= */
+.etf-list-title {
+    font-size: 26px;
+    font-weight: 800;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: left;
+    margin-top: 60px;
+}
+
+.etf-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fff;
+    padding: 25px 30px;
+    border-radius: 15px;
+    margin-bottom: 15px;
+    text-decoration: none;
+    border: 1px solid #eee;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+    text-align: left;
+}
+
+.etf-card:hover {
+    transform: translateY(-3px);
+    border-color: #055C4D;
+    box-shadow: 0 8px 20px rgba(5, 92, 77, 0.15);
+}
+
+.etf-info h3 {
+    margin: 0 0 8px 0;
+    font-size: 22px;
+    font-weight: 700;
+    color: #1a1a1a;
+}
+
+.etf-tags {
+    font-size: 15px;
+    color: #666;
+}
+
+.etf-tags span {
+    color: #055C4D;
+    font-weight: 700;
+}
+
+.arrow-icon {
+    font-size: 24px;
+    color: #ddd;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+.etf-card:hover .arrow-icon {
+    color: #055C4D;
+}
+
+/* 하단 버튼 */
+.btn-group {
+    margin-top: 60px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.home-btn, .sub-btn {
+    display: inline-block;
+    padding: 15px 35px;
+    border-radius: 30px;
+    font-size: 16px;
+    font-weight: 700;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.home-btn {
+    background: #055C4D;
+    color: #fff;
+    border: 1px solid #055C4D;
 }
 
 .home-btn:hover {
-    transform: translateY(-12px) scale(1.05);
-    background: #6eb8ae;
-    color: white;
-    box-shadow: 0 15px 35px rgba(93, 120, 146, 0.6);
+    background: #04463a;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(5, 92, 77, 0.3);
+}
+
+.sub-btn {
+    background: #fff;
+    color: #555;
+    border: 1px solid #ccc;
+}
+
+.sub-btn:hover {
+    background: #f9f9f9;
+    border-color: #999;
+    color: #333;
+    transform: translateY(-2px);
 }

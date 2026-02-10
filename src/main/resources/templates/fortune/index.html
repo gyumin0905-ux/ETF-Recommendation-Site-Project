@@ -3,15 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>오늘의 투자 운세</title>
-    <link rel="stylesheet" th:href="@{/css/fortune.css}">
+    <title>오늘의 투자 운세 - Verte</title>
+
     <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/fortune.css}">
     <link rel="icon" type="image/png" th:href="@{/images/favi.png}">
+
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
+
+<div th:replace="~{fragments/header :: headerFragment}"></div>
+
 <div class="bg-layer">
-    <h1>✨ 오늘의 투자 운세 ✨</h1>
-    <p class="subtitle">당신의 별자리가 우주의 기운으로 운명의 종목을 연결해 줄 거에요</p>
+    <h2>✨ 오늘의 투자 운세 ✨</h2>
+    <p class="subtitle">당신의 별자리가 투자의 행운을 가져다 줄 거예요</p>
 
     <div class="zodiac-grid">
         <a th:href="@{/fortune/result(sign='물병자리')}" class="zodiac-card">
@@ -64,7 +71,13 @@
         </a>
     </div>
 
-    <a th:href="@{/}" class="home-btn">메인으로 돌아가기</a>
+    <div class="btn-group" style="margin-top: 40px;">
+        <a th:href="@{/}" class="sub-btn">메인으로 돌아가기</a>
+    </div>
 </div>
+
+<div th:replace="~{fragments/footer :: footerFragment}"></div>
+<script th:src="@{/js/common.js}"></script>
+
 </body>
 </html>

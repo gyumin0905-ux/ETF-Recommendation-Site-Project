@@ -18,12 +18,12 @@ gnb.addEventListener('mouseleave', () => {
 
 // 섹션1: 검색
 window.addEventListener('DOMContentLoaded', () => {
-  const bannerElements = document.querySelectorAll('#search .transition-box>*');
+    const bannerElements = document.querySelectorAll('#search .transition-box>*');
 
-  bannerElements.forEach(el => {
-    el.style.transform = 'translateY(0px)';
-    el.style.opacity = 1;
-  })
+    bannerElements.forEach(el => {
+        el.style.transform = 'translateY(0px)';
+        el.style.opacity = 1;
+    })
 
 })
 
@@ -39,35 +39,35 @@ let isDeleting = false;
 let timer;
 
 function typing() {
-  const typingInput = document.querySelector('#search .search-bar');
+    const typingInput = document.querySelector('#search .search-bar');
 
-  if (!isDeleting) {
-    charIndex++;
-  } else {
-    charIndex--;
-  }
+    if (!isDeleting) {
+        charIndex++;
+    } else {
+        charIndex--;
+    }
 
-  typingInput.placeholder = inputText.substring(0, charIndex);
+    typingInput.placeholder = inputText.substring(0, charIndex);
 
-  // 타이핑 완료 → 삭제 시작 전 딜레이
-  if (!isDeleting && charIndex === inputText.length) {
-    timer = setTimeout(() => {
-      isDeleting = true;
-      typing();
-    }, delay);
-    return;
-  }
+    // 타이핑 완료 → 삭제 시작 전 딜레이
+    if (!isDeleting && charIndex === inputText.length) {
+        timer = setTimeout(() => {
+            isDeleting = true;
+            typing();
+        }, delay);
+        return;
+    }
 
-  // 삭제 완료 → 다시 타이핑 시작 전 딜레이
-  if (isDeleting && charIndex === 0) {
-    timer = setTimeout(() => {
-      isDeleting = false;
-      typing();
-    }, restartDelay);
-    return;
-  }
+    // 삭제 완료 → 다시 타이핑 시작 전 딜레이
+    if (isDeleting && charIndex === 0) {
+        timer = setTimeout(() => {
+            isDeleting = false;
+            typing();
+        }, restartDelay);
+        return;
+    }
 
-  timer = setTimeout(typing, isDeleting ? deletingSpeed : typingSpeed);
+    timer = setTimeout(typing, isDeleting ? deletingSpeed : typingSpeed);
 }
 
 typing();
@@ -80,50 +80,50 @@ const recommendCont = document.querySelectorAll('#recommend .right .etf-list')
 const bookmark = document.querySelectorAll('#recommend .right .etf-list .bookmark');
 
 for (let i = 0; i < recommendBtn.length; i++) {
-  recommendBtn[i].addEventListener('click', function() {
-    recommendBtn.forEach(btn => btn.classList.remove('active'));
-    this.classList.add('active');
-    recommendCont.forEach(cont => cont.classList.remove('active'));
-    recommendCont[i].classList.add('active');
-  });
+    recommendBtn[i].addEventListener('click', function() {
+        recommendBtn.forEach(btn => btn.classList.remove('active'));
+        this.classList.add('active');
+        recommendCont.forEach(cont => cont.classList.remove('active'));
+        recommendCont[i].classList.add('active');
+    });
 }
 
 // bookmark.forEach(function(img) {
-  // img.addEventListener('mouseenter', function() {
-  //   this.src = 'images/bookmark-full.png';
-  // });
-  // img.addEventListener('mouseleave', function() {
-  //   this.src = 'images/bookmark-empty.png';
-  // });
+// img.addEventListener('mouseenter', function() {
+//   this.src = 'images/bookmark-full.png';
+// });
+// img.addEventListener('mouseleave', function() {
+//   this.src = 'images/bookmark-empty.png';
+// });
 //   img.addEventListener('click', function() {
 //     this.src = 'images/bookmark-full.png';
 //   })
 // });
 
 bookmark.forEach(img => {
-  let isActive = false;
+    let isActive = false;
 
-  img.addEventListener('mouseenter', () => {
-    if (!isActive) {
-      img.src = 'images/bookmark-full.png';
-    }
-  });
+    img.addEventListener('mouseenter', () => {
+        if (!isActive) {
+            img.src = 'images/bookmark-full.png';
+        }
+    });
 
-  img.addEventListener('mouseleave', () => {
-    if (!isActive) {
-      img.src = 'images/bookmark-empty.png';
-    }
-  });
+    img.addEventListener('mouseleave', () => {
+        if (!isActive) {
+            img.src = 'images/bookmark-empty.png';
+        }
+    });
 
-  img.addEventListener('click', e => {
-    e.preventDefault();
-    e.stopPropagation();
+    img.addEventListener('click', e => {
+        e.preventDefault();
+        e.stopPropagation();
 
-    isActive = !isActive;
-    img.src = isActive
-      ? 'images/bookmark-full.png'
-      : 'images/bookmark-empty.png';
-  });
+        isActive = !isActive;
+        img.src = isActive
+            ? 'images/bookmark-full.png'
+            : 'images/bookmark-empty.png';
+    });
 });
 
 
@@ -142,11 +142,44 @@ new Swiper('.news-swiper', {
     },
 
     navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev'
+        nextEl: '.news-prev-btn',
+        prevEl: '.news-next-btn'
     },
 
     speed: 600
 });
 
+// 챗봇
+const fab = document.getElementById('chatbot-fab');
+const modal = document.getElementById('chatbot-modal');
 
+fab.addEventListener('click', () => {
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden'; // 🔒 배경 스크롤 잠금
+});
+
+modal.addEventListener('click', e => {
+    if (e.target === modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = ''; // 🔓 복구
+    }
+});
+
+window.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+});
+
+modal.addEventListener('click', e => {
+    if (e.target === modal) {
+        modal.classList.remove('active');
+    }
+});
+
+window.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+        modal.classList.remove('active');
+    }
+});

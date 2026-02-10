@@ -44,15 +44,13 @@
                             <li th:if="${session.loginUser == null}">
                                 <a th:href="@{/login}" onclick="alert('로그인이 필요한 서비스입니다.');">포트폴리오 제안</a>
                             </li>
-
+                            <li th:if="${session.loginUser != null}">
+                                <a th:href="@{/settings/investment}">투자 성향 테스트</a>
+                            </li>
+                            <li th:if="${session.loginUser == null}">
+                                <a th:href="@{/settings/investment}" onclick="alert('로그인이 필요한 서비스입니다.');">투자 성향 테스트</a>
+                            </li>
                             <li><a th:href="@{/fortune}">오늘의 투자 운세</a></li>
-                        </ul>
-                    </li>
-
-                    <li>
-                        <a href="#">투자 정보</a>
-                        <ul class="sub">
-                            <li><a th:href="@{/terms/chat}">AI 챗봇 가이드</a></li>
                         </ul>
                     </li>
 

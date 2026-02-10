@@ -1,208 +1,176 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" data-theme="light">
 <head>
-    <meta charset="UTF-8">
-    <title>ETF 비교 - 상세</title>
+    <meta charset="UTF-8" />
+    <title>ETF 비교·랭킹</title>
     <link rel="icon" th:href="@{/images/favi.png}">
 
     <link rel="stylesheet" th:href="@{/css/reset.css}">
     <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/compare.css}">
 
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
     <script src="https://cdn.tailwindcss.com"></script>
-
-    <style>
-        body {
-            font-family: "Noto Sans KR", sans-serif;
-            background: #f7f7f7;
-        }
-
-        .compare-wrap {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-
-        h1 {
-            font-size: 32px;
-            font-weight: 700;
-            color: #055C4D;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .sub {
-            text-align: center;
-            color: #666;
-            margin-bottom: 40px;
-        }
-
-        .warn {
-            background: #fff3cd;
-            color: #856404;
-            padding: 16px;
-            border-radius: 8px;
-            font-weight: bold;
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .compare-container {
-            display: flex;
-            gap: 30px;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .etf-box {
-            background: white;
-            width: 400px;
-            padding: 30px;
-            border-radius: 16px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            transition: transform 0.2s;
-        }
-
-        .etf-box:hover {
-            transform: translateY(-5px);
-        }
-
-        .etf-title {
-            font-size: 22px;
-            font-weight: 700;
-            margin-bottom: 12px;
-            color: #333;
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 4px 10px;
-            font-size: 13px;
-            border-radius: 6px;
-            margin-right: 6px;
-            font-weight: 600;
-        }
-
-        .badge-theme { background: #e8f0fe; color: #1a73e8; }
-        .badge-risk { background: #ffecec; color: #d93025; }
-
-        .item { margin-top: 15px; font-size: 15px; color: #555; }
-
-        .strengths {
-            margin-top: 20px;
-            background: #f9f9f9;
-            padding: 16px;
-            border-radius: 10px;
-            font-size: 14px;
-            line-height: 1.6;
-        }
-
-        .strengths-title {
-            font-weight: 700;
-            margin-bottom: 8px;
-            color: #055C4D;
-        }
-
-        .vs {
-            font-size: 40px;
-            font-weight: 900;
-            color: #ddd;
-            font-style: italic;
-        }
-
-        .back {
-            margin-top: 60px;
-            text-align: center;
-        }
-        .back a {
-            padding: 12px 24px;
-            background: #055C4D;
-            color: white;
-            border-radius: 999px;
-            text-decoration: none;
-            font-weight: bold;
-            transition: 0.2s;
-        }
-        .back a:hover {
-            background: #04463a;
-        }
-    </style>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
 
-<div th:replace="~{fragments/header :: headerFragment}"></div>
+<header th:replace="~{fragments/header :: headerFragment}"></header>
 
-<div style="position: relative; z-index: 1; padding-top: 100px;">
-    <div class="compare-wrap">
-        <h1>📊 ETF 비교 상세</h1>
+<section>
+    <div class="section1Wrap">
+        <h1>상품비교</h1>
+        <p>ETF를 선택하여 상품을 비교해보세요.</p>
 
-        <div th:if="${errorMessage != null}" class="warn">
-            ⚠️ <span th:text="${errorMessage}"></span>
-        </div>
-
-        <div th:if="${result != null}">
-            <div class="sub">
-                비교 테마: <b th:text="${result.theme}"></b> /
-                비교 방식: <b th:text="${result.mode}"></b>
+        <div class="comparecontent">
+            <div class="boxA">
+                <p class="boxintxt">아래에서 상품을 선택해주세요.</p>
             </div>
 
-            <div class="compare-container">
+            <img class="vs" th:src="@{/images/vs1.png}" alt="VS">
 
-                <div class="etf-box">
-                    <div class="etf-title" th:text="${result.left.name}"></div>
-
-                    <div>
-                        <span class="badge badge-theme" th:text="${result.left.theme}"></span>
-                        <span class="badge badge-risk">
-                        위험도 <span th:text="${result.left.riskLevel}"></span>
-                    </span>
-                    </div>
-
-                    <div class="item">ISIN: <b th:text="${result.left.isinCd}"></b></div>
-
-                    <div class="strengths">
-                        <div class="strengths-title">📌 장점 요약</div>
-                        <ul>
-                            <li th:each="s : ${result.left.strengths}" th:text="${s}"></li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="vs">VS</div>
-
-                <div class="etf-box">
-                    <div class="etf-title" th:text="${result.right.name}"></div>
-
-                    <div>
-                        <span class="badge badge-theme" th:text="${result.right.theme}"></span>
-                        <span class="badge badge-risk">
-                        위험도 <span th:text="${result.right.riskLevel}"></span>
-                    </span>
-                    </div>
-
-                    <div class="item">ISIN: <b th:text="${result.right.isinCd}"></b></div>
-
-                    <div class="strengths">
-                        <div class="strengths-title">📌 장점 요약</div>
-                        <ul>
-                            <li th:each="s : ${result.right.strengths}" th:text="${s}"></li>
-                        </ul>
-                    </div>
-                </div>
-
+            <div class="boxB">
+                <p class="boxintxt">아래에서 상품을 선택해주세요.</p>
             </div>
         </div>
 
-        <div class="back">
-            <a th:href="@{/compare}">← 비교 목록으로 돌아가기</a>
+        <button class="compareBtn is-disabled">비교하기</button>
+    </div>
+
+    <div class="resultBox">
+        <div class="result1">
+            <h3>주가비교차트(1년)</h3>
+            <div class="resultChart">
+                <canvas id="resultCompareChart"></canvas>
+            </div>
+        </div>
+
+        <div class="result2">
+            <ul class="tab-view">
+                <li>
+                    <div id="compareResultArea">비교 결과가 여기에 표시됩니다.</div>
+                </li>
+            </ul>
         </div>
     </div>
-</div>
 
-<div th:replace="~{fragments/footer :: footerFragment}"></div>
+    <div class="compareList">
+        <h3>ETF상품 TOP10</h3>
+
+        <div class="top10content">
+            <ul class="top5">
+                <li th:each="etf, st : ${etfs}" th:if="${st.index < 5}" th:attr="data-isin=${etf.isinCd}">
+                    <span class="rankin" th:text="${st.index + 1} + '위'"></span>
+                    <span class="prutit" th:text="${etf.name}"></span>
+                    <span class="code" th:text="${etf.isinCd}"></span>
+                </li>
+            </ul>
+            <ul class="top10">
+                <li th:each="etf, st : ${etfs}" th:if="${st.index >= 5 and st.index < 10}" th:attr="data-isin=${etf.isinCd}">
+                    <span class="rankin" th:text="${st.index + 1} + '위'"></span>
+                    <span class="prutit" th:text="${etf.name}"></span>
+                    <span class="code" th:text="${etf.isinCd}"></span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="RecommendWrap">
+        <div class="title">
+            <h1>오늘의 추천 비교</h1>
+        </div>
+
+        <div class="section2Wrap">
+            <div class="leftVS">
+                <div class="chart-left">
+                    <canvas id="compareReturnChart"></canvas>
+                </div>
+
+                <table class="inform1">
+                    <tr><th>상품명</th><td id="leftName">-</td><td id="rightName">-</td></tr>
+                    <tr><th>테마</th><td id="leftTheme">-</td><td id="rightTheme">-</td></tr>
+                    <tr><th>위험도</th><td id="leftRisk">-</td><td id="rightRisk">-</td></tr>
+                    <tr><th>ISIN</th><td id="leftIsin">-</td><td id="rightIsin">-</td></tr>
+                </table>
+            </div>
+
+            <div class="rightList">
+                <ul class="proList">
+                    <li th:each="pair, st : ${randomTop5}"
+                        th:classappend="${st.index == 0} ? 'on' : ''"
+                        th:attr="
+                        data-left-name=${pair.left.name},
+                        data-left-theme=${pair.left.theme},
+                        data-left-risk=${pair.left.riskLevel},
+                        data-left-isin=${pair.left.isinCd},
+                        data-right-name=${pair.right.name},
+                        data-right-theme=${pair.right.theme},
+                        data-right-risk=${pair.right.riskLevel},
+                        data-right-isin=${pair.right.isinCd}
+                    ">
+                        <span class="number" th:text="${st.index + 1} + '.'">1.</span>
+
+                        <div class="vs-container">
+                            <div class="vs-item">
+                                <em th:text="${pair.left.isinCd}"></em>
+                                <span class="maintxt" th:text="${pair.left.name}"></span>
+                            </div>
+                            <span class="vs-center">VS</span>
+                            <div class="vs-item">
+                                <em th:text="${pair.right.isinCd}"></em>
+                                <span class="maintxt" th:text="${pair.right.name}"></span>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer th:replace="~{fragments/footer :: footerFragment}"></footer>
 
 <script th:src="@{/js/common.js}"></script>
+<script th:src="@{/js/compare.js}"></script>
+
+<script>
+    const __charts = {};
+
+    function loadReturnChartInto(canvasId, isin1, isin2, period = "1Y", type = "line") {
+        $.getJSON("/compare/chart/return", { isin1, isin2, period }, function (res) {
+            const canvas = document.getElementById(canvasId);
+            if (!canvas) return;
+            const ctx = canvas.getContext("2d");
+
+            if (__charts[canvasId]) {
+                __charts[canvasId].destroy();
+                __charts[canvasId] = null;
+            }
+
+            // ✅ undefined 방어
+            const leftLabel  = res.left.label  || res.left.name  || isin1;
+            const rightLabel = res.right.label || res.right.name || isin2;
+
+            __charts[canvasId] = new Chart(ctx, {
+                type: type,
+                data: {
+                    labels: res.labels,
+                    datasets: [
+                        { label: res.left.label, data: res.left.data, borderColor: "#2563eb", backgroundColor: "#2563eb", borderWidth: 2, tension: 0.3, pointRadius: 0 },
+                        { label: res.right.label, data: res.right.data, borderColor: "#e11d48", backgroundColor: "#e11d48", borderWidth: 2, tension: 0.3, pointRadius: 0 }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    interaction: { mode: "index", intersect: false },
+                    scales: { y: { ticks: { callback: v => v + "%" } } }
+                }
+            });
+        });
+    }
+</script>
 
 </body>
 </html>

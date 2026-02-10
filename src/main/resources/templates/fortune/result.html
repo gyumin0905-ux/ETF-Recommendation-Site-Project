@@ -5,169 +5,79 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>오늘의 투자 운세 결과</title>
 
-    <link rel="stylesheet" th:href="@{/css/fortune.css}">
     <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/fortune.css}">
     <link rel="icon" type="image/png" th:href="@{/images/favi.png}">
 
-    <style>
-        .result-container {
-            max-width: 800px;
-            margin: 0 auto;
-            text-align: left;
-            animation: fadeIn 1s ease-in-out;
-        }
-
-        .fortune-box {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 40px;
-            margin-bottom: 40px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            text-align: center;
-        }
-
-        .fortune-title {
-            font-size: 2rem;
-            margin-bottom: 20px;
-            color: #a29bfe;
-            text-shadow: 0 0 10px rgba(162, 155, 254, 0.5);
-        }
-
-        .fortune-content {
-            font-size: 1.2rem;
-            line-height: 1.8;
-            margin-bottom: 30px;
-            color: #dfe6e9;
-            white-space: pre-wrap; /* 줄바꿈 유지 */
-        }
-
-        .keyword-box {
-            display: inline-block;
-            background: rgba(116, 185, 255, 0.2);
-            padding: 10px 25px;
-            border-radius: 50px;
-            border: 1px solid #74b9ff;
-            color: #74b9ff;
-            font-weight: bold;
-        }
-
-        /* ETF 리스트 스타일 */
-        .etf-list-title {
-            text-align: center;
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-            color: #fff;
-        }
-
-        .etf-card {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(255, 255, 255, 0.95);
-            color: #2d3436;
-            padding: 20px 30px;
-            border-radius: 15px;
-            margin-bottom: 15px;
-            text-decoration: none;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border-left: 6px solid #6c5ce7;
-        }
-
-        .etf-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
-
-        .etf-info h3 {
-            margin: 0 0 5px 0;
-            font-size: 1.2rem;
-            color: #2d3436;
-        }
-
-        .etf-tags {
-            font-size: 0.9rem;
-            color: #636e72;
-        }
-
-        .arrow-icon {
-            font-size: 1.5rem;
-            color: #6c5ce7;
-            font-weight: bold;
-        }
-
-        .btn-group {
-            margin-top: 50px;
-            text-align: center;
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-        }
-
-        .sub-btn {
-            padding: 10px 25px;
-            border-radius: 30px;
-            text-decoration: none;
-            transition: all 0.3s;
-            border: 1px solid rgba(255,255,255,0.5);
-            color: rgba(255,255,255,0.8);
-        }
-
-        .sub-btn:hover {
-            background: rgba(255,255,255,0.2);
-            color: white;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-<div class="bg-layer" style="min-height: 100vh;"> <div class="result-container">
 
-    <div class="fortune-box">
-        <h1 class="fortune-title" th:text="|✨ ${result.zodiacSign}의 오늘 운세|">물병자리의 운세</h1>
+<div th:replace="~{fragments/header :: headerFragment}"></div>
 
-        <p class="fortune-content" th:text="${result.fortuneText}">
-            오늘은 예상치 못한 행운이 찾아올 수 있습니다.
-            특히 금융과 관련된 소식에 귀를 기울여보세요.
-        </p>
+<div class="bg-layer">
+    <div class="result-container">
 
-        <div class="keyword-box">
-            🔑 행운의 키워드: <span th:text="${result.keyword}">재물</span>
-            → 추천 테마: <span th:text="${result.matchedTheme}">반도체</span>
-        </div>
-    </div>
+        <div class="fortune-box">
 
-    <h2 class="etf-list-title">🌌 우주가 추천하는 ETF</h2>
+            <div class="zodiac-img-wrap" th:switch="${result.zodiacSign}">
+                <img th:case="'물병자리'" th:src="@{/images/aqua1.png}" class="fortune-zodiac-img">
+                <img th:case="'물고기자리'" th:src="@{/images/pisces2.png}" class="fortune-zodiac-img">
+                <img th:case="'양자리'" th:src="@{/images/aries3.png}" class="fortune-zodiac-img">
+                <img th:case="'황소자리'" th:src="@{/images/tautus4.png}" class="fortune-zodiac-img">
+                <img th:case="'쌍둥이자리'" th:src="@{/images/gemini5.png}" class="fortune-zodiac-img">
+                <img th:case="'게자리'" th:src="@{/images/cancer6.png}" class="fortune-zodiac-img">
+                <img th:case="'사자자리'" th:src="@{/images/leo7.png}" class="fortune-zodiac-img">
+                <img th:case="'처녀자리'" th:src="@{/images/virgo8.png}" class="fortune-zodiac-img">
+                <img th:case="'천칭자리'" th:src="@{/images/libra9.png}" class="fortune-zodiac-img">
+                <img th:case="'전갈자리'" th:src="@{/images/scropius10.png}" class="fortune-zodiac-img">
+                <img th:case="'사수자리'" th:src="@{/images/Sagittarius11.png}" class="fortune-zodiac-img">
+                <img th:case="'염소자리'" th:src="@{/images/Capricornus12.png}" class="fortune-zodiac-img">
+            </div>
 
-    <div th:if="${result.recommendEtfs.isEmpty()}" style="text-align: center; color: #b2bec3; padding: 20px;">
-        <p>앗, 오늘은 우주의 기운이 딱 맞는 ETF를 찾지 못했네요. <br> 잠시 후 다시 시도해보세요!</p>
-    </div>
+            <h1 class="fortune-title" th:text="|✨ ${result.zodiacSign}의 오늘 운세|">물병자리의 운세</h1>
 
-    <a th:each="etf : ${result.recommendEtfs}"
-       th:href="@{/etf/{isin}(isin=${etf.isinCd})}"
-       class="etf-card">
+            <p class="fortune-content" th:text="${result.fortuneText}">
+                운세 내용이 표시됩니다.
+            </p>
 
-        <div class="etf-info">
-            <h3 th:text="${etf.name}">KODEX 반도체</h3>
-            <div class="etf-tags">
-                <span th:text="${etf.theme}">반도체</span> |
-                위험도 <span th:text="${etf.riskLevel}">2</span>등급
+            <div class="keyword-box">
+                🔑 행운의 키워드: <span th:text="${result.keyword}">재물</span>
+                &nbsp; → &nbsp; 추천 테마: <span th:text="${result.matchedTheme}">반도체</span>
             </div>
         </div>
-        <div class="arrow-icon">➜</div>
-    </a>
 
-    <div class="btn-group">
-        <a th:href="@{/fortune}" class="sub-btn">↺ 다른 별자리 보기</a>
-        <a th:href="@{/}" class="home-btn" style="margin-top: 0;">메인으로 돌아가기</a>
+        <h2 class="etf-list-title">🌌 행운을 불러오는 추천 ETF</h2>
+
+        <div th:if="${result.recommendEtfs.isEmpty()}" style="text-align: center; color: #888; padding: 40px;">
+            <p>오늘은 우주의 기운이 딱 맞는 ETF를 찾지 못했네요. <br> 잠시 후 다시 시도해보세요!</p>
+        </div>
+
+        <a th:each="etf : ${result.recommendEtfs}"
+           th:href="@{/etf/{isin}(isin=${etf.isinCd})}"
+           class="etf-card">
+
+            <div class="etf-info">
+                <h3 th:text="${etf.name}">ETF 종목명</h3>
+                <div class="etf-tags">
+                    <span>#<span th:text="${etf.theme}">테마</span></span> |
+                    위험도 <span th:text="${etf.riskLevel}">2</span>등급
+                </div>
+            </div>
+            <div class="arrow-icon">➜</div>
+        </a>
+
+        <div class="btn-group">
+            <a th:href="@{/fortune}" class="sub-btn">↺ 다른 별자리 보기</a>
+            <a th:href="@{/}" class="home-btn">메인으로 돌아가기</a>
+        </div>
+
     </div>
+</div>
 
-</div>
-</div>
+<div th:replace="~{fragments/footer :: footerFragment}"></div>
+<script th:src="@{/js/common.js}"></script>
+
 </body>
 </html>

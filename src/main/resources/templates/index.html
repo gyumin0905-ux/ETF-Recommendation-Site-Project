@@ -26,7 +26,7 @@
 <!-- ================= HEADER ================= -->
 <div th:replace="~{fragments/header :: headerFragment}"></div>
 
-<main style="padding-top:100px">
+<main>
 
     <!-- ================= 검색 히어로 ================= -->
     <section id="search">
@@ -285,17 +285,15 @@
                 </div>
 
             </div>
-
-            <!-- 기본 네비게이션 -->
-            <div class="swiper-button-prev">
-                <img src="/images/slide-btn.png">
-            </div>
-            <div class="swiper-button-next">
-                <img src="/images/slide-btn.png">
-            </div>
+        </div>
+        <!-- 기본 네비게이션 -->
+        <div class="news-prev-btn">
+            <img src="/images/slide-btn.png">
+        </div>
+        <div class="news-next-btn">
+            <img src="/images/slide-btn.png">
         </div>
     </section>
-
 
     <!-- ================= ETF 투자 정보 ================= -->
     <section id="info">
@@ -373,12 +371,32 @@
 
 </main>
 
+<!-- ===== 챗봇 플로팅 버튼 ===== -->
+<div id="chatbot-fab">🤖</div>
+
+<!-- ===== 챗봇 모달 ===== -->
+<div id="chatbot-modal">
+    <div class="chatbot-frame-wrap">
+        <iframe src="/terms/chat"
+                frameborder="0"
+                class="chatbot-iframe"></iframe>
+    </div>
+</div>
+
 <!-- ================= FOOTER ================= -->
 <div th:replace="~{fragments/footer :: footerFragment}"></div>
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         document.querySelector('#search').classList.add('active');
+    });
+
+    window.addEventListener('message', e => {
+        if (e.data && e.data.type === 'CLOSE_CHATBOT') {
+            const modal = document.getElementById('chatbot-modal');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
     });
 </script>
 

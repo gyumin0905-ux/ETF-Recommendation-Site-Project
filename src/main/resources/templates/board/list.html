@@ -11,14 +11,67 @@
     <script src="https://cdn.tailwindcss.com"></script>
 
     <style>
-        /* ===== 리스트 페이지 전용 스타일 ===== */
-        .tab-location{padding-top:100px;text-align:center;}
-        .boardName{
-            font-size:70px;
-            margin:70px 0 40px;
-            text-align:center;
-            color:#055C4D;
-            font-weight:500;
+        /* ===== 상단 경로 표시 영역 ===== */
+        section.index {
+            width: 100%;
+            margin-top: 100px;        /* 헤더 높이 */
+            border-top: 1px solid #e5e7eb;
+            border-bottom: 1px solid #e5e7eb;
+            background: #fff;
+            position: relative;
+            z-index: 20;              /* 🔥 wrap보다 높게 */
+        }
+
+        /* 경로 텍스트 래퍼 */
+        section.index .tabs {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 14px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            color: #9ca3af;
+        }
+
+        /* 기본 경로 텍스트 */
+        section.index .tabs p {
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* > 기호 */
+        section.index .tabs span {
+            margin: 0 4px;
+            color: #d1d5db;
+        }
+
+        /* 현재 선택된 페이지 */
+        section.index .tabs .selection {
+            color: #111827;
+            font-weight: 600;
+        }
+
+        .wrap {
+            position: relative;
+            margin-top: 50px;
+        }
+
+        /* ===== 페이지 타이틀 영역 ===== */
+        .page-title {
+            text-align: center;
+            margin-top: 60px;
+            margin-bottom: 40px;
+        }
+
+        .page-title h1 {
+            font-size: 56px;
+            font-weight: 600;
+            color: #055C4D;
+            letter-spacing: -1px;
         }
 
         /* ================= WRAP ================= */
@@ -108,15 +161,18 @@
 <body>
 
 <div th:replace="~{fragments/header :: headerFragment}"></div>
-
-<div class="wrap" style="position: relative; z-index: 1;">
-    <section class="tab-location">
-        <h2 class="boardName">자유게시판</h2>
-    </section>
-
+<section class="index">
+    <div class="tabs">
+        <p>커뮤니티<span>></span></p>
+        <p class="selection">자유게시판</p>
+    </div>
+</section>
+<section class="page-title">
+    <h1>자유게시판</h1>
+</section>
+<div class="wrap">
     <div class="community-wrap">
         <div class="freeboard">
-
             <nav class="bestArea">
                 <ul class="bestbg"
                     th:each="board : ${boards.subList(0, T(java.lang.Math).min(3, boards.size()))}"

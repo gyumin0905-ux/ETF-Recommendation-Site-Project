@@ -1,62 +1,68 @@
 @charset "UTF-8";
 
-/* 탭메뉴 부분 */
-.index{
+/* ===== 상단 경로 표시 영역 ===== */
+section.index {
     width: 100%;
-    padding-top: 100px;
-    box-sizing: border-box;
-    margin: 0 auto;
+    margin-top: 100px;        /* 헤더 높이 */
+    border-top: 1px solid #e5e7eb;
+    border-bottom: 1px solid #e5e7eb;
+    background: #fff;
+    position: relative;
+    z-index: 20;              /* 🔥 wrap보다 높게 */
 }
-.index .tabs{
+
+/* 경로 텍스트 래퍼 */
+section.index .tabs {
+    max-width: 1200px;
     margin: 0 auto;
-    border: 1px solid #acacac8e;
-    border-left: 0px;
-    border-right: 0px;
-    display: block;
+    padding: 14px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: #9ca3af;
+}
+
+/* 기본 경로 텍스트 */
+section.index .tabs p {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* > 기호 */
+section.index .tabs span {
+    margin: 0 4px;
+    color: #d1d5db;
+}
+
+/* 현재 선택된 페이지 */
+section.index .tabs .selection {
+    color: #111827;
+    font-weight: 600;
+}
+
+/* ===== 페이지 타이틀 영역 ===== */
+.page-title {
     text-align: center;
-    color: #acacac;
-    font-weight: 300;
-    padding: 5px 0px;
-    box-sizing: border-box;
-    color: #1a1a1a;
+    margin-top: 60px;
+    margin-bottom: 40px;
 }
-.index .tabs .noticepage{
-    position: relative;
+
+.page-title h1 {
+    font-size: 56px;
+    font-weight: 600;
     color: #055C4D;
-    font-weight: 500;
-}
-.index .tabs .noticepage::after{
-    content: "";
-    display: block;
-    width: 4px; height: 4px;
-    background-color: #acacac;
-    border-radius: 50%;
-    position: absolute;
-    top: 19px;
-    left: 60px;
-}
-.index .tabs .freepage{
-    position: relative;
-}
-.index .tabs .freepage::after{
-    content: "";
-    display: block;
-    width: 4px; height: 4px;
-    background-color: #acacac;
-    border-radius: 50%;
-    position: absolute;
-    top: 19px;
-    left: 72px;
-}
-.index .tabs .newspage{
-    position: relative;
+    letter-spacing: -1px;
 }
 
 /* 이벤트 페이지 레이아웃 */
 #event{
     width: 100%;
     /* height: 200vh; */
-    padding: 100px 0px;
+    /* padding: 100px 0px; */
     box-sizing: border-box;
 }
 

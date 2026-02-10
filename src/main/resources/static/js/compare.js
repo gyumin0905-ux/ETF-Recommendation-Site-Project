@@ -1,151 +1,133 @@
 $(document).ready(function () {
 
+    const $items = $(".compareList .top10content > ul > li");
+    const $boxA = $(".section1Wrap .comparecontent .boxA");
+    const $boxB = $(".section1Wrap .comparecontent .boxB");
+    const $btn = $(".section1Wrap .compareBtn");
+    const $resultBox = $(".resultBox");
 
-$(".tab-btn>li").on("click", function (e) {
-    e.preventDefault();
-    let i = $(this).index();
+    let selected = [];
 
-    $(".tab-view>li").hide();
-    $(".tab-view>li").eq(i).show();
-
-    $(".tab-btn>li").removeClass("active");
-    $(".tab-btn>li").eq(i).addClass("active");
-});
-
-
-const $items = $(".compareList .top10content > ul > li");
-const $boxA = $(".section1Wrap .comparecontent .boxA");
-const $boxB = $(".section1Wrap .comparecontent .boxB");
-const $btn = $(".section1Wrap .compareBtn");
-const $resultBox = $(".section2Wrap .resultBox");
-
-let selected = []; // 선택된 li들을 저장(jQuery 객체)
-
-// 결과는 처음 숨김
-$resultBox.hide();
-
-// 버튼 상태 초기화
-setBtnState();
-renderBoxes();
-
-// ✅ li 클릭 이벤트: 선택/해제
-$items.on("click", function () {
-    const $li = $(this);
-
-    // 이미 선택된 항목이면 해제
-    const idx = selected.findIndex(el => el.is($li));
-    if (idx > -1) {
-    selected.splice(idx, 1);
-    $li.removeClass("is-selected");
-
-    renderBoxes();
+    // 초기화
+    $resultBox.hide();
     setBtnState();
-    closeResultIfNotReady(); /*여기수정됨*/
-    return;
-    }
-
-    // 2개 초과 선택 방지
-    if (selected.length >= 2) {
-    alert("비교는 2개까지만 선택할 수 있어요!");
-    return;
-    }
-
-    // 새로 선택
-    selected.push($li);
-    $li.addClass("is-selected");
-
     renderBoxes();
-    setBtnState();
-    // 선택은 늘어나는 거라 result 닫을 필요 없음
-});
 
-// ✅ box 클릭 → 해당 박스 선택 취소 + resultBox 자동 닫기
-$boxA.on("click", function () {
-    if (!selected[0]) return;
+    // 1. TOP 10 리스트 클릭
+    $items.on("click", function () {
+        const $li = $(this);
+        const idx = selected.findIndex(el => el.is($li));
 
-    selected[0].removeClass("is-selected");
-    selected.splice(0, 1);
-
-    renderBoxes();
-    setBtnState();
-    closeResultIfNotReady(); /*여기수정됨*/
-});
-
-$boxB.on("click", function () {
-    if (!selected[1]) return;
-
-    selected[1].removeClass("is-selected");
-    selected.splice(1, 1);
-
-    renderBoxes();
-    setBtnState();
-    closeResultIfNotReady(); /*여기수정됨*/
-});
-
-// ✅ 비교하기 버튼 클릭 → (2개 선택 완료일 때만) resultBox 보여주기
-$btn.on("click", function () {
-    if (selected.length !== 2) {
-    alert("비교할 상품 2개를 먼저 선택해주세요!");
-    return;
-    }
-
-    // 보여주기 + 스크롤 이동
-    $resultBox.stop(true, true).slideDown(400, function () {
-    $("html, body").animate({ scrollTop: $resultBox.offset().top - 80 }, 500);
+        if (idx > -1) {
+            selected.splice(idx, 1);
+            $li.removeClass("is-selected");
+        } else {
+            if (selected.length >= 2) {
+                alert("비교는 2개까지만 선택할 수 있어요!");
+                return;
+            }
+            selected.push($li);
+            $li.addClass("is-selected");
+        }
+        renderBoxes();
+        setBtnState();
     });
-});
 
+    // 2. 박스 클릭 (해제)
+    $boxA.on("click", function () { handleBoxClick(0); });
+    $boxB.on("click", function () { handleBoxClick(1); });
 
-function renderBoxes() {
-    const emptyHTML = `<p class="boxintxt">아래에서 상품을 선택해주세요.</p>`;
-
-    // boxA
-    if (selected[0]) $boxA.html(makeBoxHTML(selected[0]));
-    else $boxA.html(emptyHTML);
-
-    // boxB
-    if (selected[1]) $boxB.html(makeBoxHTML(selected[1]));
-    else $boxB.html(emptyHTML);
-}
-
-function makeBoxHTML($li) {
-    const title = $li.find(".prutit").text().trim();
-    const code = $li.find(".code").text().trim();
-
-    return `
-    <div class="picked">
-        <p class="picked-title">${title}</p>
-        <p class="picked-code">${code}</p>
-    </div>
-    `;
-}
-
-function setBtnState() {
-    const ok = selected.length === 2;
-
-    $btn.prop("disabled", !ok);
-
-    if (!ok) $btn.addClass("is-disabled");
-    else $btn.removeClass("is-disabled");
-}
-
-function closeResultIfNotReady() { /*여기수정됨*/
-    if (selected.length < 2) {
-    $resultBox.stop(true, true).slideUp(300);
+    function handleBoxClick(index) {
+        if (!selected[index]) return;
+        selected[index].removeClass("is-selected");
+        selected.splice(index, 1);
+        renderBoxes();
+        setBtnState();
+        if (selected.length < 2) $resultBox.slideUp();
     }
-}
 
+    // 3. 비교하기 버튼 클릭
+    $btn.on("click", function () {
+        if (selected.length !== 2) {
+            alert("비교할 상품 2개를 먼저 선택해주세요!");
+            return;
+        }
 
-const $proLis = $("#RecommendWrap .proList > li"); /*여기수정됨*/
+        const isin1 = selected[0].data("isin");
+        const isin2 = selected[1].data("isin");
 
-// 초기 활성: 2번째 li가 기본으로 on 되도록 강제(HTML에 on이 없어도 동작) /*여기수정됨*/
-$proLis.removeClass("on");
-$proLis.eq(1).addClass("on"); // 0=첫번째, 1=두번째 /*여기수정됨*/
+        // 결과창 열기 + 스크롤 이동
+        $resultBox.stop(true, true).slideDown(400);
+        // 결과창이 버튼 바로 아래에 열리므로 조금 더 아래로 스크롤
+        $("html, body").animate({ scrollTop: $resultBox.offset().top - 120 }, 500);
 
-// 클릭하면 활성 이동 /*여기수정됨*/
-$proLis.on("click", function () {
-    $proLis.removeClass("on");
-    $(this).addClass("on");
-});
+        // 차트 로딩
+        if (typeof loadReturnChartInto === 'function') {
+            loadReturnChartInto("resultCompareChart", isin1, isin2, "3M", "line");
+        }
 
+        // 결과값 로딩
+        $("#compareResultArea").html('<div style="text-align:center;padding:50px;">로딩중...</div>');
+        $("#compareResultArea").load(
+            `/compare/result?isin=${encodeURIComponent(isin1)}&isin=${encodeURIComponent(isin2)} .compare-result-wrap`
+        );
+    });
+
+    function renderBoxes() {
+        const emptyHTML = `<p class="boxintxt">아래에서 상품을 선택해주세요.</p>`;
+        if (selected[0]) $boxA.html(makeBoxHTML(selected[0])).addClass('picked');
+        else $boxA.html(emptyHTML).removeClass('picked');
+
+        if (selected[1]) $boxB.html(makeBoxHTML(selected[1])).addClass('picked');
+        else $boxB.html(emptyHTML).removeClass('picked');
+    }
+
+    function makeBoxHTML($li) {
+        const title = $li.find(".prutit").text().trim();
+        const code = $li.find(".code").text().trim();
+        return `
+            <div class="">
+                <p class="picked-title">${title}</p>
+                <p class="picked-code">${code}</p>
+            </div>
+        `;
+    }
+
+    function setBtnState() {
+        const ok = selected.length === 2;
+        $btn.prop("disabled", !ok);
+        if (!ok) $btn.addClass("is-disabled");
+        else $btn.removeClass("is-disabled");
+    }
+
+    // ==========================================
+    // 오늘의 추천 비교 (우측 리스트 클릭)
+    // ==========================================
+    const $proLis = $(".proList > li");
+
+    if ($proLis.length > 0) {
+        fillDetail($proLis.eq(0));
+    }
+
+    $proLis.on("click", function () {
+        $proLis.removeClass("on");
+        $(this).addClass("on");
+        fillDetail($(this));
+    });
+
+    function fillDetail($li) {
+        $("#leftName").text($li.data("left-name"));
+        $("#leftTheme").text($li.data("left-theme"));
+        $("#leftRisk").text($li.data("left-risk"));
+        $("#leftIsin").text($li.data("left-isin"));
+
+        $("#rightName").text($li.data("right-name"));
+        $("#rightTheme").text($li.data("right-theme"));
+        $("#rightRisk").text($li.data("right-risk"));
+        $("#rightIsin").text($li.data("right-isin"));
+
+        if (typeof loadReturnChartInto === 'function') {
+            loadReturnChartInto("compareReturnChart", $li.data("left-isin"), $li.data("right-isin"), "1Y", "line");
+        }
+    }
 });

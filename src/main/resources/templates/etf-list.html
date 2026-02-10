@@ -24,12 +24,13 @@
             width: 1620px;
             margin: 0 auto 80px; /* 간격 조정 */
             text-align: center;
+            padding-top: 50px;
         }
 
         .searchTit {
             font-size: 48px;
             font-weight: 600;
-            color: #1e1f7c;
+            color: #055C4D;
             margin-bottom: 40px;
         }
 
@@ -62,7 +63,7 @@
         .filter {
             width: 300px; /* 너비 살짝 조정 */
             background: #fff;
-            padding: 32px 28px;
+            padding: 32px 20px;
             border-radius: 20px;
             flex-shrink: 0;
             box-shadow: 0 4px 12px rgba(0,0,0,0.03);
@@ -75,6 +76,7 @@
             margin-bottom: 28px;   /* 기존 20px → 여유 */
             padding-bottom: 15px;
             border-bottom: 2px solid #eee;
+            width: 100%;
         }
 
         .filter-header h3 {
@@ -117,17 +119,20 @@
         .filter-group:last-child {
             border-bottom: none;
             padding-bottom: 0;
+            width: 43%;
+            margin-left: 9px;
         }
 
         /* 그룹 구분선 */
         .filter-group:not(:last-child) {
             padding-bottom: 24px;
             border-bottom: 1px dashed #e5e7eb;
+            margin-left: 9px;
         }
 
         /* 보수 수준 강조 */
         .filter-group:last-child p {
-            color: #1e1f7c;     /* 메인 포인트 컬러 */
+            color: #055C4D;     /* 메인 포인트 컬러 */
         }
 
         .filter-btn {

@@ -1,56 +1,51 @@
 @charset "UTF-8";
 
-/* 페이지 위치 */
-.tab-location{
+/* ===== 상단 경로 표시 영역 ===== */
+section.index {
     width: 100%;
-    padding-top: 100px;
-    box-sizing: border-box;
-    margin: 0 auto;
-}
-.tab-location .tabs{
-    margin: 0 auto;
-    border: 1px solid #acacac8e;
-    border-left: 0px;
-    border-right: 0px;
-    display: block;
-    text-align: center;
-    color: #acacac;
-    font-weight: 300;
-    padding: 5px 0px;
-    box-sizing: border-box;
-    color: #1a1a1a;
-}
-.tab-location .tabs .noticepage{
+    margin-top: 100px;        /* 헤더 높이 */
+    border-top: 1px solid #e5e7eb;
+    border-bottom: 1px solid #e5e7eb;
+    background: #fff;
     position: relative;
+    z-index: 20;              /* 🔥 wrap보다 높게 */
 }
-.tab-location .tabs .noticepage::after{
-    content: "";
-    display: block;
-    width: 4px; height: 4px;
-    background-color: #acacac;
-    border-radius: 50%;
-    position: absolute;
-    top: 19px;
-    left: 60px;
+
+/* 경로 텍스트 래퍼 */
+section.index .tabs {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 14px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: #9ca3af;
 }
-.tab-location .tabs .freepage{
+
+/* 기본 경로 텍스트 */
+section.index .tabs p {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* > 기호 */
+section.index .tabs span {
+    margin: 0 4px;
+    color: #d1d5db;
+}
+
+/* 현재 선택된 페이지 */
+section.index .tabs .selection {
+    color: #111827;
+    font-weight: 600;
+}
+
+.wrap {
     position: relative;
-    color: #055C4D;
-    font-weight: 500;
-}
-.tab-location .tabs .freepage::after{
-    content: "";
-    display: block;
-    width: 4px; height: 4px;
-    background-color: #acacac;
-    border-radius: 50%;
-    position: absolute;
-    top: 19px;
-    left: 85px;
-}
-.tab-location .tabs .tab:hover{
-    color: #055C4D;
-    font-weight: 500;
 }
 
 .boardName{

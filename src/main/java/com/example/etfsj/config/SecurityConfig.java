@@ -23,6 +23,11 @@ public class SecurityConfig {
                 // CSRF 끔 (개발 단계)
                 .csrf(csrf -> csrf.disable())
 
+                // 🔥 iframe 허용 (같은 origin)
+                .headers(headers ->
+                        headers.frameOptions(frame -> frame.sameOrigin())
+                )
+
                 // 모든 요청 허용 (세션 기반 로그인 직접 구현 중)
                 .authorizeHttpRequests(auth -> auth
                         .anyRequest().permitAll()

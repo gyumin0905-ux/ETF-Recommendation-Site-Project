@@ -16,29 +16,34 @@
         body { background:#f7f7f7; font-family: 'Noto Sans KR', sans-serif; }
 
         .chat-box {
-            width:900px;
-            margin:60px auto 100px; /* 상단 여백 확보 */
-            background:white;
-            padding:30px;
-            border-radius:16px;
-            box-shadow:0 6px 18px rgba(0,0,0,0.08);
+            width: 100%;              /* iframe에 맞춤 */
+            /*max-width: 460px;*/         /* ⬅ 내부 폭 제한 */
+            margin: 1px auto 10px;
+            background: white;
+            padding: 16px 18px;            /* ⬅ 패딩 줄임 */
+            border-radius: 14px;
+            box-shadow: none;         /* iframe 안에서는 그림자 제거 */
+            position: relative;
         }
 
-        h2 { font-size: 24px; font-weight: 700; margin-bottom: 20px; color: #055C4D; }
+        h2 { font-size: 20px; font-weight: 700; margin-bottom: 8px; color: #055C4D; }
 
-        .term-buttons { margin-bottom: 14px; }
+        .term-buttons {
+            margin-top: 4px;
+            margin-bottom: 10px;
+        }
         .term-buttons button {
-            margin:4px; padding:8px 16px; border-radius:999px;
+            margin:4px; padding:6px 14px; border-radius:999px;
             border:1px solid #ddd; background:#fff; cursor:pointer;
-            font-size:14px; transition: 0.2s;
+            font-size:13px; transition: 0.2s;
         }
         .term-buttons button:hover {
             background:#f0fdf4; border-color:#055C4D; color:#055C4D;
         }
 
         .chat-area {
-            height:400px; border:1px solid #eee; border-radius:12px;
-            padding:20px; margin:20px 0; overflow-y:auto; background:#fafafa;
+            height:360px; border:1px solid #eee; border-radius:12px;
+            padding:16px; margin:20px 0; overflow-y:auto; background:#fafafa;
         }
 
         .user, .bot { display:flex; margin:10px 0; }
@@ -59,16 +64,41 @@
             transition: 0.2s;
         }
         .input-area button:hover { background: #04463a; }
+
+        .chat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .close-btn {
+            border: none;
+            background: transparent;
+            font-size: 22px;
+            cursor: pointer;
+            color: #999;
+            padding: 4px 6px;
+            line-height: 1;
+            position: absolute;
+            right: 20px;
+            top: 20px;
+        }
+
+        .close-btn:hover {
+            color: #055C4D;
+        }
+
     </style>
 </head>
 
 <body>
 
-<div th:replace="~{fragments/header :: headerFragment}"></div>
-
-<div style="position: relative; z-index: 1; padding-top: 100px;">
+<div style="position: relative; z-index: 1;">
     <div class="chat-box">
-        <h2>🤖 ETF 용어 챗봇</h2>
+        <div class="chat-header">
+            <h2>🤖 ETF 용어 챗봇</h2>
+        </div>
 
         <div class="term-buttons">
             <div th:if="${terms == null or terms.size() == 0}">
@@ -97,18 +127,57 @@
                    onkeydown="if(event.key==='Enter'){send();}" />
             <button onclick="send()">전송</button>
         </div>
-    </div>
-</div>
 
-<div th:replace="~{fragments/footer :: footerFragment}"></div>
+    </div>
+    <button class="close-btn" onclick="closeChat()">✕</button>
+</div>
 
 <script th:src="@{/js/common.js}"></script>
 <script>
     const chat = document.getElementById("chat");
 
+    function pickSubjectParticle(term) {
+        const t = (term || "").trim();
+        if (!t) return "가";
+
+        // 1️⃣ 괄호 앞 텍스트 우선 사용
+        const base = stripParenPart(t);
+
+        const last = base[base.length - 1];
+
+        // 2️⃣ 한글이면 받침 여부로 판단
+        if (isHangul(last)) {
+            return hasFinalConsonant(last) ? "이" : "가";
+        }
+
+        // 3️⃣ 영문/숫자 → 기본 가
+        return "가";
+    }
+
+    function stripParenPart(str) {
+        // "최대낙폭(MDD)" → "최대낙폭"
+        const idx = str.indexOf("(");
+        if (idx > 0) {
+            return str.substring(0, idx).trim();
+        }
+        return str;
+    }
+
     function quickAsk(term) {
-        document.getElementById("q").value = term + "가 뭐야?";
+        const josa = pickSubjectParticle(term); // 이/가 결정
+        document.getElementById("q").value = `${term}${josa} 뭐야?`;
         send();
+    }
+
+    function isHangul(ch) {
+        const code = ch.charCodeAt(0);
+        return code >= 0xAC00 && code <= 0xD7A3;
+    }
+
+    // 한글 문자 1개 기준 받침 유무
+    function hasFinalConsonant(hangulChar) {
+        const code = hangulChar.charCodeAt(0) - 0xAC00;
+        return (code % 28) !== 0;
     }
 
     function appendUser(text){
@@ -146,6 +215,14 @@
             .replaceAll(">", "&gt;")
             .replaceAll("\"", "&quot;")
             .replaceAll("'", "&#039;");
+    }
+
+    function closeChat() {
+        // 부모(index.html)에게 닫으라고 메시지 전송
+        window.parent.postMessage(
+            { type: 'CLOSE_CHATBOT' },
+            '*'
+        );
     }
 </script>
 

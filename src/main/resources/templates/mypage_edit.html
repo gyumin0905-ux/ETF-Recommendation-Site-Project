@@ -86,6 +86,66 @@
             background:#fff;
             cursor:pointer;
         }
+
+        /* ===== 사이드바 ===== */
+        .side-menu{
+            width:260px;
+            background:#4f7766;
+            padding:40px 28px;
+            box-sizing:border-box;
+            display:flex;
+            flex-direction:column;
+        }
+
+        /* 로고 */
+        .side-logo{
+            margin-bottom:50px;
+        }
+        .side-logo img{
+            width:180px;
+            display:block;
+        }
+
+        /* 네비게이션 */
+        .side-nav{
+            display:flex;
+            flex-direction:column;
+            gap:26px;
+        }
+
+        .nav-item{
+            color:#ffffff;
+            opacity:0.65;
+            font-size:17px;
+            text-decoration:none;
+            transition:all 0.2s ease;
+            position:relative;
+        }
+
+        /* hover */
+        .nav-item:hover{
+            opacity:1;
+            font-weight:600;
+        }
+
+        /* 활성 메뉴 */
+        .nav-item.active{
+            opacity:1;
+            font-weight:700;
+        }
+
+        /* 활성 메뉴 왼쪽 포인트 (선택, 이미지랑 잘 어울림) */
+        .nav-item.active::before{
+            content:"";
+            position:absolute;
+            left:-28px;
+            top:50%;
+            transform:translateY(-50%);
+            width:4px;
+            height:20px;
+            background:#ffffff;
+            border-radius:2px;
+        }
     </style>
 </head>
 
@@ -94,11 +154,20 @@
 
     <!-- SIDEBAR -->
     <aside class="side-menu">
-        <a href="/" class="logo"></a>
-        <ul class="menu-list">
-            <li><a href="/mypage">MY Page</a></li>
-            <li><a href="/mypage/edit">개인정보 관리</a></li>
-        </ul>
+        <!-- 로고 -->
+        <div class="side-logo">
+            <a href="/">
+                <img src="/images/logo-footer.png" alt="Verte ETF 로고">
+            </a>
+        </div>
+
+        <!-- 메뉴 -->
+        <nav class="side-nav">
+            <a href="/" class="nav-item">HOME</a>
+            <a href="/mypage" class="nav-item active">MY Page</a>
+            <a href="/mypage/edit" class="nav-item">개인정보 관리</a>
+            <a href="#" class="nav-item">MY Menu</a>
+        </nav>
     </aside>
 
     <!-- CONTENT -->
